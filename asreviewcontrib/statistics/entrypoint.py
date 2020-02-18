@@ -13,13 +13,15 @@
 # limitations under the License.
 
 import argparse
+import logging
 
 from pprint import pprint
 
 from asreview.config import LOGGER_EXTENSIONS
 from asreview.entry_points import BaseEntryPoint
 
-from asreviewcontrib.statistics import Statistics
+from asreviewcontrib.statistics import LogStatistics
+from asreviewcontrib.statistics.statistics import DataStatistics
 
 
 class StatEntryPoint(BaseEntryPoint):
@@ -34,25 +36,39 @@ class StatEntryPoint(BaseEntryPoint):
         self.version = __version__
 
     def execute(self, argv):
+        logging.getLogger().setLevel(logging.ERROR)
         parser = _parse_arguments()
-        args_dict = vars(parser.parse_args(argv))
+        args = vars(parser.parse_args(argv))
 
-        prefix = args_dict["prefix"]
-        data_dirs = args_dict["data_dirs"]
-        if len(args_dict["wss"]) + len(args_dict["rrf"]) == 0:
-            args_dict["wss"] = [95, 100]
-            args_dict["rrf"] = [5, 10]
-        with Statistics.from_dirs(data_dirs, prefix=prefix) as stat:
+        log_paths = []
+        for path in args['paths']:
+            try:
+                stat = DataStatistics.from_file(path)
+                print("--------------------")
+                print(path)
+                print(stat.format_summary(), end='')
+                print("++++++++++++++++++++\n")
+            except ValueError:
+                log_paths.append(path)
+
+        if len(log_paths) == 0:
+            return
+        prefix = args["prefix"]
+        if len(args["wss"]) + len(args["rrf"]) == 0:
+            args["wss"] = [95, 100]
+            args["rrf"] = [5, 10]
+
+        with LogStatistics.from_paths(log_paths, prefix=prefix) as stat:
             if len(stat.analyses) == 0:
-                print(f"No log files found in {args_dict['data_dirs']}.\n"
+                print(f"No log files found in {log_paths}.\n"
                       f"To be detected log files have to start with '{prefix}'"
                       f" and end with one of the following: \n"
                       f"{', '.join(LOGGER_EXTENSIONS)}.")
                 return
             wss_results = {f"wss_{wss}": stat.wss(wss)
-                           for wss in args_dict["wss"]}
+                           for wss in args["wss"]}
             rrf_results = {f"rrf_{rrf}": stat.rrf(rrf)
-                           for rrf in args_dict["rrf"]}
+                           for rrf in args["rrf"]}
             results = {**wss_results, **rrf_results}
             pprint(results)
 
@@ -60,7 +76,7 @@ class StatEntryPoint(BaseEntryPoint):
 def _parse_arguments():
     parser = argparse.ArgumentParser(prog='asreview stat')
     parser.add_argument(
-        'data_dirs',
+        'paths',
         metavar='N',
         type=str,
         nargs='+',

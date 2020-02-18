@@ -13,17 +13,18 @@
 # limitations under the License.
 
 # import matplotlib.pyplot as plt
-# import numpy as np
+import numpy as np
 
 from asreview.analysis.analysis import Analysis
+from asreview.readers import ASReviewData
 
 
-class Statistics():
-    def __init__(self, data_dirs, prefix="result"):
+class LogStatistics():
+    def __init__(self, path_list, prefix="result"):
         self.analyses = {}
 
-        for data_dir in data_dirs:
-            new_analysis = Analysis.from_dir(data_dir, prefix=prefix)
+        for path in path_list:
+            new_analysis = Analysis.from_path(path, prefix=prefix)
             if new_analysis is not None:
                 data_key = new_analysis.key
                 self.analyses[data_key] = new_analysis
@@ -36,8 +37,8 @@ class Statistics():
             analysis.close()
 
     @classmethod
-    def from_dirs(cls, data_dirs, prefix="result"):
-        plot_inst = cls(data_dirs, prefix=prefix)
+    def from_paths(cls, path_list, prefix="result"):
+        plot_inst = cls(path_list, prefix=prefix)
         return plot_inst
 
     def wss(self, WSS_value, result_format="percentage"):
@@ -51,3 +52,94 @@ class Statistics():
             key: analysis.rrf(RRF_value, x_format=result_format)[0]
             for key, analysis in self.analyses.items()
         }
+
+
+class DataStatistics():
+    def __init__(self, data_fp):
+        self.as_data = ASReviewData.from_file(data_fp)
+
+    @classmethod
+    def from_file(cls, data_fp):
+        return cls(data_fp)
+
+    def n_papers(self):
+        return len(self.as_data.title)
+
+    def n_included(self):
+        if self.as_data.labels is not None:
+            return np.sum(self.as_data.labels)
+        return None
+
+    def n_missing_title(self):
+        n_missing = 0
+        if self.as_data.labels is None:
+            n_missing_included = None
+        else:
+            n_missing_included = 0
+        for i in range(len(self.as_data.title)):
+            if len(self.as_data.title[i]) == 0:
+                n_missing += 1
+                if (self.as_data.labels is not None
+                        and self.as_data.labels[i] != 0):
+                    n_missing_included += 1
+        return n_missing, n_missing_included
+
+    def n_missing_abstract(self):
+        n_missing = 0
+        if self.as_data.labels is None:
+            n_missing_included = None
+        else:
+            n_missing_included = 0
+
+        for i in range(len(self.as_data.abstract)):
+            if len(self.as_data.abstract[i]) == 0:
+                n_missing += 1
+                if (self.as_data.labels is not None
+                        and self.as_data.labels[i] != 0):
+                    n_missing_included += 1
+
+        return n_missing, n_missing_included
+
+    def title_length(self):
+        avg_len = 0
+        for i in range(len(self.as_data.title)):
+            avg_len += len(self.as_data.title[i])
+        return avg_len/len(self.as_data.title)
+
+    def abstract_length(self):
+        avg_len = 0
+        for i in range(len(self.as_data.abstract)):
+            avg_len += len(self.as_data.abstract[i])
+        return avg_len/len(self.as_data.abstract)
+
+    def summary(self):
+        n_missing_title, n_missing_title_included = self.n_missing_title()
+        n_missing_abs, n_missing_abs_included = self.n_missing_abstract()
+        return {
+            "n_papers": self.n_papers(),
+            "n_included": self.n_included(),
+            "n_missing_title": n_missing_title,
+            "n_missing_title_included": n_missing_title_included,
+            "n_missing_abstract": n_missing_abs,
+            "n_missing_abstract_included": n_missing_abs_included,
+            "title_length": self.title_length(),
+            "abstract_length": self.abstract_length(),
+        }
+
+    def format_summary(self):
+        summary = self.summary()
+        summary_str = (
+            f"Number of papers:            {summary['n_papers']}\n"
+            f"Number of inclusions:        {summary['n_included']} "
+            f"({100*summary['n_included']/summary['n_papers']:.2f}%)\n"
+            f"Average title length:        {summary['title_length']:.0f}\n"
+            f"Average abstract length:     {summary['abstract_length']:.0f}\n"
+            f"Number of missing titles:    {summary['n_missing_title']}"
+        )
+        if summary['n_missing_title_included'] is not None:
+            summary_str += f" (of which {summary['n_missing_title_included']} included)"
+        summary_str += f"\nNumber of missing abstracts: {summary['n_missing_abstract']}"
+        if summary['n_missing_abstract_included'] is not None:
+            summary_str += f" (of which {summary['n_missing_abstract_included']} included)"
+        summary_str += "\n"
+        return summary_str
