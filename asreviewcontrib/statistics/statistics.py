@@ -73,6 +73,16 @@ class DataStatistics():
             return len(np.where(self.labels == 1)[0])
         return None
 
+    def n_excluded(self):
+        if self.labels is None:
+            return None
+        return len(np.where(self.labels == 0)[0])
+
+    def n_unlabeled(self):
+        if self.labels is None:
+            return None
+        return len(self.labels) - self.n_included() - self.n_excluded()
+
     def n_missing_title(self):
         n_missing = 0
         if self.labels is None:
@@ -121,6 +131,8 @@ class DataStatistics():
         return {
             "n_papers": self.n_papers(),
             "n_included": self.n_included(),
+            "n_excluded": self.n_excluded(),
+            "n_unlabeled": self.n_unlabeled(),
             "n_missing_title": n_missing_title,
             "n_missing_title_included": n_missing_title_included,
             "n_missing_abstract": n_missing_abs,
@@ -135,6 +147,10 @@ class DataStatistics():
             f"Number of papers:            {summary['n_papers']}\n"
             f"Number of inclusions:        {summary['n_included']} "
             f"({100*summary['n_included']/summary['n_papers']:.2f}%)\n"
+            f"Number of exclusions:        {summary['n_excluded']} "
+            f"({100*summary['n_excluded']/summary['n_papers']:.2f}%)\n"
+            f"Number of unlabeled:         {summary['n_unlabeled']} "
+            f"({100*summary['n_unlabeled']/summary['n_papers']:.2f}%)\n"
             f"Average title length:        {summary['title_length']:.0f}\n"
             f"Average abstract length:     {summary['abstract_length']:.0f}\n"
             f"Number of missing titles:    {summary['n_missing_title']}"

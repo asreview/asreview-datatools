@@ -80,7 +80,7 @@ def _parse_arguments():
         metavar='N',
         type=str,
         nargs='+',
-        help='Data directories.'
+        help='Data directories, data files or datasets.'
     )
     parser.add_argument(
         "--prefix",
