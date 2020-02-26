@@ -16,7 +16,7 @@
 import numpy as np
 
 from asreview.analysis.analysis import Analysis
-from asreview.readers import ASReviewData
+from asreview import ASReviewData
 
 
 class LogStatistics():
@@ -57,60 +57,63 @@ class LogStatistics():
 class DataStatistics():
     def __init__(self, data_fp):
         self.as_data = ASReviewData.from_file(data_fp)
+        self.title = self.as_data.title
+        self.abstract = self.as_data.abstract
+        self.labels = self.as_data.labels
 
     @classmethod
     def from_file(cls, data_fp):
         return cls(data_fp)
 
     def n_papers(self):
-        return len(self.as_data.title)
+        return len(self.title)
 
     def n_included(self):
-        if self.as_data.labels is not None:
-            return np.sum(self.as_data.labels)
+        if self.labels is not None:
+            return len(np.where(self.labels == 1)[0])
         return None
 
     def n_missing_title(self):
         n_missing = 0
-        if self.as_data.labels is None:
+        if self.labels is None:
             n_missing_included = None
         else:
             n_missing_included = 0
-        for i in range(len(self.as_data.title)):
-            if len(self.as_data.title[i]) == 0:
+        for i in range(len(self.title)):
+            if len(self.title[i]) == 0:
                 n_missing += 1
-                if (self.as_data.labels is not None
-                        and self.as_data.labels[i] != 0):
+                if (self.labels is not None
+                        and self.labels[i] != 0):
                     n_missing_included += 1
         return n_missing, n_missing_included
 
     def n_missing_abstract(self):
         n_missing = 0
-        if self.as_data.labels is None:
+        if self.labels is None:
             n_missing_included = None
         else:
             n_missing_included = 0
 
-        for i in range(len(self.as_data.abstract)):
-            if len(self.as_data.abstract[i]) == 0:
+        for i in range(len(self.abstract)):
+            if len(self.abstract[i]) == 0:
                 n_missing += 1
-                if (self.as_data.labels is not None
-                        and self.as_data.labels[i] != 0):
+                if (self.labels is not None
+                        and self.labels[i] != 0):
                     n_missing_included += 1
 
         return n_missing, n_missing_included
 
     def title_length(self):
         avg_len = 0
-        for i in range(len(self.as_data.title)):
-            avg_len += len(self.as_data.title[i])
-        return avg_len/len(self.as_data.title)
+        for i in range(len(self.title)):
+            avg_len += len(self.title[i])
+        return avg_len/len(self.title)
 
     def abstract_length(self):
         avg_len = 0
-        for i in range(len(self.as_data.abstract)):
-            avg_len += len(self.as_data.abstract[i])
-        return avg_len/len(self.as_data.abstract)
+        for i in range(len(self.abstract)):
+            avg_len += len(self.abstract[i])
+        return avg_len/len(self.abstract)
 
     def summary(self):
         n_missing_title, n_missing_title_included = self.n_missing_title()
@@ -137,9 +140,12 @@ class DataStatistics():
             f"Number of missing titles:    {summary['n_missing_title']}"
         )
         if summary['n_missing_title_included'] is not None:
-            summary_str += f" (of which {summary['n_missing_title_included']} included)"
-        summary_str += f"\nNumber of missing abstracts: {summary['n_missing_abstract']}"
+            summary_str += (f" (of which {summary['n_missing_title_included']}"
+                            " included)")
+        summary_str += (f"\nNumber of missing abstracts: "
+                        f"{summary['n_missing_abstract']}")
         if summary['n_missing_abstract_included'] is not None:
-            summary_str += f" (of which {summary['n_missing_abstract_included']} included)"
+            val = summary['n_missing_abstract_included']
+            summary_str += (f" (of which {val} included)")
         summary_str += "\n"
         return summary_str
