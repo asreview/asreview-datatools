@@ -44,10 +44,10 @@ class StatEntryPoint(BaseEntryPoint):
         for path in args['paths']:
             try:
                 stat = DataStatistics.from_file(path)
-                print("--------------------")
-                print(path)
+                print("************{name}************\n".format(
+                    name=f"  {path}  "))
                 print(stat.format_summary(), end='')
-                print("++++++++++++++++++++\n")
+                print("\n")
             except ValueError:
                 log_paths.append(path)
 
@@ -58,19 +58,11 @@ class StatEntryPoint(BaseEntryPoint):
             args["wss"] = [95, 100]
             args["rrf"] = [5, 10]
 
-        with LogStatistics.from_paths(log_paths, prefix=prefix) as stat:
-            if len(stat.analyses) == 0:
-                print(f"No log files found in {log_paths}.\n"
-                      f"To be detected log files have to start with '{prefix}'"
-                      f" and end with one of the following: \n"
-                      f"{', '.join(LOGGER_EXTENSIONS)}.")
-                return
-            wss_results = {f"wss_{wss}": stat.wss(wss)
-                           for wss in args["wss"]}
-            rrf_results = {f"rrf_{rrf}": stat.rrf(rrf)
-                           for rrf in args["rrf"]}
-            results = {**wss_results, **rrf_results}
-            pprint(results)
+        for path in log_paths:
+            with LogStatistics.from_path(
+                    path, wss_vals=args["wss"], rrf_vals=args["rrf"],
+                    prefix=prefix) as stat:
+                print(stat)
 
 
 def _parse_arguments():

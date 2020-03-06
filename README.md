@@ -9,7 +9,9 @@ Install the package with:
 ```bash
 pip install asreview-statistics
 ```
-The general usage of the package is to inspect files related to the systematic review done with ASReview. It can be used to inspect your dataset that you would like to review (or have reviewed).
+The general usage of the package is to inspect files related to the systematic review done
+with ASReview. It can be used to inspect your dataset that you would like to review (or have
+reviewed).
 
 General usage:
 
@@ -27,32 +29,64 @@ asreview stat path_to_your_dataset
 
 It should give some general properties of the dataset, e.g.:
 ```
-Number of papers:            5077
-Number of inclusions:        40 (0.79%)
-Number of exclusions:        5037 (99.21%)
+************  ptsd.csv  ************
+
+Number of papers:            5782
+Number of inclusions:        38 (0.66%)
+Number of exclusions:        5744 (99.34%)
 Number of unlabeled:         0 (0.00%)
-Average title length:        104
-Average abstract length:     1536
-Number of missing titles:    0 (of which 0 included)
-Number of missing abstracts: 6 (of which 0 included)
+Average title length:        101
+Average abstract length:     1339
+Number of missing titles:    64 (of which 0 included)
+Number of missing abstracts: 747 (of which 0 included)
 ```
 
-Your dataset should be in a format that is readable by the ASReview software. Documentation on how to create such a dataset is in the main project.
+Your dataset should be in a format that is readable by the ASReview software. Documentation
+on how to create such a dataset is in the main project.
 
 ## Log files
 
-Another use is the quick analysis of either one log file, or multiple log files in the same directory:
+Another use is the quick analysis of either one log file, or multiple log files in the same
+directory:
 
 ```bash
 asreview stat path_to_your_log_files
 ```
 
 This will give output similar to:
+
 ```
-{'rrf_10': {'ptsd_nb': 97.63513513513513},
- 'rrf_5': {'ptsd_nb': 97.2972972972973},
- 'wss_100': {'ptsd_nb': 87.56055363321799},
- 'wss_95': {'ptsd_nb': 91.50273543439634}}
+************  ptsd_nb  *******************
+
+-----------  general  -----------
+Number of runs           : 16
+Number of papers         : 5782
+Number of included papers: 38
+Number of excluded papers: 5744
+Number of queries        : 233
+
+-----------  settings  -----------
+model             : nb
+query_strategy    : max_random
+balance_strategy  : double
+feature_extraction: tfidf
+n_instances       : 25
+n_prior_included  : 1
+n_prior_excluded  : 1
+mode              : simulate
+model_param       : {'alpha': 3.822}
+query_param       : {'strategy_1': 'max', 'strategy_2': 'random', 'mix_ratio': 0.95}
+feature_param     : {}
+balance_param     : {'a': 2.155, 'alpha': 0.94, 'b': 0.789, 'beta': 1.0}
+abstract_only     : False
+
+-----------  WSS/RRF  -----------
+WSS@95 : 91.50 %
+WSS@100: 87.56 %
+RRF@5  : 97.30 %
+RRF@10 : 97.64 %
+
 ```
 
-Multiple log files/directories are accepted. Currently, the amount of information displayed is limited, help/suggestions are welcome!
+Multiple log files/directories are accepted. Currently, the amount of information displayed is
+limited, help/suggestions are welcome!

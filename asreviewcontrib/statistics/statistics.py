@@ -12,46 +12,97 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# import matplotlib.pyplot as plt
 import numpy as np
 
 from asreview.analysis.analysis import Analysis
 from asreview import ASReviewData
+from asreview.utils import pretty_format
 
 
 class LogStatistics():
-    def __init__(self, path_list, prefix="result"):
-        self.analyses = {}
-
-        for path in path_list:
-            new_analysis = Analysis.from_path(path, prefix=prefix)
-            if new_analysis is not None:
-                data_key = new_analysis.key
-                self.analyses[data_key] = new_analysis
+    def __init__(self, path, wss_vals=[], rrf_vals=[], prefix="result"):
+        self.wss_vals = wss_vals
+        self.rrf_vals = rrf_vals
+        self.analysis = Analysis.from_path(path, prefix=prefix)
 
     def __enter__(self):
         return self
 
     def __exit__(self, *_, **__):
-        for analysis in self.analyses.values():
-            analysis.close()
+        self.analysis.close()
 
     @classmethod
-    def from_paths(cls, path_list, prefix="result"):
-        plot_inst = cls(path_list, prefix=prefix)
-        return plot_inst
+    def from_path(cls, path, *args, prefix="result", **kwargs):
+        stat_inst = cls(path, *args, prefix=prefix, **kwargs)
+        return stat_inst
 
     def wss(self, WSS_value, result_format="percentage"):
-        return {
-            key: analysis.wss(WSS_value, x_format=result_format)[0]
-            for key, analysis in self.analyses.items()
-        }
+        return self.analysis.wss(WSS_value, x_format=result_format)[0]
 
     def rrf(self, RRF_value, result_format="percentage"):
+        return self.analysis.rrf(RRF_value, x_format=result_format)[0]
+
+    @property
+    def general(self):
+        n_queries = [logger.n_queries()
+                     for logger in self.analysis.loggers.values()]
         return {
-            key: analysis.rrf(RRF_value, x_format=result_format)[0]
-            for key, analysis in self.analyses.items()
+            "n_queries": n_queries,
+            "n_loggers": self.analysis.num_runs,
+            "n_papers": len(self.analysis.labels),
+            "n_included": sum(self.analysis.labels),
+            "n_excluded": sum(self.analysis.labels == 0),
         }
+
+    @property
+    def settings(self):
+        return self.analysis.loggers[self.analysis._first_file].settings
+
+    def asdict(self):
+        return {
+            "settings": self.settings,
+            "wss": {wss_at: self.wss(wss_at) for wss_at in self.wss_vals},
+            "rrf": {rrf_at: self.rrf(rrf_at) for rrf_at in self.rrf_vals},
+            "general": self.general
+        }
+
+    def __str__(self):
+        results = self.asdict()
+        stat_str = "************{name:*<30}\n\n".format(
+            name=f"  {self.analysis.key}  ")
+        stat_str += "-----------  general  -----------\n"
+        general_dict = {
+            "Number of runs": results['general']['n_loggers'],
+            "Number of papers": results['general']['n_papers'],
+            "Number of included papers": results['general']['n_included'],
+            "Number of excluded papers": results['general']['n_excluded'],
+        }
+
+        n_query_list = np.array(results['general']['n_queries'])
+        if np.all(np.array(n_query_list) == n_query_list[0]):
+            general_dict["Number of queries"] = n_query_list[0]
+        else:
+            avg = np.average(n_query_list)
+            minim = np.min(n_query_list)
+            maxim = np.max(n_query_list)
+            tstr = f"{avg} (min: {minim}, max: {maxim})"
+            general_dict["Number of queries"] = tstr
+
+        stat_str += pretty_format(general_dict)
+        stat_str += f"\n"
+        stat_str += "-----------  settings  -----------\n"
+        stat_str += str(results["settings"]) + "\n"
+
+        if len(results["wss"]) + len(results["rrf"]) > 0:
+            stat_str += "-----------  WSS/RRF  -----------\n"
+            for wss_at, wss_val in results["wss"].items():
+                wss_val_str = f"{wss_val:.2f}"
+                stat_str += f"WSS@{wss_at: <3}: {wss_val_str: <5} %\n"
+            for rrf_at, rrf_val in results["rrf"].items():
+                rrf_val_str = f"{rrf_val:.2f}"
+                stat_str += f"RRF@{rrf_at: <3}: {rrf_val_str: <5} %\n"
+
+        return stat_str
 
 
 class DataStatistics():
@@ -93,7 +144,7 @@ class DataStatistics():
             if len(self.title[i]) == 0:
                 n_missing += 1
                 if (self.labels is not None
-                        and self.labels[i] != 0):
+                        and self.labels[i] == 1):
                     n_missing_included += 1
         return n_missing, n_missing_included
 
@@ -108,7 +159,7 @@ class DataStatistics():
             if len(self.abstract[i]) == 0:
                 n_missing += 1
                 if (self.labels is not None
-                        and self.labels[i] != 0):
+                        and self.labels[i] == 1):
                     n_missing_included += 1
 
         return n_missing, n_missing_included
