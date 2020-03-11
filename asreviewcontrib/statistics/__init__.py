@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from asreviewcontrib.statistics.statistics import LogStatistics
+from asreviewcontrib.statistics.statistics import StateStatistics
 from asreviewcontrib.statistics.statistics import DataStatistics
 from asreviewcontrib.statistics.entrypoint import StatEntryPoint
 

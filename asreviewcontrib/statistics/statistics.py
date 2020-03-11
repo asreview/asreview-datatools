@@ -19,7 +19,7 @@ from asreview import ASReviewData
 from asreview.utils import pretty_format
 
 
-class LogStatistics():
+class StateStatistics():
     def __init__(self, path, wss_vals=[], rrf_vals=[], prefix="result"):
         self.wss_vals = wss_vals
         self.rrf_vals = rrf_vals
@@ -44,11 +44,11 @@ class LogStatistics():
 
     @property
     def general(self):
-        n_queries = [logger.n_queries()
-                     for logger in self.analysis.loggers.values()]
+        n_queries = [state.n_queries()
+                     for state in self.analysis.states.values()]
         return {
             "n_queries": n_queries,
-            "n_loggers": self.analysis.num_runs,
+            "n_states": self.analysis.num_runs,
             "n_papers": len(self.analysis.labels),
             "n_included": sum(self.analysis.labels),
             "n_excluded": sum(self.analysis.labels == 0),
@@ -56,7 +56,7 @@ class LogStatistics():
 
     @property
     def settings(self):
-        return self.analysis.loggers[self.analysis._first_file].settings
+        return self.analysis.states[self.analysis._first_file].settings
 
     def asdict(self):
         return {
@@ -72,7 +72,7 @@ class LogStatistics():
             name=f"  {self.analysis.key}  ")
         stat_str += "-----------  general  -----------\n"
         general_dict = {
-            "Number of runs": results['general']['n_loggers'],
+            "Number of runs": results['general']['n_states'],
             "Number of papers": results['general']['n_papers'],
             "Number of included papers": results['general']['n_included'],
             "Number of excluded papers": results['general']['n_excluded'],

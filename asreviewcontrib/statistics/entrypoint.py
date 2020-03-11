@@ -20,7 +20,7 @@ from pprint import pprint
 from asreview.config import LOGGER_EXTENSIONS
 from asreview.entry_points import BaseEntryPoint
 
-from asreviewcontrib.statistics import LogStatistics
+from asreviewcontrib.statistics import StateStatistics
 from asreviewcontrib.statistics.statistics import DataStatistics
 
 
@@ -59,7 +59,7 @@ class StatEntryPoint(BaseEntryPoint):
             args["rrf"] = [5, 10]
 
         for path in log_paths:
-            with LogStatistics.from_path(
+            with StateStatistics.from_path(
                     path, wss_vals=args["wss"], rrf_vals=args["rrf"],
                     prefix=prefix) as stat:
                 print(stat)
