@@ -96,10 +96,16 @@ class StateStatistics():
         if len(results["wss"]) + len(results["rrf"]) > 0:
             stat_str += "-----------  WSS/RRF  -----------\n"
             for wss_at, wss_val in results["wss"].items():
-                wss_val_str = f"{wss_val:.2f}"
+                if wss_val is not None:
+                    wss_val_str = f"{wss_val:.2f}"
+                else:
+                    wss_val_str = "NA"
                 stat_str += f"WSS@{wss_at: <3}: {wss_val_str: <5} %\n"
             for rrf_at, rrf_val in results["rrf"].items():
-                rrf_val_str = f"{rrf_val:.2f}"
+                if rrf_val is not None:
+                    rrf_val_str = f"{rrf_val:.2f}"
+                else:
+                    rrf_val_str = "NA"
                 stat_str += f"RRF@{rrf_at: <3}: {rrf_val_str: <5} %\n"
 
         return stat_str
