@@ -16,4 +16,4 @@ from asreviewcontrib.statistics.statistics import StateStatistics
 from asreviewcontrib.statistics.statistics import DataStatistics
 from asreviewcontrib.statistics.entrypoint import StatEntryPoint
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
