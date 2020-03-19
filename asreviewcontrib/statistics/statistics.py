@@ -68,7 +68,7 @@ class StateStatistics():
         }
 
     def __str__(self):
-        results = self.asdict()
+        results = self.to_dict()
         stat_str = "************{name:*<30}\n\n".format(
             name=f"  {self.analysis.key}  ")
         stat_str += "-----------  general  -----------\n"
