@@ -17,6 +17,7 @@ import numpy as np
 from asreview.analysis.analysis import Analysis
 from asreview import ASReviewData
 from asreview.utils import pretty_format
+from asreview.config import LABEL_NA
 
 
 class StateStatistics():
@@ -58,7 +59,7 @@ class StateStatistics():
     def settings(self):
         return self.analysis.states[self.analysis._first_file].settings
 
-    def asdict(self):
+    def to_dict(self):
         return {
             "settings": self.settings,
             "wss": {wss_at: self.wss(wss_at) for wss_at in self.wss_vals},
@@ -117,6 +118,9 @@ class DataStatistics():
         self.title = self.as_data.title
         self.abstract = self.as_data.abstract
         self.labels = self.as_data.labels
+        self.keywords = self.as_data.keywords
+        if self.labels is None:
+            self.labels = np.full(len(self.as_data), LABEL_NA)
 
     @classmethod
     def from_file(cls, data_fp):
@@ -182,7 +186,12 @@ class DataStatistics():
             avg_len += len(self.abstract[i])
         return avg_len/len(self.abstract)
 
-    def summary(self):
+    def num_keywords(self):
+        if self.keywords is None:
+            return None
+        return np.average([len(keywords) for keywords in self.keywords])
+
+    def to_dict(self):
         n_missing_title, n_missing_title_included = self.n_missing_title()
         n_missing_abs, n_missing_abs_included = self.n_missing_abstract()
         return {
@@ -196,10 +205,15 @@ class DataStatistics():
             "n_missing_abstract_included": n_missing_abs_included,
             "title_length": self.title_length(),
             "abstract_length": self.abstract_length(),
+            "n_keywords": self.num_keywords(),
         }
 
     def format_summary(self):
-        summary = self.summary()
+        summary = self.to_dict()
+        if summary['n_keywords'] is not None:
+            avg_keywords = f"{summary['n_keywords']:.1f}"
+        else:
+            avg_keywords = None
         summary_str = (
             f"Number of papers:            {summary['n_papers']}\n"
             f"Number of inclusions:        {summary['n_included']} "
@@ -210,6 +224,7 @@ class DataStatistics():
             f"({100*summary['n_unlabeled']/summary['n_papers']:.2f}%)\n"
             f"Average title length:        {summary['title_length']:.0f}\n"
             f"Average abstract length:     {summary['abstract_length']:.0f}\n"
+            f"Average number of keywords:  {avg_keywords}\n"
             f"Number of missing titles:    {summary['n_missing_title']}"
         )
         if summary['n_missing_title_included'] is not None:
