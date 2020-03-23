@@ -33,7 +33,7 @@ class StateStatistics():
         self.analysis.close()
 
     @classmethod
-    def from_path(cls, path, *args, prefix="result", **kwargs):
+    def from_path(cls, path, *args, prefix="", **kwargs):
         stat_inst = cls(path, *args, prefix=prefix, **kwargs)
         return stat_inst
 
@@ -127,7 +127,7 @@ class DataStatistics():
         return cls(data_fp)
 
     def n_papers(self):
-        return len(self.title)
+        return len(self.as_data)
 
     def n_included(self):
         if self.labels is not None:
@@ -146,6 +146,8 @@ class DataStatistics():
 
     def n_missing_title(self):
         n_missing = 0
+        if self.title is None:
+            return None, None
         if self.labels is None:
             n_missing_included = None
         else:
@@ -160,6 +162,8 @@ class DataStatistics():
 
     def n_missing_abstract(self):
         n_missing = 0
+        if self.abstract is None:
+            return None, None
         if self.labels is None:
             n_missing_included = None
         else:
@@ -175,12 +179,16 @@ class DataStatistics():
         return n_missing, n_missing_included
 
     def title_length(self):
+        if self.title is None:
+            return None
         avg_len = 0
         for i in range(len(self.title)):
             avg_len += len(self.title[i])
         return avg_len/len(self.title)
 
     def abstract_length(self):
+        if self.abstract is None:
+            return None
         avg_len = 0
         for i in range(len(self.abstract)):
             avg_len += len(self.abstract[i])
@@ -193,6 +201,7 @@ class DataStatistics():
 
     def to_dict(self):
         n_missing_title, n_missing_title_included = self.n_missing_title()
+
         n_missing_abs, n_missing_abs_included = self.n_missing_abstract()
         return {
             "n_papers": self.n_papers(),
