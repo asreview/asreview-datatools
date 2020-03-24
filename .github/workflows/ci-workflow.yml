@@ -20,7 +20,7 @@ jobs:
     - name: Install packages and run tests  
       run: |
         pip install pytest
-        pip install setuptools>=41.0.0
+        pip install --upgrade setuptools>=41.0.0
         pip install ./asr-core
         pip install ./asr-stat
         pytest asr-stat/tests
