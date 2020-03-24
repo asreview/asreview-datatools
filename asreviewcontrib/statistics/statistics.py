@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import OrderedDict
+
 import numpy as np
 
 from asreview.analysis.analysis import Analysis
@@ -51,8 +53,9 @@ class StateStatistics():
             "n_queries": n_queries,
             "n_states": self.analysis.num_runs,
             "n_papers": len(self.analysis.labels),
-            "n_included": sum(self.analysis.labels),
+            "n_included": sum(self.analysis.labels == 1),
             "n_excluded": sum(self.analysis.labels == 0),
+            "n_unlabeled": sum(self.analysis.labels == LABEL_NA)
         }
 
     @property
@@ -72,12 +75,13 @@ class StateStatistics():
         stat_str = "************{name:*<30}\n\n".format(
             name=f"  {self.analysis.key}  ")
         stat_str += "-----------  general  -----------\n"
-        general_dict = {
+        general_dict = OrderedDict({
             "Number of runs": results['general']['n_states'],
             "Number of papers": results['general']['n_papers'],
             "Number of included papers": results['general']['n_included'],
             "Number of excluded papers": results['general']['n_excluded'],
-        }
+            "Number of unlabeled papers": results['general']['n_unlabeled']
+        })
 
         n_query_list = np.array(results['general']['n_queries'])
         if np.all(np.array(n_query_list) == n_query_list[0]):
