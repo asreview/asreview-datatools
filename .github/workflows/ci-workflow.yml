@@ -21,7 +21,10 @@ jobs:
       run: |
         pip install pytest
         pip install --upgrade setuptools>=41.0.0
-        pip install ./asr-core
+        cd asr-core
+        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        pip install .
+        cd ..
         pip install ./asr-stat
         pytest asr-stat/tests
      
