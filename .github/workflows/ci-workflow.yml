@@ -23,6 +23,7 @@ jobs:
         pip install --upgrade setuptools>=41.0.0
         cd asr-core
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        python versioneer.py setup
         pip install .
         cd ..
         pip install ./asr-stat
