@@ -1,9 +1,10 @@
 from pathlib import Path
+
 from asreviewcontrib.statistics.statistics import DataStatistics
 
 
-def test_data():
-    test_data = Path("tests", "data", "embase.csv")
+def test_data(request):
+    test_data = Path(request.fspath.dirname, "data", "embase.csv")
 
     stat = DataStatistics.from_file(test_data)
     assert stat.n_included() == 0
@@ -17,24 +18,24 @@ def test_data():
     assert round(stat.num_keywords()) == 29
 
 
-def test_labeled_data():
-    test_data_labeled = Path("tests", "data", "embase_labelled.csv")
+def test_labeled_data(request):
+    test_data_labeled = Path(request.fspath.dirname, "data", "embase_labelled.csv")
     stat = DataStatistics.from_file(test_data_labeled)
     assert stat.n_included() == 2
     assert stat.n_excluded() == 4
     assert stat.n_papers() == 6
 
 
-def test_no_kewords():
-    test_data_nk = Path("tests", "data", "embase_no_keywords.csv")
+def test_no_kewords(request):
+    test_data_nk = Path(request.fspath.dirname, "data", "embase_no_keywords.csv")
     stat = DataStatistics.from_file(test_data_nk)
     assert stat.num_keywords() is None
     assert stat.to_dict()["n_keywords"] is None
     assert stat.n_papers() == 6
 
 
-def test_no_titles():
-    test_data_nt = Path("tests", "data", "embase_no_title.csv")
+def test_no_titles(request):
+    test_data_nt = Path(request.fspath.dirname, "data", "embase_no_title.csv")
     stat = DataStatistics.from_file(test_data_nt)
     assert stat.title_length() is None
     assert stat.n_missing_title() == (None, None)
@@ -43,8 +44,8 @@ def test_no_titles():
     assert stat.n_papers() == 6
 
 
-def test_no_abstracts():
-    test_data_na = Path("tests", "data", "embase_no_abstract.csv")
+def test_no_abstracts(request):
+    test_data_na = Path(request.fspath.dirname, "data", "embase_no_abstract.csv")
     stat = DataStatistics.from_file(test_data_na)
     assert stat.abstract_length() is None
     assert stat.n_missing_abstract() == (None, None)
