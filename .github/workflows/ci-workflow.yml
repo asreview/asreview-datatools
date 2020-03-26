@@ -9,10 +9,10 @@ jobs:
       with:
         path: asr-stat
 
-    - uses: actions/checkout@v2
-      with:
-        repository: asreview/asreview
-        path: asr-core
+    #- uses: actions/checkout@v2
+      #with:
+        #repository: asreview/asreview
+        #path: asr-core
     - uses: actions/setup-python@v1
       with:
         python-version: '3.6' # Version range or exact version of a Python version to use, using semvers version range syntax.
@@ -21,9 +21,8 @@ jobs:
       run: |
         pip install pytest
         pip install --upgrade setuptools>=41.0.0
-        cd asr-core
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        python versioneer.py setup
+        git clone https://github.com/asreview/asreview.git
+        cd asreview
         pip install .
         cd ..
         pip install ./asr-stat
