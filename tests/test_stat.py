@@ -7,11 +7,12 @@ from asreview import review_simulate
 from asreviewcontrib.statistics.statistics import StateStatistics
 
 
-def test_state():
-    os.makedirs(Path("tests", "output"), exist_ok=True)
-    state_fp = Path("tests", "output", "test.h5")
-    state_fp_2 = Path("tests", "output", "test2.h5")
-    data_fp = Path("tests", "data", "embase_labelled.csv")
+def test_state(request):
+    test_dir = request.fspath.dirname
+    os.makedirs(Path(test_dir, "output"), exist_ok=True)
+    state_fp = Path(test_dir, "output", "test.h5")
+    state_fp_2 = Path(test_dir, "output", "test2.h5")
+    data_fp = Path(test_dir, "data", "embase_labelled.csv")
     for fp in [state_fp, state_fp_2]:
         try:
             os.remove(fp)
@@ -24,7 +25,7 @@ def test_state():
     with StateStatistics.from_path(state_fp) as stat:
         check_stat(stat)
 
-    with StateStatistics.from_path(Path("tests", "output")) as stat:
+    with StateStatistics.from_path(Path(test_dir, "output")) as stat:
         check_stat(stat, 2)
 
     os.remove(state_fp)

@@ -1,6 +1,8 @@
 # ASReview-statistics
 
-ASReview extension for generating statistics on log files and datasets.
+![Deploy and release](https://github.com/asreview/asreview-statistics/workflows/Deploy%20and%20release/badge.svg)![Build status](https://github.com/asreview/asreview-statistics/workflows/test-suite/badge.svg)
+
+ASReview extension for generating statistics on state files and datasets.
 
 ## General
 
@@ -29,7 +31,7 @@ asreview stat path_to_your_dataset
 
 It should give some general properties of the dataset, e.g.:
 ```
-************  ptsd.csv  ************
+************  PTSD_VandeSchoot_18.csv  ************
 
 Number of papers:            5782
 Number of inclusions:        38 (0.66%)
@@ -37,6 +39,7 @@ Number of exclusions:        5744 (99.34%)
 Number of unlabeled:         0 (0.00%)
 Average title length:        101
 Average abstract length:     1339
+Average number of keywords:  8.8
 Number of missing titles:    64 (of which 0 included)
 Number of missing abstracts: 747 (of which 0 included)
 ```
@@ -44,13 +47,13 @@ Number of missing abstracts: 747 (of which 0 included)
 Your dataset should be in a format that is readable by the ASReview software. Documentation
 on how to create such a dataset is in the main project.
 
-## Log files
+## State files
 
-Another use is the quick analysis of either one log file, or multiple log files in the same
+Another use is the quick analysis of either one state file, or multiple state files in the same
 directory:
 
 ```bash
-asreview stat path_to_your_log_files
+asreview stat path_to_your_state_files
 ```
 
 This will give output similar to:
@@ -59,11 +62,12 @@ This will give output similar to:
 ************  ptsd_nb  *******************
 
 -----------  general  -----------
-Number of runs           : 16
-Number of papers         : 5782
-Number of included papers: 38
-Number of excluded papers: 5744
-Number of queries        : 233
+Number of runs            : 16
+Number of papers          : 5782
+Number of included papers : 38
+Number of excluded papers : 5744
+Number of unlabeled papers: 0
+Number of queries         : 233
 
 -----------  settings  -----------
 model             : nb
@@ -88,5 +92,4 @@ RRF@10 : 97.64 %
 
 ```
 
-Multiple log files/directories are accepted. Currently, the amount of information displayed is
-limited, help/suggestions are welcome!
+Currently, the amount of information displayed is growing; help and suggestions are welcome!
