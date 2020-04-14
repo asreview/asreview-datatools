@@ -9,10 +9,6 @@ jobs:
       with:
         path: asr-stat
 
-    #- uses: actions/checkout@v2
-      #with:
-        #repository: asreview/asreview
-        #path: asr-core
     - uses: actions/setup-python@v1
       with:
         python-version: '3.6' # Version range or exact version of a Python version to use, using semvers version range syntax.

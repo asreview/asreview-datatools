@@ -20,6 +20,8 @@ from asreview.analysis.analysis import Analysis
 from asreview import ASReviewData
 from asreview.utils import pretty_format
 from asreview.config import LABEL_NA
+import json
+from builtins import isinstance
 
 
 class StateStatistics():
@@ -45,6 +47,14 @@ class StateStatistics():
     def rrf(self, RRF_value, result_format="percentage"):
         return self.analysis.rrf(RRF_value, x_format=result_format)[0]
 
+    def loss(self):
+        avg_discovery_time = self.analysis.avg_time_to_discovery()
+
+        loss = 0
+        for avg_time in avg_discovery_time.values():
+            loss += avg_time/len(self.analysis.labels)
+        return loss/len(avg_discovery_time)
+
     @property
     def general(self):
         n_queries = [state.n_queries()
@@ -53,9 +63,9 @@ class StateStatistics():
             "n_queries": n_queries,
             "n_states": self.analysis.num_runs,
             "n_papers": len(self.analysis.labels),
-            "n_included": sum(self.analysis.labels == 1),
-            "n_excluded": sum(self.analysis.labels == 0),
-            "n_unlabeled": sum(self.analysis.labels == LABEL_NA)
+            "n_included": int(sum(self.analysis.labels == 1)),
+            "n_excluded": int(sum(self.analysis.labels == 0)),
+            "n_unlabeled": int(sum(self.analysis.labels == LABEL_NA))
         }
 
     @property
@@ -63,12 +73,21 @@ class StateStatistics():
         return self.analysis.states[self.analysis._first_file].settings
 
     def to_dict(self):
+        try:
+            settings_dict = self.settings.to_dict()
+        except AttributeError:
+            settings_dict = str(self.settings)
         return {
-            "settings": self.settings,
+            "settings": settings_dict,
             "wss": {wss_at: self.wss(wss_at) for wss_at in self.wss_vals},
             "rrf": {rrf_at: self.rrf(rrf_at) for rrf_at in self.rrf_vals},
+            "loss": self.loss(),
             "general": self.general
         }
+
+    def to_json(self, fp):
+        with open(fp, "w") as f:
+            json.dump(self.to_dict(), f)
 
     def __str__(self):
         results = self.to_dict()
@@ -96,7 +115,13 @@ class StateStatistics():
         stat_str += pretty_format(general_dict)
         stat_str += f"\n"
         stat_str += "-----------  settings  -----------\n"
-        stat_str += str(results["settings"]) + "\n"
+        if isinstance(results["settings"], str):
+            stat_str += results["settings"] + "\n"
+        else:
+            stat_str += pretty_format(results["settings"]) + "\n"
+
+        stat_str += "-----------    loss    -----------\n"
+        stat_str += f"{results['loss']: .3g}\n\n"
 
         if len(results["wss"]) + len(results["rrf"]) > 0:
             stat_str += "-----------  WSS/RRF  -----------\n"

@@ -22,6 +22,7 @@ from asreview.entry_points import BaseEntryPoint
 
 from asreviewcontrib.statistics import StateStatistics
 from asreviewcontrib.statistics.statistics import DataStatistics
+import json
 
 
 class StatEntryPoint(BaseEntryPoint):
@@ -39,20 +40,24 @@ class StatEntryPoint(BaseEntryPoint):
         logging.getLogger().setLevel(logging.ERROR)
         parser = _parse_arguments()
         args = vars(parser.parse_args(argv))
+        output_fp = args["output"]
 
         log_paths = []
+        stat_dict = {}
+
         for path in args['paths']:
             try:
                 stat = DataStatistics.from_file(path)
-                print("************{name}************\n".format(
-                    name=f"  {path}  "))
-                print(stat.format_summary(), end='')
-                print("\n")
+                if output_fp is None:
+                    print("************{name}************\n".format(
+                        name=f"  {path}  "))
+                    print(stat.format_summary(), end='')
+                    print("\n")
+                else:
+                    stat_dict[str(path)] = stat.to_dict()
             except ValueError:
                 log_paths.append(path)
 
-        if len(log_paths) == 0:
-            return
         prefix = args["prefix"]
         if len(args["wss"]) + len(args["rrf"]) == 0:
             args["wss"] = [95, 100]
@@ -62,7 +67,14 @@ class StatEntryPoint(BaseEntryPoint):
             with StateStatistics.from_path(
                     path, wss_vals=args["wss"], rrf_vals=args["rrf"],
                     prefix=prefix) as stat:
-                print(stat)
+                if output_fp is None:
+                    print(stat)
+                else:
+                    stat_dict[str(path)] = stat.to_dict()
+
+        if output_fp is not None:
+            with open(output_fp, "w") as fp:
+                json.dump(stat_dict, fp)
 
 
 def _parse_arguments():
@@ -73,6 +85,12 @@ def _parse_arguments():
         type=str,
         nargs='+',
         help='Data directories, data files or datasets.'
+    )
+    parser.add_argument(
+        "-o", "--output",
+        default=None,
+        type=str,
+        help="Export the results to a JSON file."
     )
     parser.add_argument(
         "--prefix",
