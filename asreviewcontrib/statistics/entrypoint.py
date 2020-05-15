@@ -26,8 +26,7 @@ import json
 
 
 class StatEntryPoint(BaseEntryPoint):
-    description = "Plotting functionality for logging files produced by "\
-        "ASReview."
+    description = "Generate statistics on datasets and ASReview state files."
     extension_name = "asreview-statistics"
 
     def __init__(self):
