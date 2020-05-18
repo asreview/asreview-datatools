@@ -5,6 +5,7 @@
 from setuptools import setup, find_namespace_packages
 from os import path
 from io import open
+import versioneer
 
 here = path.abspath(path.dirname(__file__))
 
@@ -12,15 +13,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-# Extract version from cbsodata.py
-for line in open(path.join("asreviewcontrib", "statistics", "__init__.py")):
-    if line.startswith('__version__'):
-        exec(line)
-        break
-
 setup(
     name='asreview-statistics',
-    version=__version__,  # noqa
+    version=versioneer.get_version(),
+    cmd_class=versioneer.get_cmdclass(),
     description='Statistical tools for the ASReview project',
     long_description=long_description,
     long_description_content_type='text/markdown',
