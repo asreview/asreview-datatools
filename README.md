@@ -84,12 +84,14 @@ feature_param     : {}
 balance_param     : {'a': 2.155, 'alpha': 0.94, 'b': 0.789, 'beta': 1.0}
 abstract_only     : False
 
+-----------    ATD    -----------
+ 0.0195
+
 -----------  WSS/RRF  -----------
-WSS@95 : 91.50 %
-WSS@100: 87.56 %
+WSS@95 : 91.49 %
+WSS@100: 87.54 %
 RRF@5  : 97.30 %
 RRF@10 : 97.64 %
-
 ```
 
 Currently, the amount of information displayed is growing; help and suggestions are welcome!

@@ -120,7 +120,7 @@ class StateStatistics():
         else:
             stat_str += pretty_format(results["settings"]) + "\n"
 
-        stat_str += "-----------    loss    -----------\n"
+        stat_str += "-----------    ATD    -----------\n"
         stat_str += f"{results['loss']: .3g}\n\n"
 
         if len(results["wss"]) + len(results["rrf"]) > 0:
