@@ -44,7 +44,7 @@ setup(
     keywords='asreview statistics',
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
     install_requires=[
-        "asreview>=0.7", "pprint"
+        "asreview>=0.7"
     ],
 
     extras_require={
