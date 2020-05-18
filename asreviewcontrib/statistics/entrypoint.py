@@ -37,7 +37,8 @@ class StatEntryPoint(BaseEntryPoint):
 
     def execute(self, argv):
         logging.getLogger().setLevel(logging.ERROR)
-        parser = _parse_arguments()
+        version_name = f"{self.extension_name}: {self.version}"
+        parser = _parse_arguments(version=version_name)
         args = vars(parser.parse_args(argv))
         output_fp = args["output"]
 
@@ -76,14 +77,19 @@ class StatEntryPoint(BaseEntryPoint):
                 json.dump(stat_dict, fp)
 
 
-def _parse_arguments():
+def _parse_arguments(version="?"):
     parser = argparse.ArgumentParser(prog='asreview stat')
     parser.add_argument(
         'paths',
-        metavar='N',
+        metavar='PATH',
         type=str,
         nargs='+',
         help='Data directories, data files or datasets.'
+    )
+    parser.add_argument(
+        "-V", "--version",
+        action='version',
+        version=version,
     )
     parser.add_argument(
         "-o", "--output",
