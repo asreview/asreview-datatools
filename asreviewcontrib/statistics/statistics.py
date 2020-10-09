@@ -182,7 +182,7 @@ class DataStatistics():
         else:
             n_missing_included = 0
         for i in range(len(self.title)):
-            if len(self.title[i]) == 0:
+            if len(self.title[i]) == 0 or self.title[i] == "nan":
                 n_missing += 1
                 if (self.labels is not None
                         and self.labels[i] == 1):
@@ -199,7 +199,7 @@ class DataStatistics():
             n_missing_included = 0
 
         for i in range(len(self.abstract)):
-            if len(self.abstract[i]) == 0:
+            if len(self.abstract[i]) == 0 or self.abstract[i] == "nan":
                 n_missing += 1
                 if (self.labels is not None
                         and self.labels[i] == 1):
