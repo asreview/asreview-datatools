@@ -74,7 +74,7 @@ class StatEntryPoint(BaseEntryPoint):
 
         if output_fp is not None:
             with open(output_fp, "w") as fp:
-                json.dump(stat_dict, fp)
+                json.dump(stat_dict, fp, indent=2)
 
 
 def _parse_arguments(version="?"):
