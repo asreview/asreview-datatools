@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from builtins import isinstance
 from collections import OrderedDict
 
 import numpy as np
@@ -20,8 +22,6 @@ from asreview.analysis.analysis import Analysis
 from asreview import ASReviewData
 from asreview.utils import pretty_format
 from asreview.config import LABEL_NA
-import json
-from builtins import isinstance
 
 
 class StateStatistics():
@@ -46,6 +46,11 @@ class StateStatistics():
 
     def rrf(self, RRF_value, result_format="percentage"):
         return self.analysis.rrf(RRF_value, x_format=result_format)[0]
+
+    def time_to_discovery(self):
+        ttd_sorted = sorted(self.analysis.avg_time_to_discovery().items(),
+                            key=lambda x: x[1])
+        return {int(i): float(v) for i, v in ttd_sorted}
 
     def loss(self):
         avg_discovery_time = self.analysis.avg_time_to_discovery()
@@ -82,6 +87,7 @@ class StateStatistics():
             "wss": {wss_at: self.wss(wss_at) for wss_at in self.wss_vals},
             "rrf": {rrf_at: self.rrf(rrf_at) for rrf_at in self.rrf_vals},
             "loss": self.loss(),
+            "time_to_discovery": self.time_to_discovery(),
             "general": self.general
         }
 
@@ -122,6 +128,14 @@ class StateStatistics():
 
         stat_str += "-----------    ATD    -----------\n"
         stat_str += f"{results['loss']: .3g}\n\n"
+
+        stat_str += f"Time to discovery:\n\n"
+        stat_str += f"    row   : value\n"
+
+        for i, v in results['time_to_discovery'].items():
+            stat_str += f"    {i: <6}: {v}\n"
+
+        stat_str += "\n\n"
 
         if len(results["wss"]) + len(results["rrf"]) > 0:
             stat_str += "-----------  WSS/RRF  -----------\n"
