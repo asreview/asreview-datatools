@@ -104,12 +104,6 @@ def _parse_arguments(version="?"):
              'starting with a prefix.'
     )
     parser.add_argument(
-        "--abstract_only",
-        default=False,
-        action="store_true",
-        help="Use after abstract screening as the inclusions/exclusions."
-    )
-    parser.add_argument(
         "--wss",
         default=[],
         action="append",
