@@ -105,12 +105,14 @@ def _parse_arguments(version="?"):
     )
     parser.add_argument(
         "--wss",
+        type=float,
         default=[],
         action="append",
         help="Compute WSS @ some percentage."
     )
     parser.add_argument(
         "--rrf",
+        type=float,
         default=[],
         action="append",
         help="Compute RRF @ some percentage."
