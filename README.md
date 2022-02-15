@@ -1,6 +1,6 @@
 # ASReview-statistics
 
-[![PyPI version](https://badge.fury.io/py/asreview-statistics.svg)](https://badge.fury.io/py/asreview-statistics)[![Downloads](https://pepy.tech/badge/asreview-statistics)](https://pepy.tech/project/asreview-statistics)![PyPI - License](https://img.shields.io/pypi/l/asreview-statistics)![Deploy and release](https://github.com/asreview/asreview-statistics/workflows/Deploy%20and%20release/badge.svg)![Build status](https://github.com/asreview/asreview-statistics/workflows/test-suite/badge.svg)
+[![PyPI version](https://badge.fury.io/py/asreview-statistics.svg)](https://badge.fury.io/py/asreview-statistics) [![Downloads](https://pepy.tech/badge/asreview-statistics)](https://pepy.tech/project/asreview-statistics) ![PyPI - License](https://img.shields.io/pypi/l/asreview-statistics) ![Deploy and release](https://github.com/asreview/asreview-statistics/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-statistics/workflows/test-suite/badge.svg)
 
 ASReview extension for generating statistics on state files and datasets.
 
