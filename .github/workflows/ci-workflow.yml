@@ -11,9 +11,9 @@ jobs:
 
     - uses: actions/setup-python@v1
       with:
-        python-version: '3.6' # Version range or exact version of a Python version to use, using semvers version range syntax.
+        python-version: '3.8' # Version range or exact version of a Python version to use, using semvers version range syntax.
         architecture: 'x64' # (x64 or x86)
-    - name: Install packages and run tests  
+    - name: Install packages and run tests
       run: |
         pip install pytest
         pip install --upgrade setuptools>=41.0.0
@@ -23,7 +23,7 @@ jobs:
         cd ..
         pip install ./asr-stat
         pytest asr-stat/tests
-     
+
   #test-older:
     #name: pytest
     #runs-on: ubuntu-latest
