@@ -1,97 +1,140 @@
-# ASReview-statistics
+# ASReview-datatools
 
-[![PyPI version](https://badge.fury.io/py/asreview-statistics.svg)](https://badge.fury.io/py/asreview-statistics) [![Downloads](https://pepy.tech/badge/asreview-statistics)](https://pepy.tech/project/asreview-statistics) ![PyPI - License](https://img.shields.io/pypi/l/asreview-statistics) ![Deploy and release](https://github.com/asreview/asreview-statistics/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-statistics/workflows/test-suite/badge.svg)
+![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4672242.svg)](https://doi.org/10.5281/zenodo.4672242)
 
-ASReview extension for generating statistics on state files and datasets.
 
-## General
+ASReview-datatools is an extension for [ASReview
+LAB](https://github.com/asreview/asreview) software. The extension can be used
+for describing and cleaning your (input) data via the command line.
 
-Install the package with:
+## Installation
+
+The ASReview-datatools extensions requires Python 3.6+ and [ASReview
+LAB](https://github.com/asreview/asreview) version 1.
+
+The easiest way to install the datatools extension is to install from PyPI:
+
+``` bash
+pip install asreview-datatools
+```
+
+After installation of the datatools extension, `asreview` should automatically
+detect it. Test this by:
 
 ```bash
-pip install asreview-statistics
+asreview --help
 ```
-The general usage of the package is to inspect files related to the systematic review done
-with ASReview. It can be used to inspect your dataset that you would like to review (or have
-reviewed).
 
-General usage:
+If it lists `asreview data-describe`, then the extension is successfully installed.
+
+## Getting started
+
+### `data-describe`
+
+Describe a dataset
 
 ```bash
-asreview stat path_to_file
+% asreview data-describe MY_DATASET.csv
 ```
 
-## Datasets
-
-Use the following command on your command line:
+Export the results to a file (`output.json`)
 
 ```bash
-asreview stat path_to_your_dataset
+% asreview data-describe MY_DATASET.csv -o output.json
 ```
 
-It should give some general properties of the dataset, e.g.:
-```
-************  PTSD_VandeSchoot_18.csv  ************
-
-Number of papers:            5782
-Number of inclusions:        38 (0.66%)
-Number of exclusions:        5744 (99.34%)
-Number of unlabeled:         0 (0.00%)
-Average title length:        101
-Average abstract length:     1339
-Average number of keywords:  8.8
-Number of missing titles:    64 (of which 0 included)
-Number of missing abstracts: 747 (of which 0 included)
-```
-
-Your dataset should be in a format that is readable by the ASReview software. Documentation
-on how to create such a dataset is in the main project.
-
-## State files
-
-Another use is the quick analysis of either one state file, or multiple state files in the same
-directory:
+Describe the `van_de_schoot_2017` dataset from the [benchmark
+platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-asreview stat path_to_your_state_files
+% asreview data-describe benchmark:van_de_schoot_2017 -o output.json
 ```
 
-This will give output similar to:
+```
+{
+  "asreview_version": "1.0",
+  "version": "1.0",
+  "title": "Dataset statistics and metrics",
+  "description": "Dataset statistics and metrics.",
+  "file": "benchmark:van_de_schoot_2017",
+  "results": {
+    "n_records": {
+      "title": "Number of records",
+      "description": "The number of records in the dataset.",
+      "value": 6189
+    },
+    "n_relevant": {
+      "title": "Number of relevant records",
+      "description": "The number of relevant records in the dataset.",
+      "value": 43
+    },
+    "n_irrelevant": {
+      "title": "Number of irrelevant records",
+      "description": "The number of irrelevant records in the dataset.",
+      "value": 6146
+    },
+    "n_unlabeled": {
+      "title": "Number of unlabeled records",
+      "description": "The number of unlabeled records in the dataset.",
+      "value": 0
+    },
+    "n_missing_title": {
+      "title": "Number of records with missing title",
+      "description": "The number of records in the dataset with missing title.",
+      "value": 5
+    },
+    "n_missing_abstract": {
+      "title": "Number of records with missing abstract",
+      "description": "The number of records in the dataset with missing abstract.",
+      "value": 764
+    },
+    "n_duplicates": {
+      "title": "Number of duplicate records (basic algorithm)",
+      "description": "The number of duplicate records in the dataset based on similar text.",
+      "value": 104
+    }
+  }
+}
 
 ```
-************  ptsd_nb  *******************
 
------------  general  -----------
-Number of runs            : 16
-Number of papers          : 5782
-Number of included papers : 38
-Number of excluded papers : 5744
-Number of unlabeled papers: 0
-Number of queries         : 233
+### `data-convert`
 
------------  settings  -----------
-model             : nb
-query_strategy    : max_random
-balance_strategy  : double
-feature_extraction: tfidf
-n_instances       : 25
-n_prior_included  : 1
-n_prior_excluded  : 1
-mode              : simulate
-model_param       : {'alpha': 3.822}
-query_param       : {'strategy_1': 'max', 'strategy_2': 'random', 'mix_ratio': 0.95}
-feature_param     : {}
-balance_param     : {'a': 2.155, 'alpha': 0.94, 'b': 0.789, 'beta': 1.0}
-abstract_only     : False
+Convert the format of a dataset. For example, convert a RIS dataset into a
+CSV, Excel, or TAB dataset.
 
------------    ATD    -----------
- 0.0195
-
------------  WSS/RRF  -----------
-WSS@95 : 91.49 %
-WSS@100: 87.54 %
-RRF@5  : 97.30 %
-RRF@10 : 97.64 %
+```
+asreview data-convert MY_DATASET.ris MY_OUTPUT.csv
 ```
 
-Currently, the amount of information displayed is growing; help and suggestions are welcome!
+### `data-dedup`
+
+Remove duplicate records with a simple and straightforward deduplication
+algorithm. The algorithm concatenates the title and abstract, whereafter it
+removes all non-alphanumeric tokens. Then the duplicates are removed.
+
+```
+asreview data-dedup MY_DATASET.ris
+```
+
+Export the deduplicated dataset to a file (`output.csv`)
+
+```
+asreview data-dedup MY_DATASET.ris -o output.csv
+```
+
+Using the `van_de_schoot_2017` dataset from the [benchmark
+platform](https://github.com/asreview/systematic-review-datasets).
+
+```
+asreview data-dedup benchmark:van_de_schoot_2017
+```
+
+## License
+
+This extension is MIT licensed.
+
+## Contact
+
+Use the issue tracker or see more contact options in the [ASReview
+LAB](https://github.com/asreview/asreview) repository.

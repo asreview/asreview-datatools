@@ -5,6 +5,7 @@
 from setuptools import setup, find_namespace_packages
 from os import path
 from io import open
+
 import versioneer
 
 here = path.abspath(path.dirname(__file__))
@@ -14,13 +15,13 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='asreview-statistics',
+    name='asreview-datatools',
     version=versioneer.get_version(),
-    cmd_class=versioneer.get_cmdclass(),
-    description='Statistical tools for the ASReview project',
+    cmdclass=versioneer.get_cmdclass(),
+    description='Powerful command line tools for reference management with ASReview',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/msdslab/ASReview-statistics',
+    url='https://github.com/asreview/asreview-datatools',
     author='Utrecht University',
     author_email='asreview@uu.nl',
     classifiers=[
@@ -31,16 +32,17 @@ setup(
         'Development Status :: 3 - Alpha',
 
         # Pick your license as you wish
-        'License :: OSI Approved :: Apache Software License',
+        'License :: OSI Approved :: MIT License',
 
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    keywords='asreview statistics',
+    keywords='asreview datatools',
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
     install_requires=[
-        "asreview>=0.7"
+        "asreview",  # ~=1.0
+        "pandas"
     ],
 
     extras_require={
@@ -48,14 +50,16 @@ setup(
 
     entry_points={
         "asreview.entry_points": [
-            "stat = asreviewcontrib.statistics.entrypoint:StatEntryPoint",
+            "data-convert = asreviewcontrib.datatools.convert:DataConvertEntryPoint",
+            "data-dedup = asreviewcontrib.datatools.dedup:DataDedupEntryPoint",
+            "data-describe = asreviewcontrib.datatools.describe:DataDescribeEntryPoint",
         ]
     },
 
     project_urls={
         'Bug Reports':
-            "https://github.com/asreview/ASReview-statistics/issues",
+            "https://github.com/asreview/asreview-datatools/issues",
         'Source':
-            "https://github.com/asreview/ASReview-statistics",
+            "https://github.com/asreview/asreview-datatools",
     },
 )

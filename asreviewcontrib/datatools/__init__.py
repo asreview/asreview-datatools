@@ -12,10 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from asreviewcontrib.statistics.statistics import StateStatistics
-from asreviewcontrib.statistics.statistics import DataStatistics
-from asreviewcontrib.statistics.entrypoint import StatEntryPoint
-
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
