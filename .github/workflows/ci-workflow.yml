@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        path: asr-stat
+        path: datatools
 
     - uses: actions/setup-python@v1
       with:
@@ -21,8 +21,8 @@ jobs:
         cd asreview
         pip install .
         cd ..
-        pip install ./asr-stat
-        pytest asr-stat/tests
+        pip install ./datatools
+        pytest datatools/tests
 
   #test-older:
     #name: pytest
