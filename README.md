@@ -1,5 +1,7 @@
 # ASReview-datatools
 
+This package is currently under development. See [ASReview-statistics](https://pypi.org/project/asreview-statistics/) for stable version compatible with ASReview LAB <=0.19.x.
+
 ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4672242.svg)](https://doi.org/10.5281/zenodo.4672242)
 
 
