@@ -25,29 +25,29 @@ detect it. Test this by:
 asreview --help
 ```
 
-If it lists `asreview data-describe`, then the extension is successfully installed.
+If it lists `asreview data describe`, then the extension is successfully installed.
 
 ## Getting started
 
-### `data-describe`
+### `data describe`
 
 Describe a dataset
 
 ```bash
-% asreview data-describe MY_DATASET.csv
+% asreview data describe MY_DATASET.csv
 ```
 
 Export the results to a file (`output.json`)
 
 ```bash
-% asreview data-describe MY_DATASET.csv -o output.json
+% asreview data describe MY_DATASET.csv -o output.json
 ```
 
 Describe the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-% asreview data-describe benchmark:van_de_schoot_2017 -o output.json
+% asreview data describe benchmark:van_de_schoot_2017 -o output.json
 ```
 
 ```
@@ -98,36 +98,36 @@ platform](https://github.com/asreview/systematic-review-datasets).
 
 ```
 
-### `data-convert`
+### `data convert`
 
 Convert the format of a dataset. For example, convert a RIS dataset into a
 CSV, Excel, or TAB dataset.
 
 ```
-asreview data-convert MY_DATASET.ris MY_OUTPUT.csv
+asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ```
 
-### `data-dedup`
+### `data dedup`
 
 Remove duplicate records with a simple and straightforward deduplication
 algorithm. The algorithm concatenates the title and abstract, whereafter it
 removes all non-alphanumeric tokens. Then the duplicates are removed.
 
 ```
-asreview data-dedup MY_DATASET.ris
+asreview data dedup MY_DATASET.ris
 ```
 
 Export the deduplicated dataset to a file (`output.csv`)
 
 ```
-asreview data-dedup MY_DATASET.ris -o output.csv
+asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
 Using the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```
-asreview data-dedup benchmark:van_de_schoot_2017
+asreview data dedup benchmark:van_de_schoot_2017
 ```
 
 ## License

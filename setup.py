@@ -18,7 +18,8 @@ setup(
     name='asreview-datatools',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description='Powerful command line tools for reference management with ASReview',
+    description=
+    'Powerful command line tools for reference management with ASReview',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/asreview/asreview-datatools',
@@ -29,14 +30,13 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
 
         # Pick your license as you wish
         'License :: OSI Approved :: MIT License',
-
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     keywords='asreview datatools',
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
@@ -44,22 +44,17 @@ setup(
         "asreview",  # ~=1.0
         "pandas"
     ],
-
-    extras_require={
-    },
-
+    extras_require={},
     entry_points={
         "asreview.entry_points": [
-            "data-convert = asreviewcontrib.datatools.convert:DataConvertEntryPoint",
-            "data-dedup = asreviewcontrib.datatools.dedup:DataDedupEntryPoint",
-            "data-describe = asreviewcontrib.datatools.describe:DataDescribeEntryPoint",
+            "data = asreviewcontrib.datatools.entrypoint:DataEntryPoint",
+
+            # TODO: find a trick to link this without displaying in asreview -h
+            # "datatools = asreviewcontrib.datatools.entrypoint:DataEntryPoint",
         ]
     },
-
     project_urls={
-        'Bug Reports':
-            "https://github.com/asreview/asreview-datatools/issues",
-        'Source':
-            "https://github.com/asreview/asreview-datatools",
+        'Bug Reports': "https://github.com/asreview/asreview-datatools/issues",
+        'Source': "https://github.com/asreview/asreview-datatools",
     },
 )
