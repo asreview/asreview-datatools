@@ -54,50 +54,55 @@ platform](https://github.com/asreview/systematic-review-datasets).
 
 ```
 {
-  "asreview_version": "1.0",
-  "version": "1.0",
-  "title": "Dataset statistics and metrics",
-  "description": "Dataset statistics and metrics.",
-  "file": "benchmark:van_de_schoot_2017",
-  "results": {
-    "n_records": {
-      "title": "Number of records",
-      "description": "The number of records in the dataset.",
-      "value": 6189
-    },
-    "n_relevant": {
-      "title": "Number of relevant records",
-      "description": "The number of relevant records in the dataset.",
-      "value": 43
-    },
-    "n_irrelevant": {
-      "title": "Number of irrelevant records",
-      "description": "The number of irrelevant records in the dataset.",
-      "value": 6146
-    },
-    "n_unlabeled": {
-      "title": "Number of unlabeled records",
-      "description": "The number of unlabeled records in the dataset.",
-      "value": 0
-    },
-    "n_missing_title": {
-      "title": "Number of records with missing title",
-      "description": "The number of records in the dataset with missing title.",
-      "value": 5
-    },
-    "n_missing_abstract": {
-      "title": "Number of records with missing abstract",
-      "description": "The number of records in the dataset with missing abstract.",
-      "value": 764
-    },
-    "n_duplicates": {
-      "title": "Number of duplicate records (basic algorithm)",
-      "description": "The number of duplicate records in the dataset based on similar text.",
-      "value": 104
-    }
+  "asreviewVersion": "1.0rc2+14.gac96c1a",
+  "apiVersion": "0.4+4.g3f54294",
+  "data": {
+    "items": [
+      {
+        "id": "n_records",
+        "title": "Number of records",
+        "description": "The number of records in the dataset.",
+        "value": 6189
+      },
+      {
+        "id": "n_relevant",
+        "title": "Number of relevant records",
+        "description": "The number of relevant records in the dataset.",
+        "value": 43
+      },
+      {
+        "id": "n_irrelevant",
+        "title": "Number of irrelevant records",
+        "description": "The number of irrelevant records in the dataset.",
+        "value": 6146
+      },
+      {
+        "id": "n_unlabeled",
+        "title": "Number of unlabeled records",
+        "description": "The number of unlabeled records in the dataset.",
+        "value": 0
+      },
+      {
+        "id": "n_missing_title",
+        "title": "Number of records with missing title",
+        "description": "The number of records in the dataset with missing title.",
+        "value": 5
+      },
+      {
+        "id": "n_missing_abstract",
+        "title": "Number of records with missing abstract",
+        "description": "The number of records in the dataset with missing abstract.",
+        "value": 764
+      },
+      {
+        "id": "n_duplicates",
+        "title": "Number of duplicate records (basic algorithm)",
+        "description": "The number of duplicate records in the dataset based on similar text.",
+        "value": 104
+      }
+    ]
   }
 }
-
 ```
 
 ### `data convert`
