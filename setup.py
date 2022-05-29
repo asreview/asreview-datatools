@@ -5,6 +5,7 @@
 from setuptools import setup, find_namespace_packages
 from os import path
 from io import open
+
 import versioneer
 
 here = path.abspath(path.dirname(__file__))
@@ -14,13 +15,14 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='asreview-statistics',
+    name='asreview-datatools',
     version=versioneer.get_version(),
-    cmd_class=versioneer.get_cmdclass(),
-    description='Statistical tools for the ASReview project',
+    cmdclass=versioneer.get_cmdclass(),
+    description=
+    'Powerful command line tools for reference management with ASReview',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/msdslab/ASReview-statistics',
+    url='https://github.com/asreview/asreview-datatools',
     author='Utrecht University',
     author_email='asreview@uu.nl',
     classifiers=[
@@ -28,34 +30,31 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
 
         # Pick your license as you wish
-        'License :: OSI Approved :: Apache Software License',
-
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
-    keywords='asreview statistics',
+    keywords='asreview datatools',
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
     install_requires=[
-        "asreview>=0.7"
+        "asreview",  # ~=1.0
+        "pandas"
     ],
-
-    extras_require={
-    },
-
+    extras_require={},
     entry_points={
         "asreview.entry_points": [
-            "stat = asreviewcontrib.statistics.entrypoint:StatEntryPoint",
+            "data = asreviewcontrib.datatools.entrypoint:DataEntryPoint",
+
+            # TODO: find a trick to link this without displaying in asreview -h
+            # "datatools = asreviewcontrib.datatools.entrypoint:DataEntryPoint",
         ]
     },
-
     project_urls={
-        'Bug Reports':
-            "https://github.com/asreview/ASReview-statistics/issues",
-        'Source':
-            "https://github.com/asreview/ASReview-statistics",
+        'Bug Reports': "https://github.com/asreview/asreview-datatools/issues",
+        'Source': "https://github.com/asreview/asreview-datatools",
     },
 )
