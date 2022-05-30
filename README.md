@@ -36,20 +36,20 @@ If it lists `asreview data describe`, then the extension is successfully install
 Describe a dataset
 
 ```bash
-% asreview data describe MY_DATASET.csv
+asreview data describe MY_DATASET.csv
 ```
 
 Export the results to a file (`output.json`)
 
 ```bash
-% asreview data describe MY_DATASET.csv -o output.json
+asreview data describe MY_DATASET.csv -o output.json
 ```
 
 Describe the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-% asreview data describe benchmark:van_de_schoot_2017 -o output.json
+asreview data describe benchmark:van_de_schoot_2017 -o output.json
 ```
 
 ```
