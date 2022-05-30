@@ -31,6 +31,22 @@ If it lists `asreview data describe`, then the extension is successfully install
 
 ## Getting started
 
+ASReview-datatools is a command line tool that extends ASReview LAB. Each
+subsection below describes one of the tools. The structure is
+
+```bash
+asreview data NAME_OF_TOOL
+```
+
+where `NAME_OF_TOOL` is the name of one of the tools below (i.e., `describe`)
+followed by positional arguments and optional arguments.
+
+Each tool has its own help description which is available with
+
+```bash
+asreview data NAME_OF_TOOL -h
+```
+
 ### `data describe`
 
 Describe the content of a dataset
