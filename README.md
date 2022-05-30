@@ -12,7 +12,7 @@ for describing, cleaning your (input) data, and converting file formats via the 
 ## Installation
 
 The ASReview-datatools extensions requires Python 3.6+ and [ASReview
-LAB](https://github.com/asreview/asreview) version 1.x.
+LAB](https://github.com/asreview/asreview) version 1 or later.
 
 The easiest way to install the datatools extension is to install from PyPI:
 
