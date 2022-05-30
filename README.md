@@ -27,13 +27,13 @@ pip install asreview-datatools
 ```
 
 After installation of the datatools extension, `asreview` should automatically
-detect it. Test this by:
+detect it. Test this with the following command:
 
 ```bash
 asreview --help
 ```
 
-If it lists `asreview data describe`, then the extension is successfully installed.
+The extension is successfully installed if it lists `asreview data`.
 
 ## Getting started
 
