@@ -8,10 +8,10 @@ from io import open
 
 import versioneer
 
-here = path.abspath(path.dirname(__file__))
+fp_root = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(fp_root, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -19,7 +19,7 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description=
-    'Powerful command line tools for reference management with ASReview',
+    'Powerful command line tools for data handling in ASReview',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/asreview/asreview-datatools',
@@ -40,6 +40,7 @@ setup(
     ],
     keywords='asreview datatools',
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
+    python_requires='>=3.7',
     install_requires=[
         "asreview",  # ~=1.0
         "pandas"
