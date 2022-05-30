@@ -1,13 +1,19 @@
 # ASReview-datatools
 
-This package is currently under development. See [ASReview-statistics](https://pypi.org/project/asreview-statistics/) for stable version compatible with ASReview LAB <=0.19.x.
+This package is currently under development. See
+[ASReview-statistics](https://pypi.org/project/asreview-statistics/) for
+stable version compatible with ASReview LAB <=0.19.x.
 
 [![PyPI version](https://badge.fury.io/py/asreview-datatools.svg)](https://badge.fury.io/py/asreview-datatools) [![Downloads](https://pepy.tech/badge/asreview-datatools)](https://pepy.tech/project/asreview-datatools) ![PyPI - License](https://img.shields.io/pypi/l/asreview-datatools) ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4672242.svg)](https://doi.org/10.5281/zenodo.4672242)
 
+ASReview-datatools is an extension to [ASReview
+LAB](https://github.com/asreview/asreview) that can be used for describing,
+cleaning your (input) data, and converting file formats via the command line.
 
-ASReview-datatools is an extension for [ASReview
-LAB](https://github.com/asreview/asreview) software. The extension can be used
-for describing, cleaning your (input) data, and converting file formats via the command line.
+❣️ ASReview-datatools is the successor to
+[ASReview-statistics](https://pypi.org/project/asreview-statistics/). ASReview
+datatools is available for version 1 or later. Use ASReview statistics for
+versions 0.x.
 
 ## Installation
 
@@ -133,8 +139,10 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ### `data dedup`
 
 Remove duplicate records with a simple and straightforward deduplication
-algorithm (see [source code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)). The algorithm concatenates the title and abstract, whereafter it
-removes all non-alphanumeric tokens. Then the duplicates are removed.
+algorithm (see [source
+code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)).
+The algorithm concatenates the title and abstract, whereafter it removes all
+non-alphanumeric tokens. Then the duplicates are removed.
 
 ```
 asreview data dedup MY_DATASET.ris
@@ -155,9 +163,11 @@ asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 
 ## License
 
-This extension is MIT licensed.
+This extension is published under the [MIT license](/LICENSE).
 
 ## Contact
 
-Use the issue tracker or see more contact options in the [ASReview
-LAB](https://github.com/asreview/asreview) repository.
+This extension is part of the ASReview project ([asreview.ai](https://asreview.ai)). It is maintained by the
+maintainers of ASReview LAB. See [ASReview
+LAB](https://github.com/asreview/asreview) for contact information and more
+resources.
