@@ -134,7 +134,7 @@ Using the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```
-asreview data dedup benchmark:van_de_schoot_2017
+asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
 ## License
