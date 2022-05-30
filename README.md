@@ -1,9 +1,5 @@
 # ASReview-datatools
 
-This package is currently under development. See
-[ASReview-statistics](https://pypi.org/project/asreview-statistics/) for
-stable version compatible with ASReview LAB <=0.19.x.
-
 [![PyPI version](https://badge.fury.io/py/asreview-datatools.svg)](https://badge.fury.io/py/asreview-datatools) [![Downloads](https://pepy.tech/badge/asreview-datatools)](https://pepy.tech/project/asreview-datatools) ![PyPI - License](https://img.shields.io/pypi/l/asreview-datatools) ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4672242.svg)](https://doi.org/10.5281/zenodo.4672242)
 
 ASReview-datatools is an extension to [ASReview
@@ -76,8 +72,8 @@ asreview data describe benchmark:van_de_schoot_2017 -o output.json
 
 ```
 {
-  "asreviewVersion": "1.0rc2+14.gac96c1a",
-  "apiVersion": "0.4+4.g3f54294",
+  "asreviewVersion": "1.0",
+  "apiVersion": "1.0",
   "data": {
     "items": [
       {

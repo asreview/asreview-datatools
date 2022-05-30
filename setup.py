@@ -1,7 +1,3 @@
-# based on https://github.com/pypa/sampleproject
-# MIT License
-
-# Always prefer setuptools over distutils
 from setuptools import setup, find_namespace_packages
 from os import path
 from io import open
@@ -26,13 +22,7 @@ setup(
     author='Utrecht University',
     author_email='asreview@uu.nl',
     classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
-
-        # Pick your license as you wish
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -42,7 +32,7 @@ setup(
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
     python_requires='>=3.7',
     install_requires=[
-        "asreview",  # ~=1.0
+        "asreview>=1,<2",
         "pandas"
     ],
     extras_require={},
