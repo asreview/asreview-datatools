@@ -7,12 +7,12 @@ This package is currently under development. See [ASReview-statistics](https://p
 
 ASReview-datatools is an extension for [ASReview
 LAB](https://github.com/asreview/asreview) software. The extension can be used
-for describing and cleaning your (input) data via the command line.
+for describing, cleaning your (input) data, and converting file formats via the command line.
 
 ## Installation
 
 The ASReview-datatools extensions requires Python 3.6+ and [ASReview
-LAB](https://github.com/asreview/asreview) version 1.
+LAB](https://github.com/asreview/asreview) version 1.x.
 
 The easiest way to install the datatools extension is to install from PyPI:
 
@@ -33,7 +33,7 @@ If it lists `asreview data describe`, then the extension is successfully install
 
 ### `data describe`
 
-Describe a dataset
+Describe the content of a dataset
 
 ```bash
 asreview data describe MY_DATASET.csv
