@@ -7,12 +7,12 @@ This package is currently under development. See [ASReview-statistics](https://p
 
 ASReview-datatools is an extension for [ASReview
 LAB](https://github.com/asreview/asreview) software. The extension can be used
-for describing and cleaning your (input) data via the command line.
+for describing, cleaning your (input) data, and converting file formats via the command line.
 
 ## Installation
 
 The ASReview-datatools extensions requires Python 3.6+ and [ASReview
-LAB](https://github.com/asreview/asreview) version 1.
+LAB](https://github.com/asreview/asreview) version 1 or later.
 
 The easiest way to install the datatools extension is to install from PyPI:
 
@@ -33,23 +33,23 @@ If it lists `asreview data describe`, then the extension is successfully install
 
 ### `data describe`
 
-Describe a dataset
+Describe the content of a dataset
 
 ```bash
-% asreview data describe MY_DATASET.csv
+asreview data describe MY_DATASET.csv
 ```
 
 Export the results to a file (`output.json`)
 
 ```bash
-% asreview data describe MY_DATASET.csv -o output.json
+asreview data describe MY_DATASET.csv -o output.json
 ```
 
 Describe the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-% asreview data describe benchmark:van_de_schoot_2017 -o output.json
+asreview data describe benchmark:van_de_schoot_2017 -o output.json
 ```
 
 ```
@@ -117,7 +117,7 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ### `data dedup`
 
 Remove duplicate records with a simple and straightforward deduplication
-algorithm. The algorithm concatenates the title and abstract, whereafter it
+algorithm (see [source code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)). The algorithm concatenates the title and abstract, whereafter it
 removes all non-alphanumeric tokens. Then the duplicates are removed.
 
 ```
@@ -134,7 +134,7 @@ Using the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```
-asreview data dedup benchmark:van_de_schoot_2017
+asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
 ## License
