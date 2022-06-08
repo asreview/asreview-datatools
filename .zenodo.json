@@ -1,0 +1,33 @@
+{
+   "description":"ASReview Datatools is an extension to ASReview LAB that can be used for describing basic properties of a dataset (e.g., number of papers, number of inclusions, the amount of missing data and duplicates), converting file formats via the command line, and cleaning your (input) data by removing duplicate records.",
+   "title":"ASReview Datatools",
+   "creators":[
+      {
+         "name":"ASReview LAB developers",
+         "affiliation":"Utrecht University"
+      }
+   ],
+   "keywords":[
+      "data",
+      "systematic review",
+      "active learning",
+      "statistics",
+      "machine learning",
+      "text data",
+      "natural language processing"
+   ],
+   "related_identifiers":[
+      {
+         "scheme":"doi",
+         "relation":"isSupplementTo",
+         "identifier":"10.1038/s42256-020-00287-7"
+      },
+      {
+         "scheme": "doi",
+         "identifier": "10.5281/zenodo.3345592",
+         "relation": "isSupplementTo"
+      }
+   ],
+   "license":"MIT",
+   "upload_type":"software"
+}
