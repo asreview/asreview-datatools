@@ -1,21 +1,21 @@
-# ASReview-datatools
+# ASReview Datatools
 
 [![PyPI version](https://badge.fury.io/py/asreview-datatools.svg)](https://badge.fury.io/py/asreview-datatools) [![Downloads](https://pepy.tech/badge/asreview-datatools)](https://pepy.tech/project/asreview-datatools) ![PyPI - License](https://img.shields.io/pypi/l/asreview-datatools) ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6625879.svg)](https://doi.org/10.5281/zenodo.6625879)
 
-ASReview-datatools is an extension to [ASReview
+ASReview Datatools is an extension to [ASReview
 LAB](https://github.com/asreview/asreview) that can be used for describing
 basic properties of a dataset (e.g., number of papers, number of inclusions,
 the amount of missing data and duplicates), converting file formats via the
 command line, and cleaning your (input) data by removing duplicate records.
 
-❣️ ASReview-datatools is the successor to
+❣️ ASReview Datatools is the successor to
 [ASReview-statistics](https://pypi.org/project/asreview-statistics/). ASReview
 datatools is available for version 1 or later. Use ASReview statistics for
 versions 0.x.
 
 ## Installation
 
-The ASReview-datatools extensions requires Python 3.7+ and [ASReview
+The ASReview Datatools extensions requires Python 3.7+ and [ASReview
 LAB](https://github.com/asreview/asreview) version 1 or later.
 
 The easiest way to install the datatools extension is to install from PyPI:

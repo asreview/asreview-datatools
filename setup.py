@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/asreview/asreview-datatools',
-    author='Utrecht University',
+    author='ASReview LAB developers',
     author_email='asreview@uu.nl',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
