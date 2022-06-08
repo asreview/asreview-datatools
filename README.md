@@ -7,8 +7,10 @@ stable version compatible with ASReview LAB <=0.19.x.
 [![PyPI version](https://badge.fury.io/py/asreview-datatools.svg)](https://badge.fury.io/py/asreview-datatools) [![Downloads](https://pepy.tech/badge/asreview-datatools)](https://pepy.tech/project/asreview-datatools) ![PyPI - License](https://img.shields.io/pypi/l/asreview-datatools) ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4672242.svg)](https://doi.org/10.5281/zenodo.4672242)
 
 ASReview-datatools is an extension to [ASReview
-LAB](https://github.com/asreview/asreview) that can be used for describing,
-cleaning your (input) data, and converting file formats via the command line.
+LAB](https://github.com/asreview/asreview) that can be used for describing
+basic properties of a dataset (e.g., number of papers, number of inclusions,
+the amount of missing data and duplicates), converting file formats via the
+command line, and clean your (input) data by removing duplicate records.
 
 ❣️ ASReview-datatools is the successor to
 [ASReview-statistics](https://pypi.org/project/asreview-statistics/). ASReview
