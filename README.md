@@ -10,7 +10,7 @@ ASReview-datatools is an extension to [ASReview
 LAB](https://github.com/asreview/asreview) that can be used for describing
 basic properties of a dataset (e.g., number of papers, number of inclusions,
 the amount of missing data and duplicates), converting file formats via the
-command line, and clean your (input) data by removing duplicate records.
+command line, and cleaning your (input) data by removing duplicate records.
 
 ❣️ ASReview-datatools is the successor to
 [ASReview-statistics](https://pypi.org/project/asreview-statistics/). ASReview
