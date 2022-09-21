@@ -14,7 +14,10 @@ def dedup(input_path, output_path=None):
         .str.replace("[^A-Za-z0-9]", "", regex=True) \
         .str.lower()
 
-    # remove the records
+    # remove records based on duplicate DOIs
+    asdata.df = asdata.df[(~asdata.df.duplicated(subset=['doi'])) | (asdata.df['doi'].isnull())]
+
+    # remove records based on duplicate texts
     asdata.df = asdata.df[~s.duplicated()]
 
     # count duplicates
@@ -26,8 +29,6 @@ def dedup(input_path, output_path=None):
         print(f"Removed {n_dup} records from dataset with {len(s)} records.")
     else:
         print(f"Found {n_dup} records in dataset with {len(s)} records.")
-
-
 
 
 def _parse_arguments_dedup():
