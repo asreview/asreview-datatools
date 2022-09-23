@@ -1,39 +1,44 @@
 import argparse
 
+import numpy as np
 import pandas as pd
 
-from asreview.data import load_data
 
+def dedup(asdata, pid='doi'):
+    initial_length = len(asdata.df)
 
-def dedup(input_path, output_path=None):
-    # read data in ASReview data object
-    asdata = load_data(input_path)
+    if pid in asdata.df.columns:
+        # replace NaN values with empty string to prevent astype(str) from creating literal 'NaN' string
+        asdata.df[pid].fillna('', inplace=True)
+
+        # convert to string to support non-string types, strip whitespaces and replace empty strings with NaN values
+        s_pid = asdata.df[pid].astype(str).str.strip().replace("", np.nan)
+
+        # remove records based on duplicate PIDs
+        asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
+    else:
+        print(f"Not using {pid} for deduplication because there is no such column.")
 
     # get the texts and clean them
     s = pd.Series(asdata.texts) \
         .str.replace("[^A-Za-z0-9]", "", regex=True) \
         .str.lower()
 
-    # remove records based on duplicate DOIs
-    asdata.df = asdata.df[(~asdata.df.duplicated(subset=['doi'])) | (asdata.df['doi'].isnull())]
-
     # remove records based on duplicate texts
-    asdata.df = asdata.df[~s.duplicated()]
+    asdata.df = asdata.df[~s.duplicated()].reset_index(drop=True)
 
     # count duplicates
-    n_dup = len(s) - len(asdata.df)
+    n_dup = initial_length - len(asdata.df)
+    print(f"Found {n_dup} duplicate records in dataset with {initial_length} records.")
 
-    # export the file
-    if output_path:
-        asdata.to_file(output_path)
-        print(f"Removed {n_dup} records from dataset with {len(s)} records.")
-    else:
-        print(f"Found {n_dup} records in dataset with {len(s)} records.")
+    return asdata
 
 
 def _parse_arguments_dedup():
     parser = argparse.ArgumentParser(prog="asreview data dedup")
     parser.add_argument("input_path", type=str, help="The file path of the dataset.")
     parser.add_argument("--output_path", "-o", default=None, type=str, help="The file path of the dataset.")
+    parser.add_argument("--pid", default='doi', type=str, help="Persistent identifier used for deduplication.")
 
     return parser
+
