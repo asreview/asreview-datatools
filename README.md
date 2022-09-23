@@ -139,7 +139,8 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 Remove duplicate records with a simple and straightforward deduplication
 algorithm (see [source
 code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)).
-The algorithm concatenates the title and abstract, whereafter it removes all
+The algorithm first removes all duplicates based on `DOI` if such data exists.
+Then it concatenates the title and abstract, whereafter it removes all
 non-alphanumeric tokens. Then the duplicates are removed.
 
 ```
