@@ -17,7 +17,7 @@ def dedup(asdata, pid='doi'):
         # remove records based on duplicate PIDs
         asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
     else:
-        print(f"Not using {pid} for deduplication because there is no such column.")
+        print(f"Not using {pid} for deduplication because there is no such data.")
 
     # get the texts and clean them
     s = pd.Series(asdata.texts) \
