@@ -1,6 +1,6 @@
 import argparse
 
-from asreview.data import ASReviewData
+from asreview.data import load_data
 from asreview.entry_points import BaseEntryPoint
 from asreviewcontrib.datatools.describe import describe, _parse_arguments_describe
 from asreviewcontrib.datatools.convert import convert, _parse_arguments_convert
@@ -34,8 +34,18 @@ class DataEntryPoint(BaseEntryPoint):
 
             if argv[0] == "dedup":
                 args_dedup_parser = _parse_arguments_dedup()
-                args_dedup = vars(args_dedup_parser.parse_args(argv[1:]))
-                dedup(**args_dedup)
+                args_dedup = args_dedup_parser.parse_args(argv[1:])
+
+                # read data in ASReview data object
+                asdata = load_data(args_dedup.input_path)
+
+                # retrieve deduplicated ASReview data object
+                asdata = dedup(asdata, args_dedup.pid)
+
+                if args_dedup.output_path:
+                    asdata.to_file(args_dedup.output_path)
+                    print("Removed duplicate records from the dataset.")
+
 
         # Print help message if subcommand not given or incorrect
         else:
