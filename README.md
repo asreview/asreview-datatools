@@ -153,11 +153,11 @@ Export the deduplicated dataset to a file (`output.csv`)
 asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
-The PID is case sensitive so if the column header in your .csv is 'DOI', use `--pid DOI`.
-This also allows for custom PIDs.
+Remove duplicates based on custom PIDs.
+Using the PubMed identifier (`PMID`) for deduplication
 
 ```
-asreview data dedup MY_DATASET.ris -o output.csv --pid custom_PID
+asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
 ```
 
 Using the `van_de_schoot_2017` dataset from the [benchmark
