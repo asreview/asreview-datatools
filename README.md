@@ -139,7 +139,7 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 Remove duplicate records with a simple and straightforward deduplication
 algorithm (see [source
 code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)).
-The algorithm first removes all duplicates based on `DOI` if such data exists.
+The algorithm first removes all duplicates based on a persistent identifier (PID), `doi` by default.
 Then it concatenates the title and abstract, whereafter it removes all
 non-alphanumeric tokens. Then the duplicates are removed.
 
@@ -151,6 +151,13 @@ Export the deduplicated dataset to a file (`output.csv`)
 
 ```
 asreview data dedup MY_DATASET.ris -o output.csv
+```
+
+The PID is case sensitive so if the column header in your .csv is 'DOI', use `--pid DOI`.
+This also allows for custom PIDs.
+
+```
+asreview data dedup MY_DATASET.ris -o output.csv --pid custom_PID
 ```
 
 Using the `van_de_schoot_2017` dataset from the [benchmark
