@@ -38,13 +38,22 @@ class DataEntryPoint(BaseEntryPoint):
 
                 # read data in ASReview data object
                 asdata = load_data(args_dedup.input_path)
+                initial_length = len(asdata.df)
+
+                if args_dedup.pid not in asdata.df.columns:
+                    print(f"Not using {args_dedup.pid} for deduplication because there is no such data.")
 
                 # retrieve deduplicated ASReview data object
                 asdata = dedup(asdata, args_dedup.pid)
 
+                # count duplicates
+                n_dup = initial_length - len(asdata.df)
+
                 if args_dedup.output_path:
                     asdata.to_file(args_dedup.output_path)
-                    print("Removed duplicate records from the dataset.")
+                    print(f"Removed {n_dup} records from dataset with {initial_length} records.")
+                else:
+                    print(f"Found {n_dup} records in dataset with {initial_length} records.")
 
 
         # Print help message if subcommand not given or incorrect
