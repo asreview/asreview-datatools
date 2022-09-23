@@ -5,19 +5,15 @@ import pandas as pd
 
 
 def dedup(asdata, pid='doi'):
-    initial_length = len(asdata.df)
-
     if pid in asdata.df.columns:
         # replace NaN values with empty string to prevent astype(str) from creating literal 'NaN' string
-        asdata.df[pid].fillna('', inplace=True)
+        asdata.df[pid] = asdata.df[pid].fillna('')
 
         # convert to string to support non-string types, strip whitespaces and replace empty strings with NaN values
         s_pid = asdata.df[pid].astype(str).str.strip().replace("", np.nan)
 
         # remove records based on duplicate PIDs
         asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
-    else:
-        print(f"Not using {pid} for deduplication because there is no such data.")
 
     # get the texts and clean them
     s = pd.Series(asdata.texts) \
@@ -26,10 +22,6 @@ def dedup(asdata, pid='doi'):
 
     # remove records based on duplicate texts
     asdata.df = asdata.df[~s.duplicated()].reset_index(drop=True)
-
-    # count duplicates
-    n_dup = initial_length - len(asdata.df)
-    print(f"Found {n_dup} duplicate records in dataset with {initial_length} records.")
 
     return asdata
 
@@ -41,4 +33,3 @@ def _parse_arguments_dedup():
     parser.add_argument("--pid", default='doi', type=str, help="Persistent identifier used for deduplication.")
 
     return parser
-
