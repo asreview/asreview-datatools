@@ -153,8 +153,8 @@ Export the deduplicated dataset to a file (`output.csv`)
 asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
-Remove duplicates based on a custom PID.
-If data contains a column with PubMed identifiers (`PMID`), this can be used for deduplication.
+By default, the PID is set to 'doi'. The `dedup` function offers the option to use a different PID.
+Consider a dataset with PubMed identifiers (`PMID`), the identifier can be used for deduplication.
 
 ```
 asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
