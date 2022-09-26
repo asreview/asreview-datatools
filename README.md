@@ -153,7 +153,7 @@ Export the deduplicated dataset to a file (`output.csv`)
 asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
-Remove duplicates based on custom PIDs.
+Remove duplicates based on a custom PID.
 If data contains a column with PubMed identifiers (`PMID`), this can be used for deduplication.
 
 ```

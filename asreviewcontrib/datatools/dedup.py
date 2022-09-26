@@ -29,6 +29,6 @@ def _parse_arguments_dedup():
     parser = argparse.ArgumentParser(prog="asreview data dedup")
     parser.add_argument("input_path", type=str, help="The file path of the dataset.")
     parser.add_argument("--output_path", "-o", default=None, type=str, help="The file path of the dataset.")
-    parser.add_argument("--pid", default='doi', type=str, help="Persistent identifier used for deduplication.")
+    parser.add_argument("--pid", default='doi', type=str, help="Persistent identifier used for deduplication. Default: doi.")
 
     return parser
