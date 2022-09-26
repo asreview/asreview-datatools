@@ -1,6 +1,5 @@
 import argparse
 
-import numpy as np
 import pandas as pd
 
 
@@ -10,7 +9,7 @@ def dedup(asdata, pid='doi'):
         asdata.df[pid] = asdata.df[pid].fillna('')
 
         # convert to string to support non-string types, strip whitespaces and replace empty strings with NaN values
-        s_pid = asdata.df[pid].astype(str).str.strip().replace("", np.nan)
+        s_pid = asdata.df[pid].astype(str).str.strip().replace("", None)
 
         # remove records based on duplicate PIDs
         asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
