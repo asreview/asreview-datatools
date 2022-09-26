@@ -17,7 +17,7 @@ def test_dedup():
         pd.DataFrame({
             "title": ["a", "b", "d", "e", "f", "g", "h", "i"],
             "abstract": ["lorem", "lorem", "lorem", "lorem", "lorem", "lorem", "lorem", "lorem"],
-            "doi": ["10.1", "10.3", "", "", "   ", "   ", "", ""]
+            "doi": ["10.1", "10.3", "", "", "   ", "   ", None, None]
         })
     )
 

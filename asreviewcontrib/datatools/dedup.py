@@ -8,7 +8,7 @@ def dedup(asdata, pid='doi'):
     if pid in asdata.df.columns:
         # in case of strings, strip whitespaces and replace empty strings with None
         if is_string_dtype(asdata.df[pid]):
-            s_pid = asdata.df[pid].astype(str).str.strip().replace("", None)
+            s_pid = asdata.df[pid].str.strip().replace("", None)
 
         # remove records based on duplicate PIDs
         asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
