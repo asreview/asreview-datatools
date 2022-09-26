@@ -21,4 +21,4 @@ def test_dedup():
         })
     )
 
-    assert pd.testing.assert_frame_equal(dedup(df_dups).df, df_nodups.df)
+    pd.testing.assert_frame_equal(dedup(df_dups).df, df_nodups.df)
