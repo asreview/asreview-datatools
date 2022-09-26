@@ -154,7 +154,7 @@ asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
 Remove duplicates based on custom PIDs.
-Using the PubMed identifier (`PMID`) for deduplication
+If data contains a column with PubMed identifiers (`PMID`), this can be used for deduplication.
 
 ```
 asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
