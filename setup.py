@@ -33,8 +33,7 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         "asreview>=1,<2",
-        "pandas",
-        "numpy"
+        "pandas"
     ],
     extras_require={},
     entry_points={
