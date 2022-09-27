@@ -9,17 +9,29 @@ def dedup(asdata, pid='doi'):
         # in case of strings, strip whitespaces and replace empty strings with None
         if is_string_dtype(asdata.df[pid]):
             s_pid = asdata.df[pid].str.strip().replace("", None)
+        else:
+            s_pid = asdata.df[pid]
 
-        # remove records based on duplicate PIDs
-        asdata.df = asdata.df[(~s_pid.duplicated()) | (s_pid.isnull())].reset_index(drop=True)
+        # save boolean series for duplicates based on persistent identifiers
+        s_dups_pid = ((s_pid.duplicated()) & (s_pid.notnull()))
+    else:
+        s_dups_pid = None
 
     # get the texts and clean them
     s = pd.Series(asdata.texts) \
         .str.replace("[^A-Za-z0-9]", "", regex=True) \
         .str.lower()
 
-    # remove records based on duplicate texts
-    asdata.df = asdata.df[~s.duplicated()].reset_index(drop=True)
+    # save boolean series for duplicates based on titles/abstracts
+    s_dups_text = s.duplicated()
+
+    # final boolean series for all duplicates
+    if s_dups_pid is not None:
+        s_dups = s_dups_pid | s_dups_text
+    else:
+        s_dups = s_dups_text
+
+    asdata.df = asdata.df[~s_dups].reset_index(drop=True)
 
     return asdata
 
