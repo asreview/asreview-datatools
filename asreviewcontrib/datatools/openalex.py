@@ -1,13 +1,8 @@
 import requests
 
 
-class StatusCodeError(Exception):
-    pass
-
-
 def request_by_id(id_list, id_type='doi', mailto=None):
-    """Get the data available in OpenAlex corresonpding to a list of 
-    identifiers.
+    """Get metadata from OpenAlex for a list of identifiers.
 
     Parameters
     ----------
@@ -28,24 +23,21 @@ def request_by_id(id_list, id_type='doi', mailto=None):
 
     Raises
     ------
-    StatusCodeError
-        If a request got a response with status code different from 200.
+    requests.HTTPError
+        If a request got a HTTP error response.
     """
     data = []
-    base_url = "http://api.openalex.org/works"
-    for page_start in range(0, len(id_list), 50):
-        page = id_list[page_start: page_start+50]
+    page_length = 50
+    url = "http://api.openalex.org/works"
+    for page_start in range(0, len(id_list), page_length):
+        page = id_list[page_start: page_start+page_length]
+        params = {
+            "filter": f"{id_type}:{'|'.join(page)}",
+            "per-page": page_length,
+            "mailto": mailto
+        }
+        res = requests.get(url, params=params)
+        res.raise_for_status()
+        data += res.json()['results']
 
-        # Set number of results to 50 instead of default 25.
-        url = base_url + f"?filter={id_type}:{'|'.join(page)}&per-page=50"
-        if mailto is not None:
-            url += f"&mailto={mailto}"
-        res = requests.get(url)
-
-        if res.status_code == 200:
-            data += res.json()['results']
-        else:
-            raise StatusCodeError(f"Error in request to Openalex."
-                f"Status code: {res.status_code}. Message: {res.json()}"
-            )
     return data
