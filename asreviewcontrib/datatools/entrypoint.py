@@ -5,9 +5,11 @@ from asreview.entry_points import BaseEntryPoint
 from asreviewcontrib.datatools.describe import describe, _parse_arguments_describe
 from asreviewcontrib.datatools.convert import convert, _parse_arguments_convert
 from asreviewcontrib.datatools.dedup import dedup, _parse_arguments_dedup
+from asreviewcontrib.datatools.compose import compose, _parse_arguments_compose
 
 
-DATATOOLS = ["describe", "dedup", "convert"]
+DATATOOLS = ["describe", "dedup", "convert", "compose"]
+
 
 class DataEntryPoint(BaseEntryPoint):
     description = "Home of all data tools for ASReview."
@@ -31,11 +33,14 @@ class DataEntryPoint(BaseEntryPoint):
                 args_convert_parser = _parse_arguments_convert()
                 args_convert = vars(args_convert_parser.parse_args(argv[1:]))
                 convert(**args_convert)
-
             if argv[0] == "dedup":
                 args_dedup_parser = _parse_arguments_dedup()
                 args_dedup = vars(args_dedup_parser.parse_args(argv[1:]))
                 dedup(**args_dedup)
+            if argv[0] == "compose":
+                args_compose_parser = _parse_arguments_compose()
+                args_compose = vars(args_compose_parser.parse_args(argv[1:]))
+                compose(**args_compose)
 
         # Print help message if subcommand not given or incorrect
         else:
