@@ -144,7 +144,6 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
     as_conflicts_only = ASReviewData(df=df_conflicting_dups.reset_index(drop=True))
     if len(df_conflicting_dups) > 0:
         # create a dataframe with the relevant info for the user
-        # create a dataframe with the relevant info for the user
         if pid in as_conflicts_only.df.columns:
             df_info_conflicts = pd.DataFrame(
                 {
