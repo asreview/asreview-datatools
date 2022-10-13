@@ -125,11 +125,7 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
     }
 
     # map letters to corresponding term
-    dict_terms = {
-        "r": "relevant",
-        "i": "irrelevant",
-        "u": "unlabeled"
-    }
+    dict_terms = {"r": "relevant", "i": "irrelevant", "u": "unlabeled"}
 
     # concatenate in specified order, only the first duplicate entry is kept.
     as_conflict = ASReviewData(
@@ -146,13 +142,31 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
         # create a dataframe with the relevant info for the user
         if pid in as_conflicts_only.df.columns:
             df_info_conflicts = pd.DataFrame(
-                {pid: as_conflicts_only.df[pid].fillna(""), 'Title': as_conflicts_only.title,
-                 'Abstract': as_conflicts_only.abstract})
+                {
+                    pid: as_conflicts_only.df[pid].fillna(""),
+                    "Title": as_conflicts_only.title,
+                    "Abstract": as_conflicts_only.abstract,
+                }
+            )
         else:
-            df_info_conflicts = pd.DataFrame({'Title': as_conflicts_only.title, 'Abstract': as_conflicts_only.abstract})
+            df_info_conflicts = pd.DataFrame(
+                {
+                    "Title": as_conflicts_only.title,
+                    "Abstract": as_conflicts_only.abstract,
+                }
+            )
 
         # pandas settings to print properly
-        with pd.option_context('display.max_rows', None, 'display.max_columns', 3, 'max_colwidth', 40, 'display.width', 500):
+        with pd.option_context(
+            "display.max_rows",
+            None,
+            "display.max_columns",
+            3,
+            "max_colwidth",
+            40,
+            "display.width",
+            500,
+        ):
             print(
                 f"Some records have inconsistent labels in the input files. This may be intentional because you are "
                 f"trying to overwrite labels in an input file with labels from another input file. However, "
@@ -178,7 +192,7 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
         df_composed = as_conflict.df
 
     # move included column to the end of dataframe
-    included = df_composed.pop('included')
+    included = df_composed.pop("included")
     df_composed = df_composed.assign(included=included)
 
     # prepare collected labels to pass to the output file

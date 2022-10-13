@@ -2,11 +2,14 @@ import argparse
 
 from asreview.data import ASReviewData
 from asreview.entry_points import BaseEntryPoint
-from asreviewcontrib.datatools.describe import describe, _parse_arguments_describe
-from asreviewcontrib.datatools.convert import convert, _parse_arguments_convert
-from asreviewcontrib.datatools.dedup import dedup, _parse_arguments_dedup
-from asreviewcontrib.datatools.compose import compose, _parse_arguments_compose
-
+from asreviewcontrib.datatools.compose import _parse_arguments_compose
+from asreviewcontrib.datatools.compose import compose
+from asreviewcontrib.datatools.convert import _parse_arguments_convert
+from asreviewcontrib.datatools.convert import convert
+from asreviewcontrib.datatools.dedup import _parse_arguments_dedup
+from asreviewcontrib.datatools.dedup import dedup
+from asreviewcontrib.datatools.describe import _parse_arguments_describe
+from asreviewcontrib.datatools.describe import describe
 
 DATATOOLS = ["describe", "dedup", "convert", "compose"]
 
@@ -17,6 +20,7 @@ class DataEntryPoint(BaseEntryPoint):
 
     def __init__(self):
         from asreviewcontrib.datatools.__init__ import __version__
+
         super(DataEntryPoint, self).__init__()
 
         self.version = __version__
@@ -40,12 +44,19 @@ class DataEntryPoint(BaseEntryPoint):
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
                 args_compose = args_compose_parser.parse_args(argv[1:])
-                args_compose_files = [args_compose.relevant, args_compose.irrelevant, args_compose.labeled, args_compose.unlabeled]
-                compose(args_compose.output_path, 
-                        args_compose_files, 
-                        pid=args_compose.pid, 
-                        order=args_compose.priority,
-                        resolve=args_compose.conflict_resolve)
+                args_compose_files = [
+                    args_compose.relevant,
+                    args_compose.irrelevant,
+                    args_compose.labeled,
+                    args_compose.unlabeled,
+                ]
+                compose(
+                    args_compose.output_path,
+                    args_compose_files,
+                    pid=args_compose.pid,
+                    order=args_compose.priority,
+                    resolve=args_compose.conflict_resolve,
+                )
 
         # Print help message if subcommand not given or incorrect
         else:
@@ -53,14 +64,13 @@ class DataEntryPoint(BaseEntryPoint):
             parser = argparse.ArgumentParser(
                 prog="asreview data",
                 formatter_class=argparse.RawTextHelpFormatter,
-                description="Tools for data preprocessing for ASReview."
+                description="Tools for data preprocessing for ASReview.",
             )
             parser.add_argument(
                 "subcommand",
                 nargs="?",
                 default=None,
-                help=f"The datatool to launch. Available commands:\n\n"
-                f"{DATATOOLS}"
+                help=f"The datatool to launch. Available commands:\n\n" f"{DATATOOLS}",
             )
             parser.add_argument(
                 "-V",
