@@ -170,13 +170,15 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
             40,
             "display.width",
             500,
+            "display.colheader_justify",
+            "left"
         ):
             print(
-                f"Some records have inconsistent labels in the input files. This may be intentional because you are "
+                f"\nSome records have inconsistent labels in the input files. This may be intentional because you are "
                 f"trying to overwrite labels in an input file with labels from another input file. However, "
-                f"it may also be because some records are unintentionally labeled inconsistently.\n\n "
+                f"it may also be because some records are unintentionally labeled inconsistently.\n\n"
                 f"The following records have inconsistent labels in the input files:\n"
-                f"{df_info_conflicts}"
+                f"{df_info_conflicts}\n"
             )
 
         if resolve == "abort":
@@ -184,7 +186,7 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
         elif resolve == "continue":
             warnings.warn(
                 f"Continuing, keeping one label for records with inconsistent labels, keeping labels using the "
-                f"following priority: \n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
+                f"following priority:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
         elif resolve == "keep":
