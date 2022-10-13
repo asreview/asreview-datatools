@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from compose import compose
+from asreviewcontrib.datatools.compose import compose
 
 
 class TestCompose(unittest.TestCase):
