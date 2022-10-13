@@ -183,8 +183,8 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
             raise ValueError("Abort composing because inconsistent labels were found.")
         elif resolve == "continue":
             warnings.warn(
-                f"Continuing, keeping one label for records with inconsistent labels, keeping labels in the following "
-                f"order:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
+                f"Continuing, keeping one label for records with inconsistent labels, keeping labels using the "
+                f"following priority: \n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
         elif resolve == "keep":
