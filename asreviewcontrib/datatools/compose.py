@@ -11,7 +11,7 @@ def _check_order_arg(order):
     allowed_orders = ["riu", "rui", "uri", "uir", "iru", "iur", "abort", "keep"]
     if order not in allowed_orders:
         raise ValueError(
-            f"An unsupported order was given with --order, choose one of the following: {allowed_orders}"
+            f"An unsupported order was given with --priority, choose one of the following: {allowed_orders}"
         )
 
     return
