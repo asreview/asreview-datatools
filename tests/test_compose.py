@@ -6,8 +6,8 @@ from compose import compose
 
 class TestCompose(unittest.TestCase):
     # paths for demo data for testing
-    path_dataset_1_csv = Path("tests", "demo_data", "dataset_1.ris")
-    path_dataset_2_csv = Path("tests", "demo_data", "dataset_2.ris")
+    path_dataset_1_csv = Path("demo_data", "dataset_1.ris")
+    path_dataset_2_csv = Path("demo_data", "dataset_2.ris")
 
     # labeling action on input paths in list = [relevant, irrelevant, labeled, unlabeled]
     input_files_1 = [
@@ -23,7 +23,7 @@ class TestCompose(unittest.TestCase):
         self.assertRaises(
             ValueError,
             compose,
-            "output/unit_test.csv",
+            "some_file.csv",
             input_files_1,
             pid="doi",
             order="riu",
