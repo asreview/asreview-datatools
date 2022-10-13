@@ -33,12 +33,12 @@ def _check_suffix(input_files, output_file):
     suffixes = [Path(item).suffix for item in input_files if item is not None]
     suffixes.append(Path(output_file).suffix)
 
-    set_ris = {'txt', 'ris'}
-    set_tabular = {'csv', 'tab', 'tsv', 'xlsx'}
+    set_ris = {'.txt', '.ris'}
+    set_tabular = {'.csv', '.tab', '.tsv', '.xlsx'}
     set_suffixes = set(suffixes)
 
     if len(set(suffixes)) > 1:
-        if not set_suffixes.issubset(set_ris) or set_suffixes.issubset(set_tabular):
+        if not (set_suffixes.issubset(set_ris) or set_suffixes.issubset(set_tabular)):
             raise ValueError(
                 "Several file types were given, all input files as well as the output file should be of the same type."
             )
