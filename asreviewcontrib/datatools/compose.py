@@ -86,14 +86,7 @@ def _concat_label(list_df, label, pid="doi"):
     return df_all
 
 
-def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"):
-    # check whether valid order and conflict resolve arguments are given
-    _check_order_arg(order)
-    _check_resolve_arg(resolve)
-
-    # check whether all input has the same file extension
-    _check_suffix(input_files, output_file)
-
+def create_composition(input_files, pid="doi", order="riu", resolve="continue"):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
     as_rel, as_irr, as_lab, as_unl = [
         load_data(item) if item is not None else None for item in input_files
@@ -204,12 +197,28 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
     included = df_composed.pop("included")
     df_composed = df_composed.assign(included=included)
 
+    return df_composed
+
+
+def _output_composition(final_df, output_file):
     # prepare collected labels to pass to the output file
-    labels = [[index, row["included"]] for index, row in df_composed.iterrows()]
+    labels = [[index, row["included"]] for index, row in final_df.iterrows()]
 
     # pass the new labels to the output file
-    as_composed = ASReviewData(df=df_composed)
+    as_composed = ASReviewData(df=final_df)
     as_composed.to_file(output_file, labels=labels)
+
+
+def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"):
+    # check whether valid order and conflict resolve arguments are given
+    _check_order_arg(order)
+    _check_resolve_arg(resolve)
+
+    # check whether all input has the same file extension
+    _check_suffix(input_files, output_file)
+
+    df_composition = create_composition(input_files, pid=pid, order=order, resolve=resolve)
+    _output_composition(df_composition, output_file)
 
 
 def _parse_arguments_compose():
