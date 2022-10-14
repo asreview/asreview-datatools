@@ -24,7 +24,7 @@ class TestCompose(unittest.TestCase):
             ValueError,
             compose,
             "some_file.csv",
-            input_files_1,
+            self.input_files_1,
             pid="doi",
             order="riu",
             resolve="continue",
@@ -33,19 +33,19 @@ class TestCompose(unittest.TestCase):
     # some test cases to assert prioritization of labels
     def test_label_prioritization(self):
         # input identical datasets and overwrite everything with the relevant labels
-        df_1 = compose("just_a_test.ris", input_files_1, order="riu")
+        df_1 = compose("just_a_test.ris", self.input_files_1, order="riu")
         assert df_1["included"].value_counts()[1] == len(df_1)
 
         # input identical datasets and overwrite everything with the irrelevant labels
-        df_2 = compose("just_a_test.ris", input_files_1, order="iru")
+        df_2 = compose("just_a_test.ris", self.input_files_1, order="iru")
         assert df_2["included"].value_counts()[0] == len(df_2)
 
         # input identical datasets and overwrite everything as unlabeled
-        df_3 = compose("just_a_test.ris", input_files_1, order="uri")
+        df_3 = compose("just_a_test.ris", self.input_files_1, order="uri")
         assert df_3["included"].value_counts()[-1] == len(df_3)
 
         # input different datasets with some identical records, combining as labeled and unlabeled data
-        df_4 = compose("just_a_test.ris", input_files_2, order="riu")
+        df_4 = compose("just_a_test.ris", self.input_files_2, order="riu")
         df_4_counts = df_4["included"].value_counts()
         assert df_4_counts[-1] == 7 and df_4_counts[0] == 3 and df_4_counts[1] == 1
 
