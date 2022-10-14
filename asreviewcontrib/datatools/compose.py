@@ -8,7 +8,7 @@ from asreview.data.base import load_data
 
 
 def _check_order_arg(order):
-    allowed_orders = ["riu", "rui", "uri", "uir", "iru", "iur", "abort", "keep"]
+    allowed_orders = ["riu", "rui", "uri", "uir", "iru", "iur"]
     if order not in allowed_orders:
         raise ValueError(
             f"An unsupported order was given with --priority, choose one of the following: {allowed_orders}"
@@ -132,14 +132,14 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
     # map letters to corresponding term
     dict_terms = {"r": "relevant", "i": "irrelevant", "u": "unlabeled"}
 
-    # concatenate in specified order, only the first duplicate entry is kept.
+    # concatenate in specified order, only the first duplicate entry is kept
     as_conflict = ASReviewData(
         df=pd.concat(
             [dict_dfs[order[0]], dict_dfs[order[1]], dict_dfs[order[2]]]
         ).reset_index(drop=True)
     )
 
-    # check for label conflicts.
+    # check for label conflicts
     df_conflicting_dups = as_conflict.df[as_conflict.duplicated(pid)]
     as_conflicts_only = ASReviewData(df=df_conflicting_dups.reset_index(drop=True))
     if len(df_conflicting_dups) > 0:
@@ -183,17 +183,20 @@ def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"
 
         if resolve == "abort":
             raise ValueError("Abort composing because inconsistent labels were found.")
+
         elif resolve == "continue":
             warnings.warn(
                 f"Continuing, keeping one label for records with inconsistent labels, keeping labels using the "
                 f"following priority:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
+
         elif resolve == "keep":
             warnings.warn(
                 f"Continuing, keeping all labels for duplicate records with inconsistent labels."
             )
             df_composed = as_conflict.df
+
     else:
         df_composed = as_conflict.df
 
