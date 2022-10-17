@@ -164,7 +164,7 @@ Compose is where datasets with different labels (or no labels) can be assembled 
 
 #### Data format
 Your data files need to be in tabular file format or RIS file format.
-All input files should be in the same format.
+The output file and all input files should be in the same format.
 
 - **Tabular file format:**
 Supported tabular file formats are `.csv`, `.tab`, `.tsv` or `.xlsx`.
