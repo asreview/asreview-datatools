@@ -9,7 +9,7 @@ from asreviewcontrib.datatools.compose import create_composition
 
 
 def input_files_1():
-    path_dataset_1_csv = Path("tests", "demo_data", "dataset_1.ris")
+    path_dataset_1_csv = Path("demo_data", "dataset_1.ris")
 
     # labeling action on input paths in list = [relevant, irrelevant, labeled, unlabeled]
     return [
