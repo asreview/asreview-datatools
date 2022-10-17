@@ -44,9 +44,6 @@ def test_input_resolve():
 
 
 def test_label_prioritization():
-    print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-    print(path_dataset_1_csv)
-    print(sys.path)
     # input identical datasets and overwrite everything with the relevant labels
     df_1 = create_composition(*input_files_1, order="riu")
     assert df_1["included"].value_counts()[1] == len(df_1)
