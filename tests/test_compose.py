@@ -9,18 +9,19 @@ from asreviewcontrib.datatools.compose import _check_suffix
 from asreviewcontrib.datatools.compose import create_composition
 
 
-path_dataset_1_csv = Path("tests", "demo_data", "dataset_1.ris")
-path_dataset_2_csv = Path("tests", "demo_data", "dataset_2.ris")
+parent_dir = Path(__file__).parent
+file_1 = Path(parent_dir, "demo_data", "dataset_1.ris")
+file_2 = Path(parent_dir, "demo_data", "dataset_2.ris")
 
 # labeling action on input paths in list = [relevant, irrelevant, labeled, unlabeled]
 input_files_1 = [
-    path_dataset_1_csv,
-    path_dataset_1_csv,
-    path_dataset_1_csv,
-    path_dataset_1_csv,
+    file_1,
+    file_1,
+    file_1,
+    file_1,
 ]
 
-input_files_2 = [None, None, path_dataset_1_csv, path_dataset_2_csv]
+input_files_2 = [None, None, file_1, file_2]
 
 
 # test whether input and output suffixes are compatible
