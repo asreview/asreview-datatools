@@ -217,11 +217,11 @@ By default, the order is `riu` which means that:
 
 If compose runs into any conflicts the user is warned and the conflicts are shown.
 To specify what happens in case of conflicts, use the `--conflict_resolve`/`-c` flag.
-This is set to `continue` by default, options are:
+This is set to `resolve` by default, options are:
 
 | Resolve method | Action in case of conflict                                                             |
 |----------------|----------------------------------------------------------------------------------------|
-| `continue`     | Continue, using `--priority` to determine which label to keep                          |
+| `resolve`      | Resolve, using `--priority` to determine which label to keep                           |
 | `keep`         | Keep all labels for duplicate records with inconsistent labels (ignoring `--priority`) | 
 | `abort`        | Abort                                                                                  |
 
@@ -236,15 +236,6 @@ In case any duplicate ambiguously labeled records exist, either within a dataset
 - Irrelevant labels are prioritized over relevant labels.
 
 If there are any such conflicting/contradictory labels, the user is warned, the conflicting records are shown and the script is aborted.
-
-
-### Note
-When the composed dataset is exported to RIS file format you may get a warning similar to:
-```bash
-C:\Python310\lib\site-packages\rispy\writer.py:114: UserWarning: label `included` not exported
-warnings.warn(UserWarning(f"label `{label}` not exported"))
-```
-Despite the warning, the labels will still be exported, so this warning can be ignored.
 
 ---
 
