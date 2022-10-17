@@ -12,10 +12,6 @@ from asreviewcontrib.datatools.compose import create_composition
 path_dataset_1_csv = Path("tests", "demo_data", "dataset_1.ris")
 path_dataset_2_csv = Path("tests", "demo_data", "dataset_2.ris")
 
-print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-print(path_dataset_1_csv)
-print(sys.path)
-
 # labeling action on input paths in list = [relevant, irrelevant, labeled, unlabeled]
 input_files_1 = [
     path_dataset_1_csv,
@@ -48,6 +44,9 @@ def test_input_resolve():
 
 
 def test_label_prioritization():
+    print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    print(path_dataset_1_csv)
+    print(sys.path)
     # input identical datasets and overwrite everything with the relevant labels
     df_1 = create_composition(*input_files_1, order="riu")
     assert df_1["included"].value_counts()[1] == len(df_1)
