@@ -61,8 +61,6 @@ def _check_label_errors(as_lab, path_lab):
                 f"https://asreview.readthedocs.io/en/latest/data_format.html"
             )
 
-    return
-
 
 def _append_df(list_df, as_obj, label):
     # retrieve part of dataframe with label -1, 0 or 1
@@ -70,8 +68,6 @@ def _append_df(list_df, as_obj, label):
 
     if not df_slice.empty:
         list_df.append(df_slice)
-
-    return
 
 
 def _concat_label(list_df, label, pid="doi"):
