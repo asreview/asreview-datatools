@@ -43,15 +43,12 @@ class DataEntryPoint(BaseEntryPoint):
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
                 args_compose = args_compose_parser.parse_args(argv[1:])
-                args_compose_files = [
+                compose(
+                    args_compose.output_path,
                     args_compose.relevant,
                     args_compose.irrelevant,
                     args_compose.labeled,
                     args_compose.unlabeled,
-                ]
-                compose(
-                    args_compose.output_path,
-                    args_compose_files,
                     pid=args_compose.pid,
                     order=args_compose.priority,
                     resolve=args_compose.conflict_resolve,

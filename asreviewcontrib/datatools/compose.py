@@ -94,8 +94,9 @@ def _concat_label(list_df, label, pid="doi"):
     return df_all
 
 
-def create_composition(input_files, pid="doi", order="riu", resolve="continue"):
+def create_composition(rel_path, irr_path, lab_path, unl_path, pid="doi", order="riu", resolve="continue"):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
+    input_files = [rel_path, irr_path, lab_path, unl_path]
     as_rel, as_irr, as_lab, as_unl = [
         load_data(item) if item is not None else None for item in input_files
     ]
@@ -217,11 +218,11 @@ def _output_composition(final_df, output_file):
     as_composed.to_file(output_file, labels=labels)
 
 
-def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"):
+def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="continue"):
     # check whether all input has the same file extension
-    _check_suffix(input_files, output_file)
+    _check_suffix([rel, irr, lab, unl], output_file)
 
-    df_composition = create_composition(input_files, pid=pid, order=order, resolve=resolve)
+    df_composition = create_composition(rel, irr, lab, unl, pid=pid, order=order, resolve=resolve)
     _output_composition(df_composition, output_file)
 
 
