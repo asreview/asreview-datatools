@@ -209,8 +209,8 @@ By default `doi` is used as PID, it is possible to use flag `--pid`  to specify 
 #### Resolving conflicting labels
 Each record is marked as relevant, irrelevant or unlabeled.
 In case of a duplicate record it is possible that it is marked ambiguously.
-`--priority`/`-p` is used to specify prioritization of labels.
-Pass the letters `r` (relevant), `i` (irrelevant) and `u` (unlabeled) in any order to set label prioritization order.
+`--hierarchy`/`-h` is used to specify hierarchy of labels.
+Pass the letters `r` (relevant), `i` (irrelevant) and `u` (unlabeled) in any order to set label hierarchy.
 By default, the order is `riu` which means that:
 - Relevant labels are prioritized over irrelevant and unlabeled.
 - Irrelevant labels are prioritized over unlabeled.
@@ -219,11 +219,11 @@ If compose runs into any conflicts the user is warned and the conflicts are show
 To specify what happens in case of conflicts, use the `--conflict_resolve`/`-c` flag.
 This is set to `resolve` by default, options are:
 
-| Resolve method | Action in case of conflict                                                             |
-|----------------|----------------------------------------------------------------------------------------|
-| `resolve`      | Resolve, using `--priority` to determine which label to keep                           |
-| `keep`         | Keep all labels for duplicate records with inconsistent labels (ignoring `--priority`) | 
-| `abort`        | Abort                                                                                  |
+| Resolve method | Action in case of conflict                                                              |
+|----------------|-----------------------------------------------------------------------------------------|
+| `resolve`      | Resolve, using `--hierarchy` to determine which label to keep                           |
+| `keep`         | Keep all labels for duplicate records with inconsistent labels (ignoring `--hierarchy`) | 
+| `abort`        | Abort                                                                                   |
 
 #### Example
 ```bash

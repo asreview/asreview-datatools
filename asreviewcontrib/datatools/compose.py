@@ -8,7 +8,7 @@ from asreview.data.base import load_data
 
 
 def _check_order_arg(order):
-    # if no priority is specified, set to default: "riu"
+    # if no hierarchy is specified, set to default: "riu"
     if order is None:
         return "riu"
 
@@ -17,7 +17,7 @@ def _check_order_arg(order):
         return order
     else:
         raise ValueError(
-            f"An unsupported order was given with --priority, choose one of the following: {allowed_orders}"
+            f"An unsupported order was given with --hierarchy, choose one of the following: {allowed_orders}"
         )
 
 
@@ -197,7 +197,7 @@ def create_composition(
         elif resolve == "resolve":
             warnings.warn(
                 f"Continuing, keeping one label for records with inconsistent labels, resolving conflicts using the "
-                f"following priority:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
+                f"following hierarchy:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
 
@@ -250,9 +250,9 @@ def _parse_arguments_compose():
     parser.add_argument("--labeled", "-l", type=str, help="A labeled dataset.")
     parser.add_argument("--unlabeled", "-u", type=str, help="An unlabeled dataset.")
     parser.add_argument(
-        "--priority",
-        "-p",
-        dest="priority",
+        "--hierarchy",
+        "-h",
+        dest="hierarchy",
         type=_check_order_arg,
         default="riu",
         help="Hierarchy of labels in case of duplicates." "Default: riu.",

@@ -28,8 +28,8 @@ def test_suffixes():
         _check_suffix(input_files_1, "conflicting_suffix.csv")
 
 
-# test whether wrong input priority/order raises error
-def test_input_priority():
+# test whether wrong input hierarchy/order raises error
+def test_input_hierarchy():
     with pytest.raises(ValueError):
         _check_order_arg("abc")
     with pytest.raises(ValueError):
