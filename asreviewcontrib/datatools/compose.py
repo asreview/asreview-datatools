@@ -41,8 +41,8 @@ def _check_suffix(input_files, output_file):
     suffixes = [Path(item).suffix for item in input_files if item is not None]
     suffixes.append(Path(output_file).suffix)
 
-    set_ris = {'.txt', '.ris'}
-    set_tabular = {'.csv', '.tab', '.tsv', '.xlsx'}
+    set_ris = {".txt", ".ris"}
+    set_tabular = {".csv", ".tab", ".tsv", ".xlsx"}
     set_suffixes = set(suffixes)
 
     if len(set(suffixes)) > 1:
@@ -94,7 +94,9 @@ def _concat_label(list_df, label, pid="doi"):
     return df_all
 
 
-def create_composition(rel_path, irr_path, lab_path, unl_path, pid="doi", order="riu", resolve="continue"):
+def create_composition(
+    rel_path, irr_path, lab_path, unl_path, pid="doi", order="riu", resolve="continue"
+):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
     as_rel, as_irr, as_lab, as_unl = [
@@ -173,7 +175,7 @@ def create_composition(rel_path, irr_path, lab_path, unl_path, pid="doi", order=
             "display.width",
             500,
             "display.colheader_justify",
-            "left"
+            "left",
         ):
             print(
                 f"\nSome records have inconsistent labels in the input files. This may be intentional because you are "
@@ -218,11 +220,15 @@ def _output_composition(final_df, output_file):
     as_composed.to_file(output_file, labels=labels)
 
 
-def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="continue"):
+def compose(
+    output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="continue"
+):
     # check whether all input has the same file extension
     _check_suffix([rel, irr, lab, unl], output_file)
 
-    df_composition = create_composition(rel, irr, lab, unl, pid=pid, order=order, resolve=resolve)
+    df_composition = create_composition(
+        rel, irr, lab, unl, pid=pid, order=order, resolve=resolve
+    )
     _output_composition(df_composition, output_file)
 
 

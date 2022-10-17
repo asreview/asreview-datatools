@@ -1,17 +1,23 @@
-import pytest
 from pathlib import Path
 
-from asreviewcontrib.datatools.compose import create_composition
-from asreviewcontrib.datatools.compose import _check_suffix
+import pytest
+
 from asreviewcontrib.datatools.compose import _check_order_arg
 from asreviewcontrib.datatools.compose import _check_resolve_arg
+from asreviewcontrib.datatools.compose import _check_suffix
+from asreviewcontrib.datatools.compose import create_composition
 
 
 def input_files_1():
     path_dataset_1_csv = Path("tests", "demo_data", "dataset_1.ris")
 
     # labeling action on input paths in list = [relevant, irrelevant, labeled, unlabeled]
-    return [path_dataset_1_csv, path_dataset_1_csv, path_dataset_1_csv, path_dataset_1_csv]
+    return [
+        path_dataset_1_csv,
+        path_dataset_1_csv,
+        path_dataset_1_csv,
+        path_dataset_1_csv,
+    ]
 
 
 def input_files_2():
