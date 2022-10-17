@@ -22,11 +22,11 @@ def _check_order_arg(order):
 
 
 def _check_resolve_arg(resolve):
-    # if no resolve method is specified, set to default: "continue"
+    # if no resolve method is specified, set to default: "resolve"
     if resolve is None:
-        return "continue"
+        return "resolve"
 
-    allowed_resolve = ["continue", "abort", "keep"]
+    allowed_resolve = ["resolve", "abort", "keep"]
     if resolve in allowed_resolve:
         return resolve
     else:
@@ -95,7 +95,7 @@ def _concat_label(list_df, label, pid="doi"):
 
 
 def create_composition(
-    rel_path, irr_path, lab_path, unl_path, pid="doi", order="riu", resolve="continue"
+    rel_path=None, irr_path=None, lab_path=None, unl_path=None, pid="doi", order="riu", resolve="resolve"
 ):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
@@ -104,7 +104,7 @@ def create_composition(
     ]
 
     # check whether input files are correctly labeled
-    _check_label_errors(as_lab, input_files[2])
+    _check_label_errors(as_lab, lab_path)
 
     # create lists to append dataframes with a specific label to
     list_df_rel, list_df_irr, list_df_unl = [], [], []
@@ -188,9 +188,9 @@ def create_composition(
         if resolve == "abort":
             raise ValueError("Abort composing because inconsistent labels were found.")
 
-        elif resolve == "continue":
+        elif resolve == "resolve":
             warnings.warn(
-                f"Continuing, keeping one label for records with inconsistent labels, keeping labels using the "
+                f"Continuing, keeping one label for records with inconsistent labels, resolving conflicts using the "
                 f"following priority:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
@@ -221,7 +221,7 @@ def _output_composition(final_df, output_file):
 
 
 def compose(
-    output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="continue"
+    output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="resolve"
 ):
     # check whether all input has the same file extension
     _check_suffix([rel, irr, lab, unl], output_file)
@@ -256,7 +256,7 @@ def _parse_arguments_compose():
         "-c",
         dest="conflict_resolve",
         type=_check_resolve_arg,
-        default="continue",
+        default="resolve",
         help="Method for dealing with " "conflicting labels.",
     )
     parser.add_argument(
