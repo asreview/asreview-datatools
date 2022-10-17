@@ -3,18 +3,19 @@
 [![PyPI version](https://badge.fury.io/py/asreview-datatools.svg)](https://badge.fury.io/py/asreview-datatools) [![Downloads](https://pepy.tech/badge/asreview-datatools)](https://pepy.tech/project/asreview-datatools) ![PyPI - License](https://img.shields.io/pypi/l/asreview-datatools) ![Deploy and release](https://github.com/asreview/asreview-datatools/workflows/Deploy%20and%20release/badge.svg) ![Build status](https://github.com/asreview/asreview-datatools/workflows/test-suite/badge.svg) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6625879.svg)](https://doi.org/10.5281/zenodo.6625879)
 
 ASReview Datatools is an extension to [ASReview
-LAB](https://github.com/asreview/asreview) that can be used for:
-- [**Describing**](#describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
+LAB](https://github.com/asreview/asreview) that can be used to:
+- [**Describe**](#describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
 the amount of missing data and duplicates)
-- [**Converting**](#convert) file formats via the command line
-- [**Deduplication**](#dedup): cleaning your (input) data by removing duplicate records.
-- [**Composing**](#compose) datasets with different (or no) labels into a single dataset
+- [**Convert**](#convert) file formats via the command line
+- [**Deduplicate**](#dedup) data based on properties of the data
+- [**Composie**](#compose) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
 
-ASReview
-datatools is available for ASReview Lab **v1.1+** and requires Python 3.7+.
+ASReview datatools is available for ASReview Lab **v1.1+**.
 If you are using ASReview Lab v0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
 ---
 ## Installation
+ASReview Datatools requires Python 3.7+ and [ASReview LAB](https://github.com/asreview/asreview) version 1.1 or later.
+
 The easiest way to install the datatools extension is to install from PyPI:
 
 ``` bash
@@ -48,7 +49,8 @@ Each tool has its own help description which is available with
 asreview data NAME_OF_TOOL -h
 ```
 ---
-## Describe
+## Tools
+### Data Describe
 
 Describe the content of a dataset
 
@@ -68,10 +70,6 @@ platform](https://github.com/asreview/systematic-review-datasets).
 ```bash
 asreview data describe benchmark:van_de_schoot_2017 -o output.json
 ```
-
-<details>
-  <summary>Click to see output:</summary>
-
 ```
 {
   "asreviewVersion": "1.0",
@@ -124,9 +122,8 @@ asreview data describe benchmark:van_de_schoot_2017 -o output.json
   }
 }
 ```
-</details>
 
-## Convert
+### Data Convert
 
 Convert the format of a dataset. For example, convert a RIS dataset into a
 CSV, Excel, or TAB dataset.
@@ -135,7 +132,7 @@ CSV, Excel, or TAB dataset.
 asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ```
 
-## Dedup
+### Data Dedup
 
 Remove duplicate records with a simple and straightforward deduplication
 algorithm (see [source
@@ -160,12 +157,14 @@ platform](https://github.com/asreview/systematic-review-datasets).
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
-## Compose
+### Data Compose (Experimental)
 Compose is where datasets with different labels (or no labels) can be assembled into a single dataset.
 
-### Data format
+❗ Compose is an experimental feature. We would love to hear your feedback. Please keep in mind that this feature can change in the future. 
+
+#### Data format
 Your data files need to be in tabular file format or RIS file format.
-All input files should use the same format.
+All input files should be in the same format.
 
 - **Tabular file format:**
 Supported tabular file formats are `.csv`, `.tab`, `.tsv` or `.xlsx`.
@@ -179,11 +178,7 @@ ASReview converts the labeling decisions in RIS files to a binary variable: irre
 
 Records marked as unseen or with missing labeling decisions, are converted to `-1` by ASReview.
 
-### Run script
-Navigate to the directory where your data files are located:
-```bash
-cd Parent_directory
-```
+#### Run script
 Assume you have `MY_DATASET_1.ris` from which you want to keep all existing labels
 and `MY_DATASET_2.ris` which you want to mark as unlabeled. Compose into a single dataset:
 ```bash
@@ -208,7 +203,7 @@ Overview of possible input files and corresponding properties, use at least one 
 | `--unlabeled`, `-u`  | Remove all labels in dataset.              |
 
 #### Persistent identifier
-Duplicate checking is based on title/abstract and a persistent identifier (PID), see [source code](https://github.com/asreview/asreview/blob/master/asreview/data/base.py#L453).
+Duplicate checking is based on title/abstract and a persistent identifier (PID).
 By default `doi` is used as PID, it is possible to use flag `--pid`  to specify a persistent identifier other than `doi`.
 
 #### Resolving conflicting labels
@@ -230,7 +225,7 @@ This is set to `continue` by default, options are:
 | `keep`         | Keep all labels for duplicate records with inconsistent labels (ignoring `--priority`) | 
 | `abort`        | Abort                                                                                  |
 
-### Example
+#### Example
 ```bash
 asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris -o uir -c abort
 ```
@@ -242,8 +237,6 @@ In case any duplicate ambiguously labeled records exist, either within a dataset
 
 If there are any such conflicting/contradictory labels, the user is warned, the conflicting records are shown and the script is aborted.
 
-### Tutorials
-Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
 
 ### Note
 When the composed dataset is exported to RIS file format you may get a warning similar to:
