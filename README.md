@@ -4,11 +4,11 @@
 
 ASReview Datatools is an extension to [ASReview
 LAB](https://github.com/asreview/asreview) that can be used to:
-- [**Describe**](#describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
+- [**Describe**](#data-describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
 the amount of missing data and duplicates)
-- [**Convert**](#convert) file formats via the command line
-- [**Deduplicate**](#dedup) data based on properties of the data
-- [**Composie**](#compose) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
+- [**Convert**](#data-convert) file formats via the command line
+- [**Deduplicate**](#data-dedup) data based on properties of the data
+- [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
 
 ASReview datatools is available for ASReview Lab **v1.1+**.
 If you are using ASReview Lab v0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
