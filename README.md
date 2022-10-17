@@ -159,6 +159,9 @@ platform](https://github.com/asreview/systematic-review-datasets).
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
+### Tutorials
+Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
+
 ## License
 
 This extension is published under the [MIT license](/LICENSE).
