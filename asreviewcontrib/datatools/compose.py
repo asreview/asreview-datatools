@@ -214,10 +214,12 @@ def create_composition(
 def _output_composition(final_df, output_file):
     # prepare collected labels to pass to the output file
     labels = [[index, row["included"]] for index, row in final_df.iterrows()]
-
-    # pass the new labels to the output file
     as_composed = ASReviewData(df=final_df)
-    as_composed.to_file(output_file, labels=labels)
+
+    # supress warning about certain columns not exported to .ris output
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=UserWarning)
+        as_composed.to_file(output_file, labels=labels)
 
 
 def compose(
