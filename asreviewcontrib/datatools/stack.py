@@ -1,7 +1,7 @@
 import argparse
+from pathlib import Path
 
 import pandas as pd
-from pathlib import Path
 from asreview import ASReviewData
 from asreview.data.base import load_data
 
