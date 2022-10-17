@@ -1,13 +1,11 @@
 from pathlib import Path
 
 import pytest
-import sys
 
 from asreviewcontrib.datatools.compose import _check_order_arg
 from asreviewcontrib.datatools.compose import _check_resolve_arg
 from asreviewcontrib.datatools.compose import _check_suffix
 from asreviewcontrib.datatools.compose import create_composition
-
 
 parent_dir = Path(__file__).parent
 file_1 = Path(parent_dir, "demo_data", "dataset_1.ris")
