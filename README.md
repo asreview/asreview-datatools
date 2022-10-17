@@ -217,12 +217,12 @@ By default, the order is `riu` which means that:
 
 If compose runs into any conflicts the user is warned and the conflicts are shown.
 To specify what happens in case of conflicts, use the `--conflict_resolve`/`-c` flag.
-This is set to `resolve` by default, options are:
+This is set to `keep_one` by default, options are:
 
 | Resolve method | Action in case of conflict                                                              |
 |----------------|-----------------------------------------------------------------------------------------|
-| `resolve`      | Resolve, using `--hierarchy` to determine which label to keep                           |
-| `keep`         | Keep all labels for duplicate records with inconsistent labels (ignoring `--hierarchy`) | 
+| `keep_one`     | Keep one label, using `--hierarchy` to determine which label to keep                    |
+| `keep_all`     | Keep all labels for duplicate records with inconsistent labels (ignoring `--hierarchy`) | 
 | `abort`        | Abort                                                                                   |
 
 #### Example

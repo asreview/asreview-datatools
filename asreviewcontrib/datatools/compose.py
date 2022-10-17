@@ -22,11 +22,11 @@ def _check_order_arg(order):
 
 
 def _check_resolve_arg(resolve):
-    # if no resolve method is specified, set to default: "resolve"
+    # if no resolve method is specified, set to default: "keep_one"
     if resolve is None:
-        return "resolve"
+        return "keep_one"
 
-    allowed_resolve = ["resolve", "abort", "keep"]
+    allowed_resolve = ["keep_one", "keep_all", "abort"]
     if resolve in allowed_resolve:
         return resolve
     else:
@@ -101,7 +101,7 @@ def create_composition(
     unl_path=None,
     pid="doi",
     order="riu",
-    resolve="resolve",
+    resolve="keep_one",
 ):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
@@ -194,14 +194,14 @@ def create_composition(
         if resolve == "abort":
             raise ValueError("Abort composing because inconsistent labels were found.")
 
-        elif resolve == "resolve":
+        elif resolve == "keep_one":
             warnings.warn(
                 f"Continuing, keeping one label for records with inconsistent labels, resolving conflicts using the "
                 f"following hierarchy:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
 
-        elif resolve == "keep":
+        elif resolve == "keep_all":
             warnings.warn(
                 f"Continuing, keeping all labels for duplicate records with inconsistent labels."
             )
@@ -228,7 +228,7 @@ def _output_composition(final_df, output_file):
         as_composed.to_file(output_file, labels=labels)
 
 
-def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="resolve"):
+def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="keep_one"):
     # check whether all input has the same file extension
     _check_suffix([rel, irr, lab, unl], output_file)
 
@@ -262,7 +262,7 @@ def _parse_arguments_compose():
         "-c",
         dest="conflict_resolve",
         type=_check_resolve_arg,
-        default="resolve",
+        default="keep_one",
         help="Method for dealing with " "conflicting labels.",
     )
     parser.add_argument(
