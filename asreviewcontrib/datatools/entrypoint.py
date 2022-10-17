@@ -5,9 +5,10 @@ from asreview.entry_points import BaseEntryPoint
 from asreviewcontrib.datatools.describe import describe, _parse_arguments_describe
 from asreviewcontrib.datatools.convert import convert, _parse_arguments_convert
 from asreviewcontrib.datatools.dedup import dedup, _parse_arguments_dedup
+from asreviewcontrib.datatools.stack import stack, _parse_arguments_stack
 
 
-DATATOOLS = ["describe", "dedup", "convert"]
+DATATOOLS = ["describe", "dedup", "convert", "stack"]
 
 class DataEntryPoint(BaseEntryPoint):
     description = "Home of all data tools for ASReview."
@@ -36,6 +37,11 @@ class DataEntryPoint(BaseEntryPoint):
                 args_dedup_parser = _parse_arguments_dedup()
                 args_dedup = vars(args_dedup_parser.parse_args(argv[1:]))
                 dedup(**args_dedup)
+
+            if argv[0] == "stack":
+                args_stack_parser = _parse_arguments_stack()
+                args_stack = args_stack_parser.parse_args(argv[1:])
+                stack(args_stack.output_path, args_stack.datasets)
 
         # Print help message if subcommand not given or incorrect
         else:
