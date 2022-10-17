@@ -95,7 +95,13 @@ def _concat_label(list_df, label, pid="doi"):
 
 
 def create_composition(
-    rel_path=None, irr_path=None, lab_path=None, unl_path=None, pid="doi", order="riu", resolve="resolve"
+    rel_path=None,
+    irr_path=None,
+    lab_path=None,
+    unl_path=None,
+    pid="doi",
+    order="riu",
+    resolve="resolve",
 ):
     # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
@@ -218,13 +224,11 @@ def _output_composition(final_df, output_file):
 
     # supress warning about certain columns not exported to .ris output
     with warnings.catch_warnings():
-        warnings.filterwarnings('ignore', category=UserWarning)
+        warnings.filterwarnings("ignore", category=UserWarning)
         as_composed.to_file(output_file, labels=labels)
 
 
-def compose(
-    output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="resolve"
-):
+def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="resolve"):
     # check whether all input has the same file extension
     _check_suffix([rel, irr, lab, unl], output_file)
 
