@@ -8,24 +8,32 @@ from asreview.data.base import load_data
 
 
 def _check_order_arg(order):
+    # if no priority is specified, set to default: "riu"
+    if order is None:
+        return "riu"
+
     allowed_orders = ["riu", "rui", "uri", "uir", "iru", "iur"]
-    if order not in allowed_orders:
+    if order in allowed_orders:
+        return order
+    else:
         raise ValueError(
             f"An unsupported order was given with --priority, choose one of the following: {allowed_orders}"
         )
 
-    return
-
 
 def _check_resolve_arg(resolve):
+    # if no resolve method is specified, set to default: "continue"
+    if resolve is None:
+        return "continue"
+
     allowed_resolve = ["continue", "abort", "keep"]
-    if resolve not in allowed_resolve:
+    if resolve in allowed_resolve:
+        return resolve
+    else:
         raise ValueError(
             f"An unsupported method for conflict resolving was given with --conflict_resolve, choose one "
             f"of the following: {allowed_resolve}"
         )
-
-    return
 
 
 def _check_suffix(input_files, output_file):
@@ -210,10 +218,6 @@ def _output_composition(final_df, output_file):
 
 
 def compose(output_file, input_files, pid="doi", order="riu", resolve="continue"):
-    # check whether valid order and conflict resolve arguments are given
-    _check_order_arg(order)
-    _check_resolve_arg(resolve)
-
     # check whether all input has the same file extension
     _check_suffix(input_files, output_file)
 
@@ -235,14 +239,16 @@ def _parse_arguments_compose():
     parser.add_argument(
         "--priority",
         "-p",
-        type=str,
+        dest="priority",
+        type=_check_order_arg,
         default="riu",
         help="Hierarchy of labels in case of duplicates." "Default: riu.",
     )
     parser.add_argument(
         "--conflict_resolve",
         "-c",
-        type=str,
+        dest="conflict_resolve",
+        type=_check_resolve_arg,
         default="continue",
         help="Method for dealing with " "conflicting labels.",
     )
