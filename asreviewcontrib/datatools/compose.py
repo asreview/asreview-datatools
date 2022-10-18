@@ -48,7 +48,8 @@ def _check_suffix(input_files, output_file):
     if len(set(suffixes)) > 1:
         if not (set_suffixes.issubset(set_ris) or set_suffixes.issubset(set_tabular)):
             raise ValueError(
-                "Several file types were given, all input files as well as the output file should be of the same type."
+                "Files with different file types were; all input files, as well as the output file, should be of the "
+                "same type. "
             )
 
 
@@ -56,8 +57,8 @@ def _check_label_errors(as_lab, path_lab):
     if as_lab is not None:
         if as_lab.labels is None:
             warnings.warn(
-                f"No labels were found in '{path_lab}', continuing with its records marked as "
-                f"unlabeled. If this is not correct, check if your data format complies with: "
+                f"'{path_lab}' was passed as a labeled dataset but no labels were found, continuing with its records "
+                f"marked as unlabeled. If this is not correct, check if your data format complies with: "
                 f"https://asreview.readthedocs.io/en/latest/data_format.html"
             )
 
