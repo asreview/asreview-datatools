@@ -250,7 +250,7 @@ def _parse_arguments_compose():
     parser.add_argument("--unlabeled", "-u", type=str, help="An unlabeled dataset.")
     parser.add_argument(
         "--hierarchy",
-        "-hi",
+        "-r",
         dest="hierarchy",
         type=_check_order_arg,
         default="riu",
