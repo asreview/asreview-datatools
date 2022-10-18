@@ -180,7 +180,7 @@ Records marked as unseen or with missing labeling decisions are converted to `-1
 
 #### Run script
 Assume you have records in `MY_DATASET_1.ris` from which you want to keep all existing labels
-and records in `MY_DATASET_2.ris` which you want to mark as unlabeled.
+and records in `MY_DATASET_2.ris` which you want to keep unlabeled.
 Both datasets can be composed into a single dataset using:
 ```bash
 asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris
