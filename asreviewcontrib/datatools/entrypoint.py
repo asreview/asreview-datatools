@@ -51,7 +51,7 @@ class DataEntryPoint(BaseEntryPoint):
                     args_compose.labeled,
                     args_compose.unlabeled,
                     pid=args_compose.pid,
-                    order=args_compose.priority,
+                    order=args_compose.hierarchy,
                     resolve=args_compose.conflict_resolve,
                 )
 
