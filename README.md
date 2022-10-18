@@ -177,7 +177,8 @@ The output path can be followed by any number of datasets to be stacked.
 
 #### Note
 Vstack does not do any deduplication.
-If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets while having control over duplicates and labels, use compose instead.
+For deduplication you might want to use the [deduplication tool](#data-dedup).
+If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets containing labeling decisions while having control over duplicates and labels, use [compose](#data-compose-experimental) instead.
 
 ## License
 

@@ -18,7 +18,8 @@ def _check_suffix(input_files, output_file):
     if len(set(suffixes)) > 1:
         if not (set_suffixes.issubset(set_ris) or set_suffixes.issubset(set_tabular)):
             raise ValueError(
-                "Several file types were given, all input files as well as the output file should be of the same type."
+                "• Several file types were given; All input files, as well as the output file should be of the same "
+                "type. "
             )
 
 
