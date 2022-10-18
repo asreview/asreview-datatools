@@ -148,7 +148,7 @@ def create_composition(
 
     # check for label conflicts
     df_conflicting_dups = as_conflict.df[as_conflict.duplicated(pid)]
-    as_conflicts_only = ASReviewData(df=df_conflicting_dups.reset_index(drop=True))
+    as_conflicts_only = ASReviewData(df=df_conflicting_dups)
     if len(df_conflicting_dups) > 0:
         # create a dataframe with the relevant info for the user
         if pid in as_conflicts_only.df.columns:
