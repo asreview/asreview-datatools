@@ -8,7 +8,7 @@ LAB](https://github.com/asreview/asreview) that can be used to:
 the amount of missing data and duplicates)
 - [**Convert**](#data-convert) file formats via the command line
 - [**Deduplicate**](#data-dedup) data based on properties of the data
-- [**Stack**](#data-stack-experimental) multiple datasets to create a single dataset
+- [**Stack**](#data-vstack-experimental) multiple datasets on top of each other to create a single dataset
 
 ASReview datatools is available for ASReview Lab **v1.1+**.
 If you are using ASReview Lab v0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
@@ -159,32 +159,24 @@ platform](https://github.com/asreview/systematic-review-datasets).
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
-### Data Stack (Experimental)
-Combine as many datasets as you want into a single dataset.
+### Data Vstack (Experimental)
+Vertical stacking: combine as many datasets as you want into a single dataset.
 
-❗ Stack is an experimental feature. We would love to hear your feedback. Please keep in mind that this feature can change in the future.
+❗ Vstack is an experimental feature. We would love to hear your feedback.
+Please keep in mind that this feature can change in the future.
 
-#### Data format
-Your data files need to be in tabular file format or RIS file format. All input files should be in the same format, the output path should also be of the same file format.
+Your datasets should be in any [ASReview-compatible data format](https://asreview.readthedocs.io/en/latest/data_format.html).
+All input files should be in the same format, the output path should also be of the same file format.
 
-- **Tabular file format:**
-Supported tabular file formats are `.csv`, `.tab`, `.tsv` or `.xlsx`.
-
-
-- **RIS file format:**
-RIS file formats have `.ris` or `.txt` as extension and are used by digital libraries.
-Read [how to format](https://asreview.readthedocs.io/en/latest/data_format.html) your RIS files.
-
-#### Run script
-Stack several datasets on top of each other. 
+Stack several datasets on top of each other: 
 ```
-asreview data stack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
+asreview data vstack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
 ```
 Here, 3 datasets are exported into a single dataset `output.csv`.
 The output path can be followed by any number of datasets to be stacked.
 
 #### Note
-Data stack does not do any deduplication.
+Vstack does not do any deduplication.
 If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets while having control over duplicates and labels, use compose instead.
 
 ## License
