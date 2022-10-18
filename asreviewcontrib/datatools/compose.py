@@ -224,6 +224,8 @@ def _output_composition(final_df, output_file):
         warnings.filterwarnings("ignore", category=UserWarning)
         as_composed.to_file(output_file, labels=labels)
 
+    print(f"Finished, exported composed dataset to {output_file}.")
+
 
 def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="keep_one"):
     # check whether all input has the same file extension
