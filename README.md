@@ -210,7 +210,7 @@ By default, `doi` is used as PID. It is possible to use the flag `--pid`  to spe
 #### Resolving conflicting labels
 Each record is marked as relevant, irrelevant, or unlabeled.
 In case of a duplicate record, it may be labeled ambiguously (e.g., one record with two different labels).
-`--hierarchy`/`-hi` is used to specify a hierarchy of labels.
+`--hierarchy` is used to specify a hierarchy of labels.
 Pass the letters `r` (relevant), `i` (irrelevant), and `u` (unlabeled) in any order to set label hierarchy.
 By default, the order is `riu` which means that:
 - Relevant labels are prioritized over irrelevant and unlabeled.
