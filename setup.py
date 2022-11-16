@@ -32,7 +32,7 @@ setup(
     packages=find_namespace_packages(include=['asreviewcontrib.*']),
     python_requires='>=3.7',
     install_requires=[
-        "asreview>=1,<2",
+        "asreview>=1.1,<2",
         "pandas"
     ],
     extras_require={},

@@ -1,14 +1,18 @@
 import argparse
 
-from asreview.data import ASReviewData
 from asreview.entry_points import BaseEntryPoint
-from asreviewcontrib.datatools.describe import describe, _parse_arguments_describe
-from asreviewcontrib.datatools.convert import convert, _parse_arguments_convert
-from asreviewcontrib.datatools.dedup import dedup, _parse_arguments_dedup
-from asreviewcontrib.datatools.stack import stack, _parse_arguments_stack
+from asreviewcontrib.datatools.compose import _parse_arguments_compose
+from asreviewcontrib.datatools.compose import compose
+from asreviewcontrib.datatools.convert import _parse_arguments_convert
+from asreviewcontrib.datatools.convert import convert
+from asreviewcontrib.datatools.dedup import _parse_arguments_dedup
+from asreviewcontrib.datatools.dedup import dedup
+from asreviewcontrib.datatools.describe import _parse_arguments_describe
+from asreviewcontrib.datatools.describe import describe
+from asreviewcontrib.datatools.stack import _parse_arguments_stack
+from asreviewcontrib.datatools.stack import stack
 
-
-DATATOOLS = ["describe", "dedup", "convert", "stack"]
+DATATOOLS = ["describe", "dedup", "convert", "compose", "stack"]
 
 class DataEntryPoint(BaseEntryPoint):
     description = "Home of all data tools for ASReview."
@@ -16,6 +20,7 @@ class DataEntryPoint(BaseEntryPoint):
 
     def __init__(self):
         from asreviewcontrib.datatools.__init__ import __version__
+
         super(DataEntryPoint, self).__init__()
 
         self.version = __version__
@@ -32,11 +37,23 @@ class DataEntryPoint(BaseEntryPoint):
                 args_convert_parser = _parse_arguments_convert()
                 args_convert = vars(args_convert_parser.parse_args(argv[1:]))
                 convert(**args_convert)
-
             if argv[0] == "dedup":
                 args_dedup_parser = _parse_arguments_dedup()
                 args_dedup = vars(args_dedup_parser.parse_args(argv[1:]))
                 dedup(**args_dedup)
+            if argv[0] == "compose":
+                args_compose_parser = _parse_arguments_compose()
+                args_compose = args_compose_parser.parse_args(argv[1:])
+                compose(
+                    args_compose.output_path,
+                    args_compose.relevant,
+                    args_compose.irrelevant,
+                    args_compose.labeled,
+                    args_compose.unlabeled,
+                    pid=args_compose.pid,
+                    order=args_compose.hierarchy,
+                    resolve=args_compose.conflict_resolve,
+                )
 
             if argv[0] == "stack":
                 args_stack_parser = _parse_arguments_stack()
@@ -49,14 +66,13 @@ class DataEntryPoint(BaseEntryPoint):
             parser = argparse.ArgumentParser(
                 prog="asreview data",
                 formatter_class=argparse.RawTextHelpFormatter,
-                description="Tools for data preprocessing for ASReview."
+                description="Tools for data preprocessing for ASReview.",
             )
             parser.add_argument(
                 "subcommand",
                 nargs="?",
                 default=None,
-                help=f"The datatool to launch. Available commands:\n\n"
-                f"{DATATOOLS}"
+                help=f"The datatool to launch. Available commands:\n\n" f"{DATATOOLS}",
             )
             parser.add_argument(
                 "-V",
