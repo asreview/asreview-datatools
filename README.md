@@ -267,6 +267,10 @@ In case any duplicate ambiguously labeled records exist, either within a dataset
 
 If there are conflicting/contradictory labels, the user is warned, records with inconsistent labels are shown, and the script is aborted.
 
+### Tutorials
+
+Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
+
 ## License
 
 This extension is published under the [MIT license](/LICENSE).
