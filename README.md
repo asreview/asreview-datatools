@@ -8,6 +8,7 @@ LAB](https://github.com/asreview/asreview) that can be used to:
 the amount of missing data and duplicates)
 - [**Convert**](#data-convert) file formats via the command line
 - [**Deduplicate**](#data-dedup) data based on properties of the data
+- [**Stack**](#data-vstack-experimental) multiple datasets on top of each other to create a single dataset
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
 
 ASReview datatools is available for ASReview Lab **v1.1+**.
@@ -164,6 +165,27 @@ platform](https://github.com/asreview/systematic-review-datasets).
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
+### Data Vstack (Experimental)
+Vertical stacking: combine as many datasets as you want into a single dataset.
+
+❗ Vstack is an experimental feature. We would love to hear your feedback.
+Please keep in mind that this feature can change in the future.
+
+Your datasets should be in any [ASReview-compatible data format](https://asreview.readthedocs.io/en/latest/data_format.html).
+All input files should be in the same format, the output path should also be of the same file format.
+
+Stack several datasets on top of each other: 
+```
+asreview data vstack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
+```
+Here, 3 datasets are exported into a single dataset `output.csv`.
+The output path can be followed by any number of datasets to be stacked.
+
+#### Note
+Vstack does not do any deduplication.
+For deduplication you might want to use the [deduplication tool](#data-dedup).
+If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets containing labeling decisions while having control over duplicates and labels, use [compose](#data-compose-experimental) instead.
+
 ### Data Compose (Experimental)
 Compose is where datasets with different labels (or no labels) can be assembled into a single dataset.
 
@@ -246,6 +268,7 @@ In case any duplicate ambiguously labeled records exist, either within a dataset
 If there are conflicting/contradictory labels, the user is warned, records with inconsistent labels are shown, and the script is aborted.
 
 ### Tutorials
+
 Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
 
 ## License
