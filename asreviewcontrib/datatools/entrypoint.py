@@ -1,7 +1,6 @@
 import argparse
 
 from asreview.entry_points import BaseEntryPoint
-
 from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert
@@ -10,9 +9,10 @@ from asreviewcontrib.datatools.dedup import _parse_arguments_dedup
 from asreviewcontrib.datatools.dedup import dedup
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
+from asreviewcontrib.datatools.stack import _parse_arguments_stack
+from asreviewcontrib.datatools.stack import stack
 
-DATATOOLS = ["describe", "dedup", "convert", "compose"]
-
+DATATOOLS = ["describe", "dedup", "convert", "compose", "stack"]
 
 class DataEntryPoint(BaseEntryPoint):
     description = "Home of all data tools for ASReview."
@@ -54,6 +54,11 @@ class DataEntryPoint(BaseEntryPoint):
                     order=args_compose.hierarchy,
                     resolve=args_compose.conflict_resolve,
                 )
+
+            if argv[0] == "stack":
+                args_stack_parser = _parse_arguments_stack()
+                args_stack = args_stack_parser.parse_args(argv[1:])
+                stack(args_stack.output_path, args_stack.datasets)
 
         # Print help message if subcommand not given or incorrect
         else:
