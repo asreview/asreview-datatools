@@ -181,7 +181,7 @@ of the model and you can continue screening all unlabeled records found in the
 new search.
 
 ---
-## Prepare a dataset for a simulation study in ASReview
+## 3. Prepare a dataset for a simulation study in ASReview
 
 Assume you want to use the [simulation
 mode](https://asreview.readthedocs.io/en/latest/simulation_overview.html) of
