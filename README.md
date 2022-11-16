@@ -13,7 +13,7 @@ the amount of missing data and duplicates)
 
 ASReview datatools is available for ASReview Lab **v1.1+**.
 If you are using ASReview Lab v0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
----
+
 ## Installation
 ASReview Datatools requires Python 3.7+ and [ASReview LAB](https://github.com/asreview/asreview) version 1.1 or later.
 
@@ -49,7 +49,7 @@ Each tool has its own help description which is available with
 ```bash
 asreview data NAME_OF_TOOL -h
 ```
----
+
 ## Tools
 ### Data Describe
 
@@ -266,8 +266,6 @@ In case any duplicate ambiguously labeled records exist, either within a dataset
 - Irrelevant labels are prioritized over relevant labels.
 
 If there are conflicting/contradictory labels, the user is warned, records with inconsistent labels are shown, and the script is aborted.
-
----
 
 ## License
 
