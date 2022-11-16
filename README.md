@@ -11,13 +11,13 @@ the amount of missing data and duplicates)
 - [**Stack**](#data-vstack-experimental) multiple datasets on top of each other to create a single dataset
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
 
-ASReview datatools is available for ASReview Lab **v1.1+**.
-If you are using ASReview Lab v0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
+ASReview datatools is available for ASReview LAB version 1 or later.
+If you are using ASReview LAB version 0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
 
 ## Installation
 ASReview Datatools requires Python 3.7+ and [ASReview LAB](https://github.com/asreview/asreview) version 1.1 or later.
 
-The easiest way to install the datatools extension is to install from PyPI:
+The easiest way to install the extension is to install from PyPI:
 
 ``` bash
 pip install asreview-datatools
@@ -34,7 +34,7 @@ The extension is successfully installed if it lists `asreview data`.
 
 ## Getting started
 
-ASReview-datatools is a command line tool that extends ASReview LAB. Each
+ASReview Datatools is a command line tool that extends ASReview LAB. Each
 subsection below describes one of the tools. The structure is
 
 ```bash
@@ -166,6 +166,7 @@ asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
 
 ### Data Vstack (Experimental)
+
 Vertical stacking: combine as many datasets as you want into a single dataset.
 
 ❗ Vstack is an experimental feature. We would love to hear your feedback.
@@ -182,16 +183,19 @@ Here, 3 datasets are exported into a single dataset `output.csv`.
 The output path can be followed by any number of datasets to be stacked.
 
 #### Note
+
 Vstack does not do any deduplication.
 For deduplication you might want to use the [deduplication tool](#data-dedup).
 If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets containing labeling decisions while having control over duplicates and labels, use [compose](#data-compose-experimental) instead.
 
 ### Data Compose (Experimental)
+
 Compose is where datasets with different labels (or no labels) can be assembled into a single dataset.
 
 ❗ Compose is an experimental feature. We would love to hear your feedback. Please keep in mind that this feature can change in the future. 
 
 #### Data format
+
 Your data files need to be in tabular or RIS file format.
 The output file and all input files should be in the same format.
 
@@ -208,6 +212,7 @@ ASReview converts the labeling decisions in RIS files to a binary variable: irre
 Records marked as unseen or with missing labeling decisions are converted to `-1` by ASReview.
 
 #### Run script
+
 Assume you have records in `MY_DATASET_1.ris` from which you want to keep all existing labels
 and records in `MY_DATASET_2.ris` which you want to keep unlabeled.
 Both datasets can be composed into a single dataset using:
@@ -223,6 +228,7 @@ Optional arguments are available for:
 - Resolving conflicting labels
 
 #### Input files
+
 Overview of possible input files and corresponding properties, use at least one of the following arguments:
 
 | Arguments            | Action                                     |
@@ -233,10 +239,12 @@ Overview of possible input files and corresponding properties, use at least one 
 | `--unlabeled`, `-u`  | Remove all labels from this dataset in the composed dataset.              |
 
 #### Persistent identifier
+
 Duplicate checking is based on title/abstract and a persistent identifier (PID) like the digital object identifier (DOI).
 By default, `doi` is used as PID. It is possible to use the flag `--pid`  to specify a persistent identifier other than `doi`.
 
 #### Resolving conflicting labels
+
 Each record is marked as relevant, irrelevant, or unlabeled.
 In case of a duplicate record, it may be labeled ambiguously (e.g., one record with two different labels).
 `--hierarchy` is used to specify a hierarchy of labels.
@@ -256,6 +264,7 @@ This is set to `keep_one` by default, options are:
 | `abort`        | Abort                                                                                   |
 
 #### Example
+
 ```bash
 asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris -o uir -c abort
 ```
