@@ -31,7 +31,9 @@ you run the original  search query again but with a new date. You save the
 newly found records in `SEARCH_UPDATE.ris`. 
 
 
-In the command line interface (CLI), navigate to the directory where the dataset(s) are stored:
+In the command line interface (CLI), navigate to the directory where the
+dataset(s) are stored:
+
 ```bash
 cd Parent_directory
 ```
@@ -199,7 +201,9 @@ Suppose the following files are available:
 You need to compose the files into a single file where all records from
 `RELEVANT.csv` are relevant all other records are irrelevant.
 
-In the command line interface (CLI), navigate to the directory where the dataset(s) are stored:
+In the command line interface (CLI), navigate to the directory where the
+dataset(s) are stored:
+
 ```bash
 cd Parent_directory
 ```
