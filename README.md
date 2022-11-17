@@ -16,7 +16,7 @@ If you are using ASReview LAB version 0.x, use [ASReview-statistics](https://pyp
 ## Installation
 ASReview Datatools requires Python 3.7+ and [ASReview LAB](https://github.com/asreview/asreview) version 1.1 or later.
 
-The easiest way to install the extension is to install from PyPI:
+The easiest way to install the extension is to install it from PyPI:
 
 ``` bash
 pip install asreview-datatools
