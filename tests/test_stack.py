@@ -15,6 +15,6 @@ def test_stack(tmpdir):
     as_test = ASReviewData.from_file(output_path)
 
     assert len(as_test.df) == 14
-    assert as_test.df['included'].value_counts()[-1] == 9
-    assert as_test.df['included'].value_counts()[0] == 3
-    assert as_test.df['included'].value_counts()[1] == 2
+    assert as_test.df["included"].value_counts()[-1] == 9
+    assert as_test.df["included"].value_counts()[0] == 3
+    assert as_test.df["included"].value_counts()[1] == 2

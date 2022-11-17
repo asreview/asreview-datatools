@@ -227,7 +227,9 @@ def _output_composition(final_df, output_file):
     print(f"Finished, exported composed dataset to {output_file}.")
 
 
-def compose(output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="keep_one"):
+def compose(
+    output_file, rel, irr, lab, unl, pid="doi", order="riu", resolve="keep_one"
+):
     # check whether all input has the same file extension
     _check_suffix([rel, irr, lab, unl], output_file)
 
