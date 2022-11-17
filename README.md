@@ -4,11 +4,10 @@
 
 ASReview Datatools is an extension to [ASReview
 LAB](https://github.com/asreview/asreview) that can be used to:
-- [**Describe**](#data-describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
-the amount of missing data and duplicates)
-- [**Convert**](#data-convert) file formats via the command line
-- [**Deduplicate**](#data-dedup) data based on properties of the data
-- [**Stack**](#data-vstack-experimental) multiple datasets on top of each other to create a single dataset
+- [**Describe**](#data-describe) basic properties of a dataset
+- [**Convert**](#data-convert) file formats
+- [**Deduplicate**](#data-dedup) data
+- [**Stack**](#data-vstack-experimental) multiple datasets
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
 
 ASReview datatools is available for ASReview LAB version 1 or later.
