@@ -40,7 +40,7 @@ subsection below describes one of the tools. The structure is
 asreview data NAME_OF_TOOL
 ```
 
-where `NAME_OF_TOOL` is the name of one of the tools below (`describe`, `convert`, `compose`, or `dedup`)
+where `NAME_OF_TOOL` is the name of one of the tools below (`describe`, `convert`, `dedup`, `vstack`, or `compose`)
 followed by positional arguments and optional arguments.
 
 Each tool has its own help description which is available with
