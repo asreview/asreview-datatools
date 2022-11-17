@@ -1,15 +1,15 @@
 # Tutorials
 
 --- 
-Below are several tutorials to illustrate how to use `datatools`.  Make
+Below are several examples to illustrate how to use `ASReview-datatools`.  Make
 sure to have installed
 [asreview-datatools](https://github.com/asreview/asreview-datatools) and
 [ASReview LAB](https://asreview.nl/download/) v1.1 or higher.
 
 Overview of the tutorials:
-1. [Update systematic review](#1-update-systematic-review)
-2. [Add prior knowledge](#2-add-prior-knowledge)
-3. [Prepare a dataset for a simulation study in ASReview](#Prepare-a-dataset-for-a-simulation-study-in-ASReview)
+1. [Update systematic review](update-systematic-review)
+2. [Add prior knowledge](add-prior-knowledge)
+3. [Prepare a dataset for a simulation study](#Prepare-a-dataset-for-a-simulation-study)
 
 
 Allowed data formats are described in the [ASReview
@@ -17,7 +17,7 @@ documentation](https://asreview.readthedocs.io/en/latest/data_format.html).
 
 --- 
 
-## 1. Update Systematic Review 
+## Update Systematic Review 
 
 Assume you are working on a systematic review and you want to update the
 review with newly available records. The original data is stored in
@@ -33,7 +33,7 @@ In the command line interface (CLI), navigate to the directory where the dataset
 cd Parent_directory
 ```
 
-## Preparing your data
+### Preparing your data
 
 The original data and the newly found records are in a different datafile
 format.  You can convert files to a different file format using the `convert`
@@ -106,7 +106,7 @@ of the model and you can continue screening all unlabeled records found in the
 new search.
 
 ---
-## 2. Add prior knowledge
+## Add prior knowledge
 
 Assume you have just executed a search query for a systematic review and you
 want to use a pre-defined set of relevant and irrelevant records as training
@@ -181,7 +181,7 @@ of the model and you can continue screening all unlabeled records found in the
 new search.
 
 ---
-## 3. Prepare a dataset for a simulation study in ASReview
+## 3. Prepare a dataset for a simulation study
 
 Assume you want to use the [simulation
 mode](https://asreview.readthedocs.io/en/latest/simulation_overview.html) of
