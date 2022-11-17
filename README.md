@@ -160,9 +160,13 @@ asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
 Using the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
-```
+```bash
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
+```
+Removed 104 records from dataset with 6189 records.
+```
+
 
 ### Data Vstack (Experimental)
 
