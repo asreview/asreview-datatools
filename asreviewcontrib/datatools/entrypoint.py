@@ -1,6 +1,7 @@
 import argparse
 
 from asreview.entry_points import BaseEntryPoint
+
 from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert

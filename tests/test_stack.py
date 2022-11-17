@@ -1,8 +1,8 @@
 from pathlib import Path
 
 from asreview.data import ASReviewData
-from asreviewcontrib.datatools.stack import stack
 
+from asreviewcontrib.datatools.stack import stack
 
 test_dir = Path(__file__).parent
 file_1 = Path(test_dir, "demo_data", "dataset_1.ris")
