@@ -218,8 +218,6 @@ asreview data describe RELEVANT.ris -o RELEVANT_description.json
 ```
 The results will be exported to `SCREENED_description.json` and `RELEVANT_description.json`.
 
-
-
 ### Compose datasets
 
 Run `compose.py` to compose a new dataset from `SCREENED.ris` and `RELEVANT.ris`:
@@ -247,6 +245,8 @@ The result will be exported to `screened_with_labels_description.json`.
 
 ### Run simulation in ASReview lab
 
-The resulting file `screened_with_labels.ris` can be uploaded to [ASReview lab Simulation mode](https://asreview.readthedocs.io/en/latest/simulation_webapp.html). This
+The resulting file `screened_with_labels.ris` can be uploaded to [ASReview lab
+Simulation
+mode](https://asreview.readthedocs.io/en/latest/simulation_webapp.html). This
 allows you to simulate the screening procedure of the systematic review as if
 it were carried out using ASReview lab.
