@@ -27,7 +27,7 @@ review with newly available records. The original data is stored in
 `MY_LABELED_DATASET.csv` and the file contains a
 [column](https://asreview.readthedocs.io/en/latest/data_labeled.html#label-format)
 containing the labeling decissions. In order to update the systematic review,
-you run the original  search query again but with the new date. You save the
+you run the original  search query again but with a new date. You save the
 newly found records in `SEARCH_UPDATE.ris`. 
 
 
@@ -39,9 +39,9 @@ cd Parent_directory
 ### Preparing your data
 
 The original data and the newly found records are in a different datafile
-format.  You can convert files to a different file format using the `convert`
-script.  For example, to convert SEARCH_UPDATE.ris to CSV format, open the
-command line interface (CLI) and navigate to the directory where the
+format (CSV and RIS).  You can convert files to the same file format using the
+`convert` script.  For example, to convert SEARCH_UPDATE.ris to CSV format,
+open the command line interface (CLI) and navigate to the directory where the
 dataset(s) are stored and run
 
 ```bash
