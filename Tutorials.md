@@ -14,6 +14,9 @@ Overview of the tutorials:
 
 Allowed data formats are described in the [ASReview
 documentation](https://asreview.readthedocs.io/en/latest/data_format.html).
+ASReview converts the labeling decisions in RIS files to a binary variable:
+irrelevant as `0` and relevant as `1`. Records marked as unseen or with
+missing labeling decisions are converted to `-1`.
 
 --- 
 
