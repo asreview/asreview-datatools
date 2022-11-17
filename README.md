@@ -194,46 +194,14 @@ asreview data vstack output.ris dataset_1.ris dataset_2.ris
 
 ### Data Compose (Experimental)
 
-Compose is where datasets with different labels (or no labels) can be assembled into a single dataset.
+Compose is where datasets containing records with different labels (or no
+labels) can be assembled into a single dataset.
 
-❗ Compose is an experimental feature. We would love to hear your feedback. Please keep in mind that this feature can change in the future. 
+❗ Compose is an experimental feature. We would love to hear your feedback.
+Please keep in mind that this feature can change in the future. 
 
-#### Data format
-
-Your data files need to be in tabular or RIS file format.
-The output file and all input files should be in the same format.
-
-- **Tabular file format:**
-Supported tabular file formats are `.csv`, `.tab`, `.tsv` or `.xlsx`.
-Ensure the column names adhere to the predetermined set of [accepted column names](https://asreview.readthedocs.io/en/latest/data_format.html).
-
-
-- **RIS file format:**
-A RIS file has `.ris` or `.txt` as an extension.
-Read [how to format](https://asreview.readthedocs.io/en/latest/data_format.html) your RIS files.
-ASReview converts the labeling decisions in RIS files to a binary variable: irrelevant as `0` and relevant as `1`.
-
-Records marked as unseen or with missing labeling decisions are converted to `-1` by ASReview.
-
-#### Run script
-
-Assume you have records in `MY_DATASET_1.ris` from which you want to keep all existing labels
-and records in `MY_DATASET_2.ris` which you want to keep unlabeled.
-Both datasets can be composed into a single dataset using:
-```bash
-asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris
-```
-The resulting dataset is exported to `composed_output.ris`.
-
-The output path (`composed_output.ris` in the example) should always be specified.
-Optional arguments are available for:
-- Input files
-- Persistent identifier (PID) used for deduplication
-- Resolving conflicting labels
-
-#### Input files
-
-Overview of possible input files and corresponding properties, use at least one of the following arguments:
+Overview of possible input files and corresponding properties, use at least
+one of the following arguments:
 
 | Arguments            | Action                                     |
 |----------------------|--------------------------------------------|
@@ -242,24 +210,15 @@ Overview of possible input files and corresponding properties, use at least one 
 | `--labeled`, `-l`    | Use existing labels from this dataset in the composed dataset.           |
 | `--unlabeled`, `-u`  | Remove all labels from this dataset in the composed dataset.              |
 
-#### Persistent identifier
+The output path should always be specified.
 
-Duplicate checking is based on title/abstract and a persistent identifier (PID) like the digital object identifier (DOI).
-By default, `doi` is used as PID. It is possible to use the flag `--pid`  to specify a persistent identifier other than `doi`.
-
-#### Resolving conflicting labels
-
-Each record is marked as relevant, irrelevant, or unlabeled.
-In case of a duplicate record, it may be labeled ambiguously (e.g., one record with two different labels).
-`--hierarchy` is used to specify a hierarchy of labels.
-Pass the letters `r` (relevant), `i` (irrelevant), and `u` (unlabeled) in any order to set label hierarchy.
-By default, the order is `riu` which means that:
-- Relevant labels are prioritized over irrelevant and unlabeled.
-- Irrelevant labels are prioritized over unlabeled ones.
-
-If compose runs into conflicting labels, the user is warned, and the conflicting records are shown.
-To specify what happens in case of conflicts, use the `--conflict_resolve`/`-c` flag.
-This is set to `keep_one` by default, options are:
+Duplicate checking is based on title/abstract and a persistent identifier
+(PID) like the digital object identifier (DOI). By default, `doi` is used as
+PID. It is possible to use the flag `--pid`  to specify a persistent
+identifier other than `doi`. In case duplicate records are detected, the user
+is warned, and the conflicting records are shown. To specify what happens in
+case of conflicts, use the `--conflict_resolve`/`-c` flag. This is set to
+`keep_one` by default, options are:
 
 | Resolve method | Action in case of conflict                                                              |
 |----------------|-----------------------------------------------------------------------------------------|
@@ -267,22 +226,28 @@ This is set to `keep_one` by default, options are:
 | `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) | 
 | `abort`        | Abort                                                                                   |
 
-#### Example
+
+In case of an ambiguously labeled record (e.g., one record with two different
+labels), use `--hierarchy` to specify a hierarchy of labels. Pass the letters
+`r` (relevant), `i` (irrelevant), and `u` (unlabeled) in any order to set
+label hierarchy. By default, the order is `riu`  meaning that relevant labels
+are prioritized over irrelevant and unlabeled, and irrelevant labels are
+prioritized over unlabeled ones.
+
+
+Asume you have records in `MY_DATASET_1.ris` from which you want to keep all
+existing labels and records in `MY_DATASET_2.ris` which you want to keep
+unlabeled. Both datasets can be composed into a single dataset using:
 
 ```bash
 asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris -o uir -c abort
 ```
-Above command will compose a dataset from `MY_DATASET_1.ris` and `MY_DATASET_2.ris`.
-The labels from `MY_DATASET_1.ris` are kept, and all records from `MY_DATASET_2.ris` are marked as unlabeled.
-In case any duplicate ambiguously labeled records exist, either within a dataset or across the datasets:
-- Unlabeled is prioritized over irrelevant and relevant labels.
-- Irrelevant labels are prioritized over relevant labels.
-
-If there are conflicting/contradictory labels, the user is warned, records with inconsistent labels are shown, and the script is aborted.
-
-### Tutorials
-
-Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
+Because of the flag `-c abort` in case of conflicting/contradictory labels,
+the user is warned, records with inconsistent labels are shown, and the script
+is aborted. The flag `-o uir` results in the following hierarch if any
+duplicate ambiguously labeled records exist: unlabeled is prioritized over
+irrelevant and relevant labels, and irrelevant labels are prioritized over
+relevant labels.
 
 ## License
 
