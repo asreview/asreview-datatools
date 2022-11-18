@@ -101,7 +101,7 @@ class DataEntryPoint(BaseEntryPoint):
             if argv[0] == "vstack":
                 args_vstack_parser = _parse_arguments_vstack()
                 args_vstack = args_vstack_parser.parse_args(argv[1:])
-                vstack(args_stack.output_path, args_stack.datasets)
+                vstack(args_vstack.output_path, args_vstack.datasets)
 
         # Print help message if subcommand not given or incorrect
         else:
