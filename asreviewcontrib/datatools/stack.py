@@ -23,21 +23,21 @@ def _check_suffix(input_files, output_file):
             )
 
 
-def stack(output_file, input_files):
+def vstack(output_file, input_files):
     _check_suffix(input_files, output_file)
 
     list_dfs = [load_data(item).df for item in input_files]
-    df_stacked = pd.concat(list_dfs).reset_index(drop=True)
-    as_stacked = ASReviewData(df=df_stacked)
+    df_vstacked = pd.concat(list_dfs).reset_index(drop=True)
+    as_vstacked = ASReviewData(df=df_vstacked)
 
-    as_stacked.to_file(output_file)
+    as_vstacked.to_file(output_file)
 
 
-def _parse_arguments_stack():
-    parser = argparse.ArgumentParser(prog="ASReview dataset stacking")
+def _parse_arguments_vstack():
+    parser = argparse.ArgumentParser(prog="asreview data vstack")
     parser.add_argument("output_path", type=str, help="The output file path.")
     parser.add_argument(
-        "datasets", type=str, nargs="+", help="Any number of datasets to stack."
+        "datasets", type=str, nargs="+", help="Any number of datasets to stack vertically."
     )
 
     return parser

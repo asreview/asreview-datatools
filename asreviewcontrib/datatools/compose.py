@@ -240,7 +240,7 @@ def compose(
 
 
 def _parse_arguments_compose():
-    parser = argparse.ArgumentParser(prog="ASReview merge data")
+    parser = argparse.ArgumentParser(prog="asreview data compose")
     parser.add_argument("output_path", type=str, help="The output file path.")
     parser.add_argument(
         "--relevant", "-r", type=str, help="A dataset with relevant records."
