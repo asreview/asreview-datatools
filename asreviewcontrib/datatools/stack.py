@@ -1,4 +1,5 @@
 import argparse
+import warnings
 from pathlib import Path
 
 import pandas as pd
@@ -30,7 +31,10 @@ def stack(output_file, input_files):
     df_stacked = pd.concat(list_dfs).reset_index(drop=True)
     as_stacked = ASReviewData(df=df_stacked)
 
-    as_stacked.to_file(output_file)
+    # supress warning about certain columns not exported to .ris output
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=UserWarning)
+        as_stacked.to_file(output_file)
 
 
 def _parse_arguments_stack():
