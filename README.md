@@ -75,8 +75,8 @@ asreview data describe benchmark:van_de_schoot_2017 -o output.json
 ```
 ```
 {
-  "asreviewVersion": "1.0",
-  "apiVersion": "1.0",
+  "asreviewVersion": "1.1",
+  "apiVersion": "1.1.1",
   "data": {
     "items": [
       {
