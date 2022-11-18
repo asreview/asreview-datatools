@@ -9,7 +9,7 @@ from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
-from asreviewcontrib.datatools.stack import _parse_arguments_stack
+from asreviewcontrib.datatools.stack import _parse_arguments_vstack
 from asreviewcontrib.datatools.stack import vstack
 
 DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack"]
