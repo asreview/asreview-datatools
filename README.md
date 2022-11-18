@@ -4,12 +4,14 @@
 
 ASReview Datatools is an extension to [ASReview
 LAB](https://github.com/asreview/asreview) that can be used to:
-- [**Describe**](#data-describe) basic properties of a dataset (e.g., number of papers, number of inclusions,
-the amount of missing data and duplicates)
-- [**Convert**](#data-convert) file formats via the command line
-- [**Deduplicate**](#data-dedup) data based on properties of the data
-- [**Stack**](#data-vstack-experimental) multiple datasets on top of each other to create a single dataset
+- [**Describe**](#data-describe) basic properties of a dataset
+- [**Convert**](#data-convert) file formats
+- [**Deduplicate**](#data-dedup) data
+- [**Stack**](#data-vstack-experimental) multiple datasets
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
+
+Several [tutorials](Tutorials.md) are available that show how
+`ASReview-Datatools` can be used in different scenarios.
 
 ASReview datatools is available for ASReview LAB version 1 or later.
 If you are using ASReview LAB version 0.x, use [ASReview-statistics](https://pypi.org/project/asreview-statistics/) instead of ASReview datatools.
@@ -17,7 +19,7 @@ If you are using ASReview LAB version 0.x, use [ASReview-statistics](https://pyp
 ## Installation
 ASReview Datatools requires Python 3.7+ and [ASReview LAB](https://github.com/asreview/asreview) version 1.1 or later.
 
-The easiest way to install the extension is to install from PyPI:
+The easiest way to install the extension is to install it from PyPI:
 
 ``` bash
 pip install asreview-datatools
@@ -41,7 +43,7 @@ subsection below describes one of the tools. The structure is
 asreview data NAME_OF_TOOL
 ```
 
-where `NAME_OF_TOOL` is the name of one of the tools below (`describe`, `convert`, `compose`, or `dedup`)
+where `NAME_OF_TOOL` is the name of one of the tools below (`describe`, `convert`, `dedup`, `vstack`, or `compose`)
 followed by positional arguments and optional arguments.
 
 Each tool has its own help description which is available with
@@ -136,10 +138,9 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ### Data Dedup
 
 Remove duplicate records with a simple and straightforward deduplication
-algorithm (see [source code](https://github.com/asreview/asreview-datatools/blob/master/asreviewcontrib/datatools/dedup.py)).
-The algorithm first removes all duplicates based on a persistent identifier (PID), `doi` by default.
-Then it concatenates the title and abstract, whereafter it removes all
-non-alphanumeric tokens. Then the duplicates are removed.
+algorithm. The algorithm first removes all duplicates based on a persistent
+identifier (PID). Then it concatenates the title and abstract, whereafter it
+removes all non-alphanumeric tokens. Then the duplicates are removed.
 
 ```
 asreview data dedup MY_DATASET.ris
@@ -151,8 +152,9 @@ Export the deduplicated dataset to a file (`output.csv`)
 asreview data dedup MY_DATASET.ris -o output.csv
 ```
 
-By default, the PID is set to 'doi'. The `dedup` function offers the option to use a different PID.
-Consider a dataset with PubMed identifiers (`PMID`), the identifier can be used for deduplication.
+By default, the PID is set to 'doi'. The `dedup` function offers the option to
+use a different PID. Consider a dataset with PubMed identifiers (`PMID`), the
+identifier can be used for deduplication.
 
 ```
 asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
@@ -161,75 +163,45 @@ asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
 Using the `van_de_schoot_2017` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
-```
+```bash
 asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
 ```
+```
+Removed 104 records from dataset with 6189 records.
+```
+
 
 ### Data Vstack (Experimental)
 
-Vertical stacking: combine as many datasets as you want into a single dataset.
+Vertical stacking: combine as many datasets in the same file format as you want into a single dataset.
 
 ❗ Vstack is an experimental feature. We would love to hear your feedback.
 Please keep in mind that this feature can change in the future.
-
-Your datasets should be in any [ASReview-compatible data format](https://asreview.readthedocs.io/en/latest/data_format.html).
-All input files should be in the same format, the output path should also be of the same file format.
 
 Stack several datasets on top of each other: 
 ```
 asreview data vstack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
 ```
-Here, 3 datasets are exported into a single dataset `output.csv`.
+Here, three datasets are exported into a single dataset `output.csv`.
 The output path can be followed by any number of datasets to be stacked.
 
-#### Note
+ This is an example using the [demo datasets](https://github.com/asreview/asreview-datatools/tree/master/tests/demo_data):
 
-Vstack does not do any deduplication.
-For deduplication you might want to use the [deduplication tool](#data-dedup).
-If you wish to create a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets containing labeling decisions while having control over duplicates and labels, use [compose](#data-compose-experimental) instead.
+```bash
+asreview data vstack output.ris dataset_1.ris dataset_2.ris
+```
+
 
 ### Data Compose (Experimental)
 
-Compose is where datasets with different labels (or no labels) can be assembled into a single dataset.
+Compose is where datasets containing records with different labels (or no
+labels) can be assembled into a single dataset.
 
-❗ Compose is an experimental feature. We would love to hear your feedback. Please keep in mind that this feature can change in the future. 
+❗ Compose is an experimental feature. We would love to hear your feedback.
+Please keep in mind that this feature can change in the future. 
 
-#### Data format
-
-Your data files need to be in tabular or RIS file format.
-The output file and all input files should be in the same format.
-
-- **Tabular file format:**
-Supported tabular file formats are `.csv`, `.tab`, `.tsv` or `.xlsx`.
-Ensure the column names adhere to the predetermined set of [accepted column names](https://asreview.readthedocs.io/en/latest/data_format.html).
-
-
-- **RIS file format:**
-A RIS file has `.ris` or `.txt` as an extension.
-Read [how to format](https://asreview.readthedocs.io/en/latest/data_format.html) your RIS files.
-ASReview converts the labeling decisions in RIS files to a binary variable: irrelevant as `0` and relevant as `1`.
-
-Records marked as unseen or with missing labeling decisions are converted to `-1` by ASReview.
-
-#### Run script
-
-Assume you have records in `MY_DATASET_1.ris` from which you want to keep all existing labels
-and records in `MY_DATASET_2.ris` which you want to keep unlabeled.
-Both datasets can be composed into a single dataset using:
-```bash
-asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris
-```
-The resulting dataset is exported to `composed_output.ris`.
-
-The output path (`composed_output.ris` in the example) should always be specified.
-Optional arguments are available for:
-- Input files
-- Persistent identifier (PID) used for deduplication
-- Resolving conflicting labels
-
-#### Input files
-
-Overview of possible input files and corresponding properties, use at least one of the following arguments:
+Overview of possible input files and corresponding properties, use at least
+one of the following arguments:
 
 | Arguments            | Action                                     |
 |----------------------|--------------------------------------------|
@@ -238,24 +210,15 @@ Overview of possible input files and corresponding properties, use at least one 
 | `--labeled`, `-l`    | Use existing labels from this dataset in the composed dataset.           |
 | `--unlabeled`, `-u`  | Remove all labels from this dataset in the composed dataset.              |
 
-#### Persistent identifier
+The output path should always be specified.
 
-Duplicate checking is based on title/abstract and a persistent identifier (PID) like the digital object identifier (DOI).
-By default, `doi` is used as PID. It is possible to use the flag `--pid`  to specify a persistent identifier other than `doi`.
-
-#### Resolving conflicting labels
-
-Each record is marked as relevant, irrelevant, or unlabeled.
-In case of a duplicate record, it may be labeled ambiguously (e.g., one record with two different labels).
-`--hierarchy` is used to specify a hierarchy of labels.
-Pass the letters `r` (relevant), `i` (irrelevant), and `u` (unlabeled) in any order to set label hierarchy.
-By default, the order is `riu` which means that:
-- Relevant labels are prioritized over irrelevant and unlabeled.
-- Irrelevant labels are prioritized over unlabeled ones.
-
-If compose runs into conflicting labels, the user is warned, and the conflicting records are shown.
-To specify what happens in case of conflicts, use the `--conflict_resolve`/`-c` flag.
-This is set to `keep_one` by default, options are:
+Duplicate checking is based on title/abstract and a persistent identifier
+(PID) like the digital object identifier (DOI). By default, `doi` is used as
+PID. It is possible to use the flag `--pid`  to specify a persistent
+identifier other than `doi`. In case duplicate records are detected, the user
+is warned, and the conflicting records are shown. To specify what happens in
+case of conflicts, use the `--conflict_resolve`/`-c` flag. This is set to
+`keep_one` by default, options are:
 
 | Resolve method | Action in case of conflict                                                              |
 |----------------|-----------------------------------------------------------------------------------------|
@@ -263,22 +226,28 @@ This is set to `keep_one` by default, options are:
 | `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) | 
 | `abort`        | Abort                                                                                   |
 
-#### Example
+
+In case of an ambiguously labeled record (e.g., one record with two different
+labels), use `--hierarchy` to specify a hierarchy of labels. Pass the letters
+`r` (relevant), `i` (irrelevant), and `u` (unlabeled) in any order to set
+label hierarchy. By default, the order is `riu`  meaning that relevant labels
+are prioritized over irrelevant and unlabeled, and irrelevant labels are
+prioritized over unlabeled ones.
+
+
+Asume you have records in `MY_DATASET_1.ris` from which you want to keep all
+existing labels and records in `MY_DATASET_2.ris` which you want to keep
+unlabeled. Both datasets can be composed into a single dataset using:
 
 ```bash
 asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris -o uir -c abort
 ```
-Above command will compose a dataset from `MY_DATASET_1.ris` and `MY_DATASET_2.ris`.
-The labels from `MY_DATASET_1.ris` are kept, and all records from `MY_DATASET_2.ris` are marked as unlabeled.
-In case any duplicate ambiguously labeled records exist, either within a dataset or across the datasets:
-- Unlabeled is prioritized over irrelevant and relevant labels.
-- Irrelevant labels are prioritized over relevant labels.
-
-If there are conflicting/contradictory labels, the user is warned, records with inconsistent labels are shown, and the script is aborted.
-
-### Tutorials
-
-Several [tutorials](Tutorials.md) are available that show how compose can be used in different scenarios.
+Because of the flag `-c abort` in case of conflicting/contradictory labels,
+the user is warned, records with inconsistent labels are shown, and the script
+is aborted. The flag `-o uir` results in the following hierarch if any
+duplicate ambiguously labeled records exist: unlabeled is prioritized over
+irrelevant and relevant labels, and irrelevant labels are prioritized over
+relevant labels.
 
 ## License
 
