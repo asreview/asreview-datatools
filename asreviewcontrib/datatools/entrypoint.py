@@ -1,5 +1,6 @@
 import argparse
 
+from asreview.data import load_data
 from asreview.entry_points import BaseEntryPoint
 
 from asreviewcontrib.datatools.compose import _parse_arguments_compose
@@ -77,11 +78,11 @@ class DataEntryPoint(BaseEntryPoint):
                 if args_dedup.output_path:
                     asdata.to_file(args_dedup.output_path)
                     print(
-                        f"Removed {n_dup} records from dataset with {initial_length} records."
+                        f"Removed {n_dup} duplicates from dataset with {initial_length} records."
                     )
                 else:
                     print(
-                        f"Found {n_dup} records in dataset with {initial_length} records."
+                        f"Found {n_dup} duplicates in dataset with {initial_length} records."
                     )
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
