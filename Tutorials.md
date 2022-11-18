@@ -1,44 +1,49 @@
 # Tutorials
 
 --- 
-Below are several tutorials to illustrate how to use `datatools`.  Make
+Below are several examples to illustrate how to use `ASReview-datatools`.  Make
 sure to have installed
 [asreview-datatools](https://github.com/asreview/asreview-datatools) and
 [ASReview LAB](https://asreview.nl/download/) v1.1 or higher.
 
 Overview of the tutorials:
-1. [Update systematic review](#1-update-systematic-review)
-2. [Add prior knowledge](#2-add-prior-knowledge)
-3. [Prepare a dataset for a simulation study in ASReview](#Prepare-a-dataset-for-a-simulation-study-in-ASReview)
+1. [Update systematic review](#update-systematic-review)
+2. [Add prior knowledge](#add-prior-knowledge)
+3. [Prepare a dataset for a simulation study](#prepare-a-dataset-for-a-simulation-study)
 
 
 Allowed data formats are described in the [ASReview
 documentation](https://asreview.readthedocs.io/en/latest/data_format.html).
+ASReview converts the labeling decisions in [RIS files](https://asreview.readthedocs.io/en/latest/data_format.html#ris-file-format) to a binary variable:
+irrelevant as `0` and relevant as `1`. Records marked as unseen or with
+missing labeling decisions are converted to `-1`.
 
 --- 
 
-## 1. Update Systematic Review 
+## Update Systematic Review 
 
 Assume you are working on a systematic review and you want to update the
 review with newly available records. The original data is stored in
 `MY_LABELED_DATASET.csv` and the file contains a
 [column](https://asreview.readthedocs.io/en/latest/data_labeled.html#label-format)
 containing the labeling decissions. In order to update the systematic review,
-you run the original  search query again but with the new date. You save the
+you run the original  search query again but with a new date. You save the
 newly found records in `SEARCH_UPDATE.ris`. 
 
 
-In the command line interface (CLI), navigate to the directory where the dataset(s) are stored:
+In the command line interface (CLI), navigate to the directory where the
+dataset(s) are stored:
+
 ```bash
 cd Parent_directory
 ```
 
-## Preparing your data
+### Preparing your data
 
 The original data and the newly found records are in a different datafile
-format.  You can convert files to a different file format using the `convert`
-script.  For example, to convert SEARCH_UPDATE.ris to CSV format, open the
-command line interface (CLI) and navigate to the directory where the
+format (CSV and RIS).  You can convert files to the same file format using the
+`convert` script.  For example, to convert SEARCH_UPDATE.ris to CSV format,
+open the command line interface (CLI) and navigate to the directory where the
 dataset(s) are stored and run
 
 ```bash
@@ -106,7 +111,7 @@ of the model and you can continue screening all unlabeled records found in the
 new search.
 
 ---
-## 2. Add prior knowledge
+## Add prior knowledge
 
 Assume you have just executed a search query for a systematic review and you
 want to use a pre-defined set of relevant and irrelevant records as training
@@ -181,7 +186,7 @@ of the model and you can continue screening all unlabeled records found in the
 new search.
 
 ---
-## 3. Prepare a dataset for a simulation study in ASReview
+## Prepare a dataset for a simulation study
 
 Assume you want to use the [simulation
 mode](https://asreview.readthedocs.io/en/latest/simulation_overview.html) of
@@ -196,7 +201,9 @@ Suppose the following files are available:
 You need to compose the files into a single file where all records from
 `RELEVANT.csv` are relevant all other records are irrelevant.
 
-In the command line interface (CLI), navigate to the directory where the dataset(s) are stored:
+In the command line interface (CLI), navigate to the directory where the
+dataset(s) are stored:
+
 ```bash
 cd Parent_directory
 ```
@@ -210,8 +217,6 @@ asreview data describe SCREENED.ris -o SCREENED_description.json
 asreview data describe RELEVANT.ris -o RELEVANT_description.json
 ```
 The results will be exported to `SCREENED_description.json` and `RELEVANT_description.json`.
-
-
 
 ### Compose datasets
 
@@ -240,6 +245,8 @@ The result will be exported to `screened_with_labels_description.json`.
 
 ### Run simulation in ASReview lab
 
-The resulting file `screened_with_labels.ris` can be uploaded to [ASReview lab Simulation mode](https://asreview.readthedocs.io/en/latest/simulation_webapp.html). This
+The resulting file `screened_with_labels.ris` can be uploaded to [ASReview lab
+Simulation
+mode](https://asreview.readthedocs.io/en/latest/simulation_webapp.html). This
 allows you to simulate the screening procedure of the systematic review as if
 it were carried out using ASReview lab.
