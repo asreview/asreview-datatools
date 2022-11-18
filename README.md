@@ -240,11 +240,11 @@ existing labels and records in `MY_DATASET_2.ris` which you want to keep
 unlabeled. Both datasets can be composed into a single dataset using:
 
 ```bash
-asreview data compose composed_output.ris -l MY_DATASET_1.ris -u MY_DATASET_2.ris -o uir -c abort
+asreview data compose composed_output.ris -l DATASET_1.ris -u DATASET_2.ris --hierarchy uir -c abort
 ```
 Because of the flag `-c abort` in case of conflicting/contradictory labels,
 the user is warned, records with inconsistent labels are shown, and the script
-is aborted. The flag `-o uir` results in the following hierarch if any
+is aborted. The flag `--hierarchy uir` results in the following hierarch if any
 duplicate ambiguously labeled records exist: unlabeled is prioritized over
 irrelevant and relevant labels, and irrelevant labels are prioritized over
 relevant labels.
