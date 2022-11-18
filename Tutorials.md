@@ -158,8 +158,10 @@ keeping labels is:
 2. irrelevant
 3. unlabeled
 
-You can configure the behavior in resolving conflicting labels, as explained
-[here](README.md#Resolving-conflicting-labels).
+You can configure the behavior in resolving conflicting labels by setting the
+hierarchy differently. To do so, pass the letters r (relevant), i
+(irrelevant), and u (unlabeled) in any order to, for example, `--hierarchy
+uir`. 
 
 
 The composed dataset will be exported to `search_with_priors.ris`.
