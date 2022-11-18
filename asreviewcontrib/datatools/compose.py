@@ -17,7 +17,7 @@ def _check_order_arg(order):
         return order
     else:
         raise ValueError(
-            f"An unsupported order was given with --hierarchy, choose one of the following: {allowed_orders}"
+            f"hierarchy '{order}' not found, should be one of the following: {allowed_orders}"
         )
 
 
@@ -31,7 +31,7 @@ def _check_resolve_arg(resolve):
         return resolve
     else:
         raise ValueError(
-            f"An unsupported method for conflict resolving was given with --conflict_resolve, choose one "
+            f"conflict_resolve '{resolve}' not found, should be one "
             f"of the following: {allowed_resolve}"
         )
 
@@ -72,7 +72,8 @@ def _append_df(list_df, as_obj, label):
 
 
 def _concat_label(list_df, label, pid="doi"):
-    # if there are any dataframes with the given label, concatenate and drop duplicates on pid and title/abstract
+    # if there are any dataframes with the given label, concatenate and drop
+    # duplicates on pid and title/abstract
     if list_df:
         df_all = pd.concat(list_df).reset_index(drop=True)
         df_all["included"] = label
@@ -100,7 +101,8 @@ def create_composition(
     order="riu",
     resolve="keep_one",
 ):
-    # load all input files and URLs into ASReviewData objects, fill with None if input was not specified
+    # load all input files and URLs into ASReviewData objects, fill with None
+    # if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
     as_rel, as_irr, as_lab, as_unl = [
         load_data(item) if item is not None else None for item in input_files
@@ -112,7 +114,8 @@ def create_composition(
     # create lists to append dataframes with a specific label to
     list_df_rel, list_df_irr, list_df_unl = [], [], []
 
-    # split labeled input data in relevant, irrelevant and unlabeled and add to list of dataframes for that label
+    # split labeled input data in relevant, irrelevant and unlabeled and add
+    # to list of dataframes for that label
     if as_lab is not None:
         if as_lab.labels is not None:
             _append_df(list_df_rel, as_lab, 1)
@@ -129,7 +132,8 @@ def create_composition(
     if as_unl is not None:
         list_df_unl.append(as_unl.df)
 
-    # concatenate all dataframes with the same label, drop duplicates and map them in a dictionary
+    # concatenate all dataframes with the same label, drop duplicates and map
+    # them in a dictionary
     dict_dfs = {
         "r": _concat_label(list_df_rel, 1, pid),
         "i": _concat_label(list_df_irr, 0, pid),
@@ -240,7 +244,7 @@ def compose(
 
 
 def _parse_arguments_compose():
-    parser = argparse.ArgumentParser(prog="ASReview merge data")
+    parser = argparse.ArgumentParser(prog="asreview data compose")
     parser.add_argument("output_path", type=str, help="The output file path.")
     parser.add_argument(
         "--relevant", "-r", type=str, help="A dataset with relevant records."

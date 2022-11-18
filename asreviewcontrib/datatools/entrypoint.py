@@ -10,9 +10,9 @@ from asreviewcontrib.datatools.convert import convert
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
 from asreviewcontrib.datatools.stack import _parse_arguments_stack
-from asreviewcontrib.datatools.stack import stack
+from asreviewcontrib.datatools.stack import vstack
 
-DATATOOLS = ["describe", "dedup", "convert", "compose", "stack"]
+DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack"]
 
 
 class DataEntryPoint(BaseEntryPoint):
@@ -98,10 +98,10 @@ class DataEntryPoint(BaseEntryPoint):
                     resolve=args_compose.conflict_resolve,
                 )
 
-            if argv[0] == "stack":
-                args_stack_parser = _parse_arguments_stack()
-                args_stack = args_stack_parser.parse_args(argv[1:])
-                stack(args_stack.output_path, args_stack.datasets)
+            if argv[0] == "vstack":
+                args_vstack_parser = _parse_arguments_vstack()
+                args_vstack = args_vstack_parser.parse_args(argv[1:])
+                vstack(args_stack.output_path, args_stack.datasets)
 
         # Print help message if subcommand not given or incorrect
         else:
