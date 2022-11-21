@@ -138,7 +138,7 @@ asreview data convert MY_DATASET.ris MY_OUTPUT.csv
 ### Data Dedup
 
 Remove duplicate records with a simple and straightforward deduplication
-algorithm. The algorithm first removes all duplicates based on a persistent
+[algorithm](https://github.com/asreview/asreview/blob/master/asreview/data/base.py#L461-L505). The algorithm first removes all duplicates based on a persistent
 identifier (PID). Then it concatenates the title and abstract, whereafter it
 removes all non-alphanumeric tokens. Then the duplicates are removed.
 
