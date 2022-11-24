@@ -223,10 +223,7 @@ def _output_composition(final_df, output_file):
     labels = [[index, row["included"]] for index, row in final_df.iterrows()]
     as_composed = ASReviewData(df=final_df)
 
-    # supress warning about certain columns not exported to .ris output
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=UserWarning)
-        as_composed.to_file(output_file, labels=labels)
+    as_composed.to_file(output_file, labels=labels)
 
     print(f"Finished, exported composed dataset to {output_file}.")
 
