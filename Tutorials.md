@@ -181,7 +181,7 @@ output folder.
 
 The [partly
 labelled](https://asreview.readthedocs.io/en/latest/data_labeled.html#partially-labeled-data)
-data, `rch_with_priors.ris`, can be uploaded to [ASReview lab - Oracle
+data, `search_with_priors.ris`, can be uploaded to [ASReview lab - Oracle
 mode](https://asreview.readthedocs.io/en/latest/project_create.html). The
 lables will be reckognized by ASReview and used to train the first iteration
 of the model and you can continue screening all unlabeled records found in the
