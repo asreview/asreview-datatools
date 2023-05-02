@@ -120,7 +120,7 @@ you already know to be relevant/irrelevant are saved in
 `PRIOR_RELEVANT.ris` and `PRIOR_IRRELEVANT.ris` respectively.
 
 
-In the command line interface (CLI), naviate to the directory where the dataset(s) are stored:
+In the command line interface (CLI), navigate to the directory where the dataset(s) are stored:
 ```bash
 cd Parent_directory
 ```
