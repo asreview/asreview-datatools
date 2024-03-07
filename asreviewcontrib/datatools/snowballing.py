@@ -193,11 +193,13 @@ def snowballing(
                 " identifiers or a column 'doi' containing DOIs."
             )
         id_mapping = openalex_from_doi(data.doi.to_list())
-        n_openalex_ids = len([
-            openalex_id
-            for openalex_id in id_mapping.values()
-            if openalex_id is not None
-        ])
+        n_openalex_ids = len(
+            [
+                openalex_id
+                for openalex_id in id_mapping.values()
+                if openalex_id is not None
+            ]
+        )
         print(
             f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(id_mapping)}"
             " records. Performing snowballing for those records."
@@ -238,19 +240,24 @@ def _parse_arguments_snowballing():
     parser.add_argument(
         "output_path", type=str, help="The file path of the output dataset."
     )
-    parser.add_argument("--forward", type=bool, help="Do forward snowballing.")
-    parser.add_argument("--backward", type=bool, help="Do backward snowballing.")
     parser.add_argument(
-        "--use_all",
-        type=bool,
-        default=False,
-        required=False,
+        "--forward", "-f", action="store_true", help="Do forward snowballing."
+    )
+    parser.add_argument(
+        "--backward", "-b", action="store_true", help="Do backward snowballing."
+    )
+    parser.add_argument(
+        "--all",
+        "-a",
+        action="store_true",
+        dest="use_all",
         help=(
             "Do snowballing on all records in the dataset, not just the included ones."
         ),
     )
     parser.add_argument(
         "--email",
+        "-e",
         type=str,
         required=False,
         help=(
