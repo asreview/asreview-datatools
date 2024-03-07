@@ -149,6 +149,33 @@ def snowballing(
     use_all: bool = False,
     email: str = None,
 ) -> None:
+    """Perform snowballing on an ASReview dataset.
+
+    Parameters
+    ----------
+    input_path : Path
+        Location of the input ASReview dataset.
+    output_path : Path
+        Location where to save the output dataset.
+    forward : bool
+        Perform forward snowballing. At least one of `forward` or `backward` should be
+        True.
+    backward : bool
+        Perform backward snowballing. At least one of `forward` or `backward` should be
+        True.
+    use_all : bool, optional
+        Perform snowballing on all records in the dataset or only the included
+        records, by default False
+    email : str, optional
+        Email address to send along with request to OpenAlex, by default None
+
+    Raises
+    ------
+    ValueError
+        If `forward` and `backward` are both False.
+    ValueError
+        If the dataset contains no column name `openalex_id` and no column names `doi`.
+    """
     if not (forward or backward):
         raise ValueError("At least one of 'forward' or 'backward' should be True.")
 
