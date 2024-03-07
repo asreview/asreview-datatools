@@ -149,19 +149,23 @@ def snowballing(
     use_all: bool = False,
     email: str = None,
 ) -> None:
-    data = load_data(input_path)
-
     if not (forward or backward):
         raise ValueError("At least one of 'forward' or 'backward' should be True.")
 
+    data = load_data(input_path)
+    if use_all:
+        data = data.df
+    else:
+        data = data.df.loc[data.included]
+
     # Add OpenAlex identifiers if not available.
-    if "openalex_id" not in data.df.columns:
-        if "doi" not in data.df.columns:
+    if "openalex_id" not in data.columns:
+        if "doi" not in data.columns:
             raise ValueError(
                 "Dataset should contain a column 'openalex_id' containing OpenAlex"
                 " identifiers or a column 'doi' containing DOIs."
             )
-        id_mapping = openalex_from_doi(data.df.doi.to_list())
+        id_mapping = openalex_from_doi(data.doi.to_list())
         n_openalex_ids = len(
             openalex_id
             for openalex_id in id_mapping.values()
@@ -171,14 +175,9 @@ def snowballing(
             f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(id_mapping)}"
             " records. Performing snowballing for those records."
         )
-        data["openalex_id"] = [id_mapping[doi] for doi in data.df.doi]
+        data["openalex_id"] = [id_mapping[doi] for doi in data.doi]
 
-    if not use_all:
-        identifiers = data.df.loc[
-            data.included & data.df.openalex_id.notna(), "openalex_id"
-        ].to_list()
-    else:
-        identifiers = data.df["openalex_id"].dropna().to_list()
+    identifiers = data.df["openalex_id"].dropna().to_list()
 
     if email is not None:
         pyalex.config.email = email
