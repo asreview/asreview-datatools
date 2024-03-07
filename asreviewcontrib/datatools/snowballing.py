@@ -154,11 +154,24 @@ def snowballing(
     if not (forward or backward):
         raise ValueError("At least one of 'forward' or 'backward' should be True.")
 
+    # Add OpenAlex identifiers if not available.
     if "openalex_id" not in data.df.columns:
-        raise ValueError(
-            "Dataset should contain a column 'openalex_id' containing OpenAlex"
-            " identifiers."
+        if "doi" not in data.df.columns:
+            raise ValueError(
+                "Dataset should contain a column 'openalex_id' containing OpenAlex"
+                " identifiers or a column 'doi' containing DOIs."
+            )
+        id_mapping = openalex_from_doi(data.df.doi.to_list())
+        n_openalex_ids = len(
+            openalex_id
+            for openalex_id in id_mapping.values()
+            if openalex_id is not None
         )
+        print(
+            f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(id_mapping)}"
+            " records. Performing snowballing for those records."
+        )
+        data["openalex_id"] = [id_mapping[doi] for doi in data.df.doi]
 
     if not use_all:
         identifiers = data.df.loc[
