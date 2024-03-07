@@ -183,7 +183,7 @@ def snowballing(
     if use_all:
         data = data.df
     else:
-        data = data.df.loc[data.included]
+        data = data.df.loc[data.included.astype(bool)]
 
     # Add OpenAlex identifiers if not available.
     if "openalex_id" not in data.columns:
