@@ -192,7 +192,7 @@ def snowballing(
                 "Dataset should contain a column 'openalex_id' containing OpenAlex"
                 " identifiers or a column 'doi' containing DOIs."
             )
-        id_mapping = openalex_from_doi(data.doi.to_list())
+        id_mapping = openalex_from_doi(data.doi.dropna().to_list())
         n_openalex_ids = len(
             [
                 openalex_id
@@ -201,10 +201,13 @@ def snowballing(
             ]
         )
         print(
-            f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(id_mapping)}"
+            f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(data)}"
             " records. Performing snowballing for those records."
         )
-        data["openalex_id"] = [id_mapping[doi] for doi in data.doi]
+        data["openalex_id"] = None
+        data.loc[data.doi.notna(), "openalex_id"] = data.loc[
+            data.doi.notna(), "doi"
+        ].apply(lambda doi: id_mapping[doi])
 
     identifiers = data["openalex_id"].dropna().to_list()
 
