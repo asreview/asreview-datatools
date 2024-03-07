@@ -1,7 +1,22 @@
 from asreviewcontrib.datatools.snowballing import (
     backward_snowballing,
     forward_snowballing,
+    openalex_from_doi,
 )
+
+
+def test_openalex_from_doi():
+    dois = [
+        "https://doi.org/10.1042/cs20220150",
+        "https://doi.org/10.1042/bst20220734",
+        "not_a_doi",
+    ]
+
+    assert openalex_from_doi(dois) == {
+        "https://doi.org/10.1042/cs20220150": "https://openalex.org/W4386305682",
+        "https://doi.org/10.1042/bst20220734": "https://openalex.org/W4312006214",
+        "not_a_doi": None,
+    }
 
 
 def test_backward_snowballing():

@@ -4,7 +4,6 @@ from pathlib import Path
 import pandas as pd
 import pyalex
 from asreview import ASReviewData, load_data
-from pyalex import Works
 
 # Maximum number of statements joined by a logical OR in a call to OpenAlex.
 OPENALEX_MAX_OR_LENGTH = 100
@@ -39,7 +38,9 @@ def forward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     citing_works = {}
     for idx, openalex_id in enumerate(identifiers):
         print(f"{idx}. Getting cited works for {openalex_id}")
-        works_citing_id = Works().filter(cites=openalex_id).select(USED_FIELDS).get()
+        works_citing_id = (
+            pyalex.Works().filter(cites=openalex_id).select(USED_FIELDS).get()
+        )
         citing_works[openalex_id] = [
             {
                 key: work[key]
@@ -74,15 +75,13 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     page_length = min(OPENALEX_MAX_OR_LENGTH, OPENALEX_MAX_PAGE_LENGTH)
     for i in range(0, len(identifiers), page_length):
         fltr = "|".join(identifiers[i : i + page_length])
-        pager = (
-            Works()
+        for work in (
+            pyalex.Works()
             .filter(openalex=fltr)
             .select("id,referenced_works")
             .paginate(per_page=page_length)
-        )
-        for page in pager:
-            for work in page:
-                referenced_works[work["id"]] = work["referenced_works"]
+        ):
+            referenced_works[work["id"]] = work["referenced_works"]
 
     # Get the fields for the referenced works.
     all_identifiers = []
@@ -92,21 +91,19 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     all_referenced_works = {}
     for i in range(0, len(all_identifiers), page_length):
         fltr = "|".join(all_identifiers[i : i + page_length])
-        pager = (
-            Works()
+        for work in (
+            pyalex.Works()
             .filter(openalex=fltr)
             .select(USED_FIELDS)
-            .paginate(per_page=page_length)
-        )
-        for page in pager:
-            for work in page:
-                all_referenced_works[work["id"]] = {
-                    key: work[key]
-                    for key in [
-                        col if col != "abstract_inverted_index" else "abstract"
-                        for col in USED_FIELDS
-                    ]
-                }
+            .get(per_page=page_length)
+        ):
+            all_referenced_works[work["id"]] = {
+                key: work[key]
+                for key in [
+                    col if col != "abstract_inverted_index" else "abstract"
+                    for col in USED_FIELDS
+                ]
+            }
 
     # Connect the referenced works back to the input works.
     for identifier, ref_id_list in referenced_works.items():
@@ -114,6 +111,34 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
             all_referenced_works[ref_id] for ref_id in ref_id_list
         ]
     return referenced_works
+
+
+def openalex_from_doi(dois: list[str]) -> dict[str, str]:
+    """Get the OpenAlex identifiers corresponding to a list of DOIs.
+
+    Parameters
+    ----------
+    dois : list[str]
+        List of DOIs.
+
+    Returns
+    -------
+    dict[str, str]
+        Dictionary {doi: openalex_id}. If there was no OpenAlex identifier found for a
+        DOI, the corresponding value will be None.
+    """
+    page_length = min(OPENALEX_MAX_OR_LENGTH, OPENALEX_MAX_PAGE_LENGTH)
+    id_mapping = {doi: None for doi in dois}
+    for i in range(0, len(dois), page_length):
+        fltr = "|".join(dois[i : i + page_length])
+        for work in (
+            pyalex.Works()
+            .filter(doi=fltr)
+            .select(["id", "doi"])
+            .get(per_page=page_length)
+        ):
+            id_mapping[work["doi"]] = work["id"]
+    return id_mapping
 
 
 def snowballing(
