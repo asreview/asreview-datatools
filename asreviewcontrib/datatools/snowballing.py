@@ -79,7 +79,7 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
             pyalex.Works()
             .filter(openalex=fltr)
             .select("id,referenced_works")
-            .paginate(per_page=page_length)
+            .get(per_page=page_length)
         ):
             referenced_works[work["id"]] = work["referenced_works"]
 
@@ -193,18 +193,18 @@ def snowballing(
                 " identifiers or a column 'doi' containing DOIs."
             )
         id_mapping = openalex_from_doi(data.doi.to_list())
-        n_openalex_ids = len(
+        n_openalex_ids = len([
             openalex_id
             for openalex_id in id_mapping.values()
             if openalex_id is not None
-        )
+        ])
         print(
             f"Found OpenAlex identifiers for {n_openalex_ids} out of {len(id_mapping)}"
             " records. Performing snowballing for those records."
         )
         data["openalex_id"] = [id_mapping[doi] for doi in data.doi]
 
-    identifiers = data.df["openalex_id"].dropna().to_list()
+    identifiers = data["openalex_id"].dropna().to_list()
 
     if email is not None:
         pyalex.config.email = email
