@@ -8,7 +8,8 @@ LAB](https://github.com/asreview/asreview) that can be used to:
 - [**Convert**](#data-convert) file formats
 - [**Deduplicate**](#data-dedup) data
 - [**Stack**](#data-vstack-experimental) multiple datasets
-- [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets.
+- [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets
+- [**Snowball**](#snowball) a dataset to find incoming or outgoing citations.
 
 Several [tutorials](Tutorials.md) are available that show how
 `ASReview-Datatools` can be used in different scenarios.
@@ -248,6 +249,38 @@ is aborted. The flag `--hierarchy uir` results in the following hierarch if any
 duplicate ambiguously labeled records exist: unlabeled is prioritized over
 irrelevant and relevant labels, and irrelevant labels are prioritized over
 relevant labels.
+
+## Snowball
+
+ASReview Datatools supports snowballing via the `asreview data snowball` subcommand.
+It can perform both backwards (outgoing citations) and forwards (incoming citations)
+snowballing. The tool works by searching the [OpenAlex](https://openalex.org/) database
+for citation data. An example usage would be:
+
+```bash
+asreview data snowball input_dataset.csv output_dataset.csv --forward
+```
+
+This performs forwards snowballing on `input_dataset.csv` and writes the results to
+`output_dataset.csv`. For this to work it is necessary that the input dataset contains
+a column with DOI's or a column called `openalex_id` containing OpenAlex work
+identifiers. The output dataset will contain the columns `id`, `doi`, `title`, `abstract`, `referenced_works` and `publication_date`. In the case of forward snowballing it will
+contain all works in OpenAlex that have a reference to one of the included works in the
+input dataset. In the case of backward snowballing it will contain all works in OpenAlex
+with referenced by one of the included works of the input dataset.
+
+If you want to find references for all records in your dataset, instead of just the included works, you can include the flag `--all`, so for example:
+
+```bash
+asreview data snowball input_dataset.csv output_dataset.csv --backward --all
+```
+
+One thing to note is that OpenAlex will handle data requests faster if the sender sends along their email with the request (see [OpenAlex Polite Pool](https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication#the-polite-pool
+)), you can to this using the `--email` argument. An example would be:
+
+```bash
+asreview data snowball input_dataset.csv output_dataset.csv --backward --email my_email@provider.com
+```
 
 ## License
 
