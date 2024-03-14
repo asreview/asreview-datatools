@@ -2,10 +2,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from asreviewcontrib.datatools.snowballing import backward_snowballing
-from asreviewcontrib.datatools.snowballing import forward_snowballing
-from asreviewcontrib.datatools.snowballing import openalex_from_doi
-from asreviewcontrib.datatools.snowballing import snowballing
+from asreviewcontrib.datatools.snowball import backward_snowballing
+from asreviewcontrib.datatools.snowball import forward_snowballing
+from asreviewcontrib.datatools.snowball import openalex_from_doi
+from asreviewcontrib.datatools.snowball import snowball
 
 INPUT_DIR = Path(__file__).parent / "demo_data"
 
@@ -58,7 +58,7 @@ def test_forward_snowballing():
 
 def test_openalex_id_forward(tmpdir):
     out_fp = Path(tmpdir, "forward_all.csv")
-    snowballing(
+    snowball(
         input_path=INPUT_DIR / "snowballing_openalex.csv",
         output_path=out_fp,
         forward=True,
@@ -69,7 +69,7 @@ def test_openalex_id_forward(tmpdir):
     assert len(df) >= 23
 
     all_out_fp = Path(tmpdir, "forward_all.csv")
-    snowballing(
+    snowball(
         input_path=INPUT_DIR / "snowballing_openalex.csv",
         output_path=all_out_fp,
         forward=True,
@@ -82,7 +82,7 @@ def test_openalex_id_forward(tmpdir):
 
 def test_openalex_id_backward(tmpdir):
     out_fp = Path(tmpdir, "forward_all.csv")
-    snowballing(
+    snowball(
         input_path=INPUT_DIR / "snowballing_openalex.csv",
         output_path=out_fp,
         forward=False,
@@ -93,7 +93,7 @@ def test_openalex_id_backward(tmpdir):
     assert len(df) == 31
 
     all_out_fp = Path(tmpdir, "backward_all.csv")
-    snowballing(
+    snowball(
         input_path=INPUT_DIR / "snowballing_openalex.csv",
         output_path=all_out_fp,
         forward=False,
@@ -106,7 +106,7 @@ def test_openalex_id_backward(tmpdir):
 
 def test_snowballing_from_doi(tmpdir):
     out_fp = Path(tmpdir, "doi_all.csv")
-    snowballing(
+    snowball(
         input_path=INPUT_DIR / "snowballing_doi.csv",
         output_path=out_fp,
         forward=False,

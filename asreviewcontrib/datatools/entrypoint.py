@@ -9,8 +9,8 @@ from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
-from asreviewcontrib.datatools.snowballing import _parse_arguments_snowballing
-from asreviewcontrib.datatools.snowballing import snowballing
+from asreviewcontrib.datatools.snowball import _parse_arguments_snowball
+from asreviewcontrib.datatools.snowball import snowball
 from asreviewcontrib.datatools.stack import _parse_arguments_vstack
 from asreviewcontrib.datatools.stack import vstack
 
@@ -98,9 +98,9 @@ class DataEntryPoint(BaseEntryPoint):
                     resolve=args_compose.conflict_resolve,
                 )
             if argv[0] == "snowballing":
-                args_snowballing_parser = _parse_arguments_snowballing()
+                args_snowballing_parser = _parse_arguments_snowball()
                 args_snowballing = vars(args_snowballing_parser.parse_args(argv[1:]))
-                snowballing(**args_snowballing)
+                snowball(**args_snowballing)
             if argv[0] == "vstack":
                 args_vstack_parser = _parse_arguments_vstack()
                 args_vstack = args_vstack_parser.parse_args(argv[1:])

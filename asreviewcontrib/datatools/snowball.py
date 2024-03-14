@@ -168,7 +168,7 @@ def openalex_from_doi(dois: list[str]) -> dict[str, str]:
     return id_mapping
 
 
-def snowballing(
+def snowball(
     input_path: Path,
     output_path: Path,
     forward: bool,
@@ -266,7 +266,7 @@ def snowballing(
     print("Saved dataset")
 
 
-def _parse_arguments_snowballing():
+def _parse_arguments_snowball():
     parser = argparse.ArgumentParser(prog="asreview data snowballing")
     parser.add_argument(
         "input_path", type=str, help="The file path of the input dataset."
