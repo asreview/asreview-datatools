@@ -73,8 +73,15 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     # Get the referenced works.
     referenced_works = {}
     page_length = min(OPENALEX_MAX_OR_LENGTH, OPENALEX_MAX_PAGE_LENGTH)
+    OPENALEX_PREFIX = "https://openalex.org/"
+
     for i in range(0, len(identifiers), page_length):
-        fltr = "|".join(identifiers[i : i + page_length])
+        print(f"Getting works citing records {i}-{i+page_length}")
+        # We need to remove the prefix here because otherwise the URL is too long.
+        fltr = "|".join(
+            identifier.removeprefix(OPENALEX_PREFIX)
+            for identifier in identifiers[i : i + page_length]
+        )
         for work in (
             pyalex.Works()
             .filter(openalex=fltr)
@@ -87,10 +94,16 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     all_identifiers = []
     for reference_list in referenced_works.values():
         all_identifiers += reference_list
+    all_identifiers = list(set(all_identifiers))
+    print(f"Found {len(all_identifiers)} records")
 
     all_referenced_works = {}
     for i in range(0, len(all_identifiers), page_length):
-        fltr = "|".join(all_identifiers[i : i + page_length])
+        # We need to remove the prefix here because otherwise the URL is too long.
+        fltr = "|".join(
+            identifier.removeprefix(OPENALEX_PREFIX)
+            for identifier in all_identifiers[i : i + page_length]
+        )
         for work in (
             pyalex.Works()
             .filter(openalex=fltr)
@@ -106,11 +119,19 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
             }
 
     # Connect the referenced works back to the input works.
+    output = {}
     for identifier, ref_id_list in referenced_works.items():
-        referenced_works[identifier] = [
-            all_referenced_works[ref_id] for ref_id in ref_id_list
+        # We need the last check if 'ref_id' is in 'all_referenced_works': If a work
+        # references an ID that redirects to another ID, it won't be present here.
+        # Example: https://openalex.org/W2015370450 has in the references the identifier
+        # https://openalex.org/W2008744335, but this redirects to
+        # https://openalex.org/W4233569835
+        output[identifier] = [
+            all_referenced_works[ref_id]
+            for ref_id in ref_id_list
+            if ref_id in all_referenced_works
         ]
-    return referenced_works
+    return output
 
 
 def openalex_from_doi(dois: list[str]) -> dict[str, str]:
@@ -215,10 +236,12 @@ def snowballing(
         pyalex.config.email = email
 
     if forward:
+        print("Starting forward snowballing")
         forward_data = forward_snowballing(identifiers)
     else:
         forward_data = {}
     if backward:
+        print("Starting backward snowballing")
         backward_data = backward_snowballing(identifiers)
     else:
         backward_data = {}
@@ -228,11 +251,13 @@ def snowballing(
         all_works += works_list
     for works_list in backward_data.values():
         all_works += works_list
+
     output_data = pd.DataFrame(all_works)
     output_data.drop_duplicates(subset=["id"], inplace=True)
     output_data.rename({"id": "openalex_id"}, axis=1, inplace=True)
     output_data = ASReviewData(output_data)
     output_data.to_file(output_path)
+    print("Saved dataset")
 
 
 def _parse_arguments_snowballing():

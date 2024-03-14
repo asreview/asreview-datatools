@@ -29,7 +29,6 @@ class DataEntryPoint(BaseEntryPoint):
         self.version = __version__
 
     def execute(self, argv):
-        print(argv)
         if len(argv) > 1 and argv[0] in DATATOOLS:
             if argv[0] == "describe":
                 args_describe_parser = _parse_arguments_describe()
