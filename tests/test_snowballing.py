@@ -2,12 +2,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from asreviewcontrib.datatools.snowballing import (
-    backward_snowballing,
-    forward_snowballing,
-    openalex_from_doi,
-    snowballing,
-)
+from asreviewcontrib.datatools.snowballing import backward_snowballing
+from asreviewcontrib.datatools.snowballing import forward_snowballing
+from asreviewcontrib.datatools.snowballing import openalex_from_doi
+from asreviewcontrib.datatools.snowballing import snowballing
 
 INPUT_DIR = Path(__file__).parent / "demo_data"
 

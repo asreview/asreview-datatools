@@ -3,7 +3,8 @@ from pathlib import Path
 
 import pandas as pd
 import pyalex
-from asreview import ASReviewData, load_data
+from asreview import ASReviewData
+from asreview import load_data
 
 # Maximum number of statements joined by a logical OR in a call to OpenAlex.
 OPENALEX_MAX_OR_LENGTH = 100
