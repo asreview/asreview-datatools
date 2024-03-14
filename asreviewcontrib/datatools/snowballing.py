@@ -37,20 +37,25 @@ def forward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     """
     citing_works = {}
     for idx, openalex_id in enumerate(identifiers):
-        print(f"{idx}. Getting cited works for {openalex_id}")
-        works_citing_id = (
-            pyalex.Works().filter(cites=openalex_id).select(USED_FIELDS).get()
+        print(f"{idx}. Getting works citing {openalex_id}")
+        pager = (
+            pyalex.Works()
+            .filter(cites=openalex_id)
+            .select(USED_FIELDS)
+            .paginate(per_page=OPENALEX_MAX_PAGE_LENGTH, n_max=None)
         )
-        citing_works[openalex_id] = [
-            {
-                key: work[key]
-                for key in [
-                    col if col != "abstract_inverted_index" else "abstract"
-                    for col in USED_FIELDS
-                ]
-            }
-            for work in works_citing_id
-        ]
+        citing_works[openalex_id] = []
+        for page in pager:
+            citing_works[openalex_id] += [
+                {
+                    key: work[key]
+                    for key in [
+                        col if col != "abstract_inverted_index" else "abstract"
+                        for col in USED_FIELDS
+                    ]
+                }
+                for work in page
+            ]
     return citing_works
 
 

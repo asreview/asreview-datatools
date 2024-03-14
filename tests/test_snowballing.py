@@ -1,8 +1,15 @@
+from pathlib import Path
+
+import pandas as pd
+
 from asreviewcontrib.datatools.snowballing import (
     backward_snowballing,
     forward_snowballing,
     openalex_from_doi,
+    snowballing,
 )
+
+INPUT_DIR = Path(__file__).parent / "demo_data"
 
 
 def test_openalex_from_doi():
@@ -49,3 +56,64 @@ def test_forward_snowballing():
     assert "https://openalex.org/W2124637492" in [
         field_dict["id"] for field_dict in forwards_citations[identifiers[1]]
     ]
+
+
+def test_openalex_id_forward(tmpdir):
+    out_fp = Path(tmpdir, "forward_all.csv")
+    snowballing(
+        input_path=INPUT_DIR / "snowballing_openalex.csv",
+        output_path=out_fp,
+        forward=True,
+        backward=False,
+        use_all=False,
+    )
+    df = pd.read_csv(out_fp)
+    assert len(df) >= 23
+
+    all_out_fp = Path(tmpdir, "forward_all.csv")
+    snowballing(
+        input_path=INPUT_DIR / "snowballing_openalex.csv",
+        output_path=all_out_fp,
+        forward=True,
+        backward=False,
+        use_all=True,
+    )
+    df_all = pd.read_csv(all_out_fp)
+    assert len(df_all) >= 387
+
+
+def test_openalex_id_backward(tmpdir):
+    out_fp = Path(tmpdir, "forward_all.csv")
+    snowballing(
+        input_path=INPUT_DIR / "snowballing_openalex.csv",
+        output_path=out_fp,
+        forward=False,
+        backward=True,
+        use_all=False,
+    )
+    df = pd.read_csv(out_fp)
+    assert len(df) == 31
+
+    all_out_fp = Path(tmpdir, "backward_all.csv")
+    snowballing(
+        input_path=INPUT_DIR / "snowballing_openalex.csv",
+        output_path=all_out_fp,
+        forward=False,
+        backward=True,
+        use_all=True,
+    )
+    df_all = pd.read_csv(all_out_fp)
+    assert len(df_all) == 117
+
+
+def test_snowballing_from_doi(tmpdir):
+    out_fp = Path(tmpdir, "doi_all.csv")
+    snowballing(
+        input_path=INPUT_DIR / "snowballing_doi.csv",
+        output_path=out_fp,
+        forward=False,
+        backward=True,
+        use_all=True,
+    )
+    df = pd.read_csv(out_fp)
+    assert len(df) == 117
