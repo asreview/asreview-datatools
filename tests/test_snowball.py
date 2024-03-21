@@ -18,8 +18,8 @@ def test_openalex_from_doi():
     ]
 
     assert openalex_from_doi(dois) == {
-        "https://doi.org/10.1042/cs20220150": "https://openalex.org/W4386305682",
-        "https://doi.org/10.1042/bst20220734": "https://openalex.org/W4312006214",
+        "10.1042/cs20220150": "https://openalex.org/W4386305682",
+        "10.1042/bst20220734": "https://openalex.org/W4312006214",
         "not_a_doi": None,
     }
 

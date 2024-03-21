@@ -9,6 +9,9 @@ from asreview import load_data
 # Maximum number of statements joined by a logical OR in a call to OpenAlex.
 OPENALEX_MAX_OR_LENGTH = 100
 OPENALEX_MAX_PAGE_LENGTH = 200
+OPENALEX_PREFIX = "https://openalex.org/"
+DOI_PREFIX = "https://doi.org/"
+
 # OpenAlex data fields to retrieve.
 USED_FIELDS = [
     "id",
@@ -79,7 +82,6 @@ def backward_snowballing(identifiers: list[str]) -> dict[str, list[dict]]:
     # Get the referenced works.
     referenced_works = {}
     page_length = min(OPENALEX_MAX_OR_LENGTH, OPENALEX_MAX_PAGE_LENGTH)
-    OPENALEX_PREFIX = "https://openalex.org/"
 
     for i in range(0, len(identifiers), page_length):
         print(f"Getting works citing records {i}-{i+page_length}")
@@ -155,7 +157,7 @@ def openalex_from_doi(dois: list[str]) -> dict[str, str]:
         DOI, the corresponding value will be None.
     """
     page_length = min(OPENALEX_MAX_OR_LENGTH, OPENALEX_MAX_PAGE_LENGTH)
-    id_mapping = {doi: None for doi in dois}
+    id_mapping = {doi.removeprefix(DOI_PREFIX): None for doi in dois}
     for i in range(0, len(dois), page_length):
         fltr = "|".join(dois[i : i + page_length])
         for work in (
@@ -164,7 +166,7 @@ def openalex_from_doi(dois: list[str]) -> dict[str, str]:
             .select(["id", "doi"])
             .get(per_page=page_length)
         ):
-            id_mapping[work["doi"]] = work["id"]
+            id_mapping[work["doi"].removeprefix(DOI_PREFIX)] = work["id"]
     return id_mapping
 
 
@@ -234,7 +236,7 @@ def snowball(
         data["openalex_id"] = None
         data.loc[data.doi.notna(), "openalex_id"] = data.loc[
             data.doi.notna(), "doi"
-        ].apply(lambda doi: id_mapping[doi])
+        ].str.removeprefix(DOI_PREFIX).apply(lambda doi: id_mapping[doi])
 
     identifiers = data["openalex_id"].dropna().to_list()
 
