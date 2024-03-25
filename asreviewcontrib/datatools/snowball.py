@@ -211,7 +211,7 @@ def snowball(
         raise ValueError("At least one of 'forward' or 'backward' should be True.")
 
     data = load_data(input_path)
-    if use_all:
+    if (use_all or (data.included is None)):
         data = data.df
     else:
         data = data.df.loc[data.included.astype(bool)]
