@@ -5,41 +5,10 @@ jobs:
     name: pytest
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: datatools
-
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.8' # Version range or exact version of a Python version to use, using semvers version range syntax.
-        architecture: 'x64' # (x64 or x86)
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
     - name: Install packages and run tests
       run: |
         pip install pytest
-        pip install --upgrade setuptools>=41.0.0
-        git clone https://github.com/asreview/asreview.git
-        cd asreview
         pip install .
-        cd ..
-        pip install ./datatools
-        pytest datatools/tests
-
-  #test-older:
-    #name: pytest
-    #runs-on: ubuntu-latest
-    #strategy:
-      #matrix:
-        #asr_versions: []
-    #steps:
-    #- uses: actions/checkout@v2
-    #- uses: actions/setup-python@v1
-      #with:
-        #python-version: '3.6' # Version range or exact version of a Python version to use, using semvers version range syntax.
-        #architecture: 'x64' # (x64 or x86)
-    #- name: Install packages and run tests
-      #run: |
-        #pip install pytest
-        #pip install setuptools>=41.0.0
-        #pip install asreview==${{ matrix.asr_versions }}
-        #pip install .
-        #pytest tests
+        pytest
