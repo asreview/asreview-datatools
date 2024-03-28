@@ -9,7 +9,8 @@ LAB](https://github.com/asreview/asreview) that can be used to:
 - [**Deduplicate**](#data-dedup) data
 - [**Stack**](#data-vstack-experimental) multiple datasets
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets
-- [**Snowball**](#snowball) a dataset to find incoming or outgoing citations.
+- [**Snowball**](#snowball) a dataset to find incoming or outgoing citations
+- [**Sample**](#sample) n old, n random, and n new papers in order to check if the terminology has changed over time.
 
 Several [tutorials](Tutorials.md) are available that show how
 `ASReview-Datatools` can be used in different scenarios.
@@ -281,6 +282,8 @@ One thing to note is that OpenAlex will handle data requests faster if the sende
 ```bash
 asreview data snowball input_dataset.csv output_dataset.csv --backward --email my_email@provider.com
 ```
+
+## Sample
 
 ## License
 
