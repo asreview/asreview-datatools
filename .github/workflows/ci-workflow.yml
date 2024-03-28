@@ -24,6 +24,7 @@ jobs:
     - uses: actions/setup-python@v5
     - name: Install packages and run tests
       run: |
+        python3 -m pip install pip -U
         pip install pytest
         pip install .
         pip freeze
