@@ -32,7 +32,7 @@ setup(
     keywords="asreview datatools",
     packages=find_namespace_packages(include=["asreviewcontrib.*"]),
     python_requires=">=3.7",
-    install_requires=["asreview>=1.1,<2", "pandas"],
+    install_requires=["asreview>=1.1,<2", "pandas", "pyalex"],
     extras_require={},
     entry_points={
         "asreview.entry_points": [
