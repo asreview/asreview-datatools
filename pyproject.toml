@@ -1,0 +1,47 @@
+[project]
+name = "asreview-datatools"
+description = "Powerful command line tools for data handling in ASReview"
+authors = [
+    { name = "ASReview LAB developers", email = "asreview@uu.nl" }
+]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+license = {text = "MIT License"}
+dependencies = ["asreview>=1.1,<2", "pandas", "pyalex"]
+dynamic = ["version"]
+requires-python = ">=3.8"
+
+[project.urls]
+homepage = "https://asreview.ai"
+repository = "https://github.com/asreview/asreview-datatools"
+issues = "https://github.com/asreview/asreview-datatools/issues"
+
+[project.entry-points."asreview.entry_points"]
+data = "asreviewcontrib.datatools.entrypoint:DataEntryPoint"
+
+[project.optional-dependencies]
+lint = ["ruff"]
+test = ["pytest"]
+
+[build-system]
+build-backend = 'setuptools.build_meta'
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+
+[tool.setuptools]
+packages = ["asreviewcontrib"]
+
+[tool.setuptools_scm]
+write_to = "asreviewcontrib/datatools/_version.py"
+
+[tool.ruff.lint]
+select = ["E", "F", "UP", "I", "B"]
+
+[tool.ruff.lint.isort]
+force-single-line = true

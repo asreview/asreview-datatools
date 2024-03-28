@@ -17,7 +17,8 @@ def _check_order_arg(order):
         return order
     else:
         raise ValueError(
-            f"hierarchy '{order}' not found, should be one of the following: {allowed_orders}"
+            f"hierarchy '{order}' not found, should be one of the"
+            f" following: {allowed_orders}"
         )
 
 
@@ -48,8 +49,8 @@ def _check_suffix(input_files, output_file):
     if len(set(suffixes)) > 1:
         if not (set_suffixes.issubset(set_ris) or set_suffixes.issubset(set_tabular)):
             raise ValueError(
-                "Files with different file types were; all input files, as well as the output file, should be of the "
-                "same type. "
+                "Files with different file types were; all input files, as well as the"
+                " output file, should be of the same type. "
             )
 
 
@@ -57,9 +58,11 @@ def _check_label_errors(as_lab, path_lab):
     if as_lab is not None:
         if as_lab.labels is None:
             warnings.warn(
-                f"'{path_lab}' was passed as a labeled dataset but no labels were found, continuing with its records "
-                f"marked as unlabeled. If this is not correct, check if your data format complies with: "
-                f"https://asreview.readthedocs.io/en/latest/data_format.html"
+                f"'{path_lab}' was passed as a labeled dataset but no labels were"
+                " found, continuing with its records marked as unlabeled. If this is"
+                " not correct, check if your data format complies with:"
+                " https://asreview.readthedocs.io/en/latest/data_format.html",
+                stacklevel=1,
             )
 
 
@@ -83,8 +86,8 @@ def _concat_label(list_df, label, pid="doi"):
 
         n_total_dedup = n_total - len(df_all)
         print(
-            f"Detected {n_total} records with label '{label}', from which {n_total_dedup} duplicate records with the "
-            f"same label were removed."
+            f"Detected {n_total} records with label '{label}', from which"
+            f" {n_total_dedup} duplicate records with the same label were removed."
         )
     else:
         df_all = pd.DataFrame()
@@ -104,9 +107,9 @@ def create_composition(
     # load all input files and URLs into ASReviewData objects, fill with None
     # if input was not specified
     input_files = [rel_path, irr_path, lab_path, unl_path]
-    as_rel, as_irr, as_lab, as_unl = [
+    as_rel, as_irr, as_lab, as_unl = (
         load_data(item) if item is not None else None for item in input_files
-    ]
+    )
 
     # check whether input files are correctly labeled
     _check_label_errors(as_lab, lab_path)
@@ -185,10 +188,11 @@ def create_composition(
             "left",
         ):
             print(
-                f"\nSome records have inconsistent labels in the input files. This may be intentional because you are "
-                f"trying to overwrite labels in an input file with labels from another input file. However, "
-                f"it may also be because some records are unintentionally labeled inconsistently.\n\n"
-                f"The following records have inconsistent labels in the input files:\n"
+                f"\nSome records have inconsistent labels in the input files. This may"
+                " be intentional because you are trying to overwrite labels in an input"
+                " file with labels from another input file. However, it may also be"
+                " because some records are unintentionally labeled inconsistently.\n\n"
+                "The following records have inconsistent labels in the input files:\n"
                 f"{df_info_conflicts}\n"
             )
 
@@ -197,14 +201,19 @@ def create_composition(
 
         elif resolve == "keep_one":
             warnings.warn(
-                f"Continuing, keeping one label for records with inconsistent labels, resolving conflicts using the "
-                f"following hierarchy:\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}\n3. {dict_terms[order[2]]}"
+                f"Continuing, keeping one label for records with inconsistent labels,"
+                " resolving conflicts using the following hierarchy:"
+                f"\n1. {dict_terms[order[0]]}\n2. {dict_terms[order[1]]}"
+                f"\n3. {dict_terms[order[2]]}",
+                stacklevel=1,
             )
             df_composed = as_conflict.drop_duplicates(pid=pid).reset_index(drop=True)
 
         elif resolve == "keep_all":
             warnings.warn(
-                f"Continuing, keeping all labels for duplicate records with inconsistent labels."
+                "Continuing, keeping all labels for duplicate records with inconsistent"
+                " labels.",
+                stacklevel=1,
             )
             df_composed = as_conflict.df
 

@@ -55,7 +55,8 @@ def test_label_prioritization():
     df_3 = create_composition(*input_files_1, order="uri")
     assert df_3["included"].value_counts()[-1] == len(df_3)
 
-    # input different datasets with some identical records, combining as labeled and unlabeled data
+    # input different datasets with some identical records, combining as labeled and
+    # unlabeled data
     df_4 = create_composition(*input_files_2, order="riu")
     df_4_counts = df_4["included"].value_counts()
     assert df_4_counts[-1] == 7 and df_4_counts[0] == 3 and df_4_counts[1] == 1

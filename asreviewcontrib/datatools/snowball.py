@@ -211,7 +211,7 @@ def snowball(
         raise ValueError("At least one of 'forward' or 'backward' should be True.")
 
     data = load_data(input_path)
-    if (use_all or (data.included is None)):
+    if use_all or (data.included is None):
         data = data.df
     else:
         data = data.df.loc[data.included.astype(bool)]
@@ -236,9 +236,11 @@ def snowball(
             " records. Performing snowballing for those records."
         )
         data["openalex_id"] = None
-        data.loc[data.doi.notna(), "openalex_id"] = data.loc[
-            data.doi.notna(), "doi"
-        ].str.removeprefix(DOI_PREFIX).apply(lambda doi: id_mapping[doi])
+        data.loc[data.doi.notna(), "openalex_id"] = (
+            data.loc[data.doi.notna(), "doi"]
+            .str.removeprefix(DOI_PREFIX)
+            .apply(lambda doi: id_mapping[doi])
+        )
 
     identifiers = data["openalex_id"].dropna().to_list()
 
