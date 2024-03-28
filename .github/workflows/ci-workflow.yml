@@ -27,5 +27,4 @@ jobs:
         python3 -m pip install pip -U
         pip install pytest
         pip install .
-        pip freeze
         pytest
