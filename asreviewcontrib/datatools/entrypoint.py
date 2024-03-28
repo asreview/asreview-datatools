@@ -13,8 +13,10 @@ from asreviewcontrib.datatools.snowball import _parse_arguments_snowball
 from asreviewcontrib.datatools.snowball import snowball
 from asreviewcontrib.datatools.stack import _parse_arguments_vstack
 from asreviewcontrib.datatools.stack import vstack
+from asreviewcontrib.datatools.sample import _parse_arguments_sample
+from asreviewcontrib.datatools.sample import sample
 
-DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack", "snowball"]
+DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack", "snowball", "sample"]
 
 
 class DataEntryPoint(BaseEntryPoint):
@@ -101,6 +103,10 @@ class DataEntryPoint(BaseEntryPoint):
                 args_snowballing_parser = _parse_arguments_snowball()
                 args_snowballing = vars(args_snowballing_parser.parse_args(argv[1:]))
                 snowball(**args_snowballing)
+            if argv[0] == "sample":
+                args_sample_parser = _parse_arguments_sample()
+                args_sample = vars(args_sample_parser.parse_args(argv[1:]))
+                sample(**args_sample)
             if argv[0] == "vstack":
                 args_vstack_parser = _parse_arguments_vstack()
                 args_vstack = args_vstack_parser.parse_args(argv[1:])
