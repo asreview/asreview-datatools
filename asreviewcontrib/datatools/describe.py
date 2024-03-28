@@ -6,7 +6,7 @@ import asreview
 from asreview.data import load_data
 from asreview.data.statistics import *  # noqa
 
-from asreviewcontrib.datatools._version import get_versions
+from asreviewcontrib.datatools import __version__
 
 
 def describe(input_path, output_path=None):
@@ -17,7 +17,7 @@ def describe(input_path, output_path=None):
     # based on https://google.github.io/styleguide/jsoncstyleguide.xml
     stats = {
         "asreviewVersion": asreview.__version__,
-        "apiVersion": get_versions()["version"],
+        "apiVersion": __version__,
         "data": {
             "items": [
                 {
