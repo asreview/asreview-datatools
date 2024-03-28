@@ -26,4 +26,5 @@ jobs:
       run: |
         pip install pytest
         pip install .
+        pip freeze
         pytest
