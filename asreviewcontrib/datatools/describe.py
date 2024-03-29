@@ -1,23 +1,27 @@
 import argparse
 import json
-from pathlib import Path
 
 import asreview
 from asreview.data import load_data
-from asreview.data.statistics import *  # noqa
+from asreview.data.statistics import n_duplicates
+from asreview.data.statistics import n_irrelevant
+from asreview.data.statistics import n_missing_abstract
+from asreview.data.statistics import n_missing_title
+from asreview.data.statistics import n_records
+from asreview.data.statistics import n_relevant
+from asreview.data.statistics import n_unlabeled
 
-from asreviewcontrib.datatools._version import get_versions
+from asreviewcontrib.datatools import __version__
 
 
 def describe(input_path, output_path=None):
-
     # read data in ASReview data object
     asdata = load_data(input_path)
 
     # based on https://google.github.io/styleguide/jsoncstyleguide.xml
     stats = {
         "asreviewVersion": asreview.__version__,
-        "apiVersion": get_versions()["version"],
+        "apiVersion": __version__,
         "data": {
             "items": [
                 {
@@ -47,19 +51,26 @@ def describe(input_path, output_path=None):
                 {
                     "id": "n_missing_title",
                     "title": "Number of records with missing title",
-                    "description": "The number of records in the dataset with missing title.",
+                    "description": (
+                        "The number of records in the dataset with missing title."
+                    ),
                     "value": n_missing_title(asdata)[0],
                 },
                 {
                     "id": "n_missing_abstract",
                     "title": "Number of records with missing abstract",
-                    "description": "The number of records in the dataset with missing abstract.",
+                    "description": (
+                        "The number of records in the dataset with missing abstract."
+                    ),
                     "value": n_missing_abstract(asdata)[0],
                 },
                 {
                     "id": "n_duplicates",
                     "title": "Number of duplicate records (basic algorithm)",
-                    "description": "The number of duplicate records in the dataset based on similar text.",
+                    "description": (
+                        "The number of duplicate records in the dataset based on"
+                        " similar text."
+                    ),
                     "value": n_duplicates(asdata),
                 },
             ]
