@@ -10,12 +10,12 @@ from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
+from asreviewcontrib.datatools.sample import _parse_arguments_sample
+from asreviewcontrib.datatools.sample import sample
 from asreviewcontrib.datatools.snowball import _parse_arguments_snowball
 from asreviewcontrib.datatools.snowball import snowball
 from asreviewcontrib.datatools.stack import _parse_arguments_vstack
 from asreviewcontrib.datatools.stack import vstack
-from asreviewcontrib.datatools.sample import _parse_arguments_sample
-from asreviewcontrib.datatools.sample import sample
 
 DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack", "snowball", "sample"]
 
