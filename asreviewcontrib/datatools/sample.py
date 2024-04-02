@@ -42,6 +42,13 @@ def sample(output_path, input_path, nr_records):
 
     # Sort by year
     dated_records = df_input[df_input["publication_year"].notnull()]
+
+    if dated_records.empty:
+        raise ValueError("• The input file should have at least one record with a 'publication_year'.")
+    
+    if len(dated_records) < nr_records*2:
+        raise ValueError(f"• The input file contains only {len(dated_records)} dated records.")
+
     sorted_records = dated_records.sort_values("publication_year", ascending=True)
 
     # Take x old and x new records
