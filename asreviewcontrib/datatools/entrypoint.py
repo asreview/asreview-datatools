@@ -3,6 +3,7 @@ import argparse
 from asreview.data import load_data
 from asreview.entry_points import BaseEntryPoint
 
+from asreviewcontrib.datatools import __version__
 from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert
@@ -26,7 +27,7 @@ class DataEntryPoint(BaseEntryPoint):
     def __init__(self):
         from asreviewcontrib.datatools.__init__ import __version__
 
-        super(DataEntryPoint, self).__init__()
+        super().__init__()
 
         self.version = __version__
 
@@ -80,11 +81,13 @@ class DataEntryPoint(BaseEntryPoint):
                 if args_dedup.output_path:
                     asdata.to_file(args_dedup.output_path)
                     print(
-                        f"Removed {n_dup} duplicates from dataset with {initial_length} records."
+                        f"Removed {n_dup} duplicates from dataset with"
+                        f" {initial_length} records."
                     )
                 else:
                     print(
-                        f"Found {n_dup} duplicates in dataset with {initial_length} records."
+                        f"Found {n_dup} duplicates in dataset with"
+                        f" {initial_length} records."
                     )
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
@@ -114,7 +117,6 @@ class DataEntryPoint(BaseEntryPoint):
 
         # Print help message if subcommand not given or incorrect
         else:
-
             parser = argparse.ArgumentParser(
                 prog="asreview data",
                 formatter_class=argparse.RawTextHelpFormatter,
