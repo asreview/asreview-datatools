@@ -31,7 +31,7 @@ def sample(output_path, input_path, nr_records):
     if "publication_year" not in df_input.columns:
         raise ValueError("• The input file should have a 'publication_year' column.")
 
-    # Check if x is not too large
+    # Check if k is not too large
     if nr_records*3 > len(df_input):
         raise ValueError(
             f"• The number of records to sample is too large."
@@ -53,11 +53,11 @@ def sample(output_path, input_path, nr_records):
 
     sorted_records = dated_records.sort_values("publication_year", ascending=True)
 
-    # Take x old and x new records
+    # Take k old and k new records
     old_records = sorted_records.head(nr_records)
     new_records = sorted_records.tail(nr_records)
 
-    # Sample x records without overlap with old/new records
+    # Sample k records without overlap with old/new records
     records_to_exclude = pd.concat([old_records, new_records]).index
     remaining_records = df_input[~df_input.index.isin(records_to_exclude)]
 
