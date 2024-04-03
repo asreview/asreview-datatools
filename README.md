@@ -35,6 +35,12 @@ asreview --help
 
 The extension is successfully installed if it lists `asreview data`.
 
+To make sure that you are working with the latest version of datatools you can use:
+
+```bash
+pip install asreview-datatools --upgrade
+```
+
 ## Getting started
 
 ASReview Datatools is a command line tool that extends ASReview LAB. Each
