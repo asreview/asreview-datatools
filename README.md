@@ -35,6 +35,12 @@ asreview --help
 
 The extension is successfully installed if it lists `asreview data`.
 
+To make sure that you are working with the latest version of datatools you can use:
+
+```bash
+pip install asreview-datatools --upgrade
+```
+
 ## Getting started
 
 ASReview Datatools is a command line tool that extends ASReview LAB. Each
@@ -68,11 +74,11 @@ Export the results to a file (`output.json`)
 asreview data describe MY_DATASET.csv -o output.json
 ```
 
-Describe the `van_de_schoot_2017` dataset from the [benchmark
+Describe the `van_de_schoot_2018` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-asreview data describe benchmark:van_de_schoot_2017 -o output.json
+asreview data describe synergy:van_de_schoot_2018 -o output.json
 ```
 ```
 {
@@ -161,11 +167,11 @@ identifier can be used for deduplication.
 asreview data dedup MY_DATASET.csv -o output.csv --pid PMID
 ```
 
-Using the `van_de_schoot_2017` dataset from the [benchmark
+Using the `van_de_schoot_2018` dataset from the [benchmark
 platform](https://github.com/asreview/systematic-review-datasets).
 
 ```bash
-asreview data dedup benchmark:van_de_schoot_2017 -o van_de_schoot_2017_dedup.csv
+asreview data dedup synergy:van_de_schoot_2018 -o van_de_schoot_2018_dedup.csv
 ```
 ```
 Removed 104 records from dataset with 6189 records.
