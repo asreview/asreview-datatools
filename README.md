@@ -9,7 +9,8 @@ LAB](https://github.com/asreview/asreview) that can be used to:
 - [**Deduplicate**](#data-dedup) data
 - [**Stack**](#data-vstack-experimental) multiple datasets
 - [**Compose**](#data-compose-experimental) a single (labeled, partly labeled, or unlabeled) dataset from multiple datasets
-- [**Snowball**](#snowball) a dataset to find incoming or outgoing citations.
+- [**Snowball**](#snowball) a dataset to find incoming or outgoing citations
+- [**Sample**](#sample) old, random, and new papers in order to check if the terminology has changed over time.
 
 Several [tutorials](Tutorials.md) are available that show how
 `ASReview-Datatools` can be used in different scenarios.
@@ -287,6 +288,15 @@ One thing to note is that OpenAlex will handle data requests faster if the sende
 ```bash
 asreview data snowball input_dataset.csv output_dataset.csv --backward --email my_email@provider.com
 ```
+
+## Sample
+
+This datatool is used to sample old, random and new records from your dataset by using the `asreview data sample` command. The sampled records are then stored in an output file. This can be useful for detecting concept drift, meaning that the words used for certain concepts change over time. This script assumes that the dataset includes a column named `publication_year`. An example would be:
+
+```bash
+asreview data sample input_dataset.xlsx output_dataset.xslx 50
+```
+This samples the `50` oldest and `50` newest records from `input_dataset.xlsx` and samples `50` records randomly (without overlap from the old and new partitions!). The resulting 150 records are written to `output_dataset.xlsx`.
 
 ## License
 
