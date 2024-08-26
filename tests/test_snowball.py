@@ -122,7 +122,12 @@ def test_openalex_id_backward(tmpdir):
         email=EMAIL,
     )
     df = pd.read_csv(out_fp)
-    assert len(df) == 40
+    # Actual value at time of writing test is 40 (2024-08-26).
+    # In theory the number of results should be stable for backward snowballing,
+    # but OpenAlex sometimes makes changes, so we allow for a margin.
+    # The margins of this assert and the next assert should not overlap,
+    # otherwise we don't test if 'use_all' works.
+    assert 38 <= len(df) <= 42
 
     all_out_fp = Path(tmpdir, "backward_all.csv")
     snowball(
@@ -134,7 +139,8 @@ def test_openalex_id_backward(tmpdir):
         email=EMAIL,
     )
     df_all = pd.read_csv(all_out_fp)
-    assert len(df_all) == 45
+    # Actual value at time of writing test is 46 (2024-08-26).
+    assert 43 <= len(df_all) <= 49
 
 
 def test_snowballing_from_doi(tmpdir):
@@ -148,4 +154,6 @@ def test_snowballing_from_doi(tmpdir):
         email=EMAIL,
     )
     df = pd.read_csv(out_fp)
-    assert len(df) == 45
+    # Actual value at time of writing test is 46 (2024-08-26).
+    # See comments in 'test_openalex_id_backward'.
+    assert 43 <= len(df) <= 49
