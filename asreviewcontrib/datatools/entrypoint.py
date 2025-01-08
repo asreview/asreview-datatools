@@ -8,6 +8,7 @@ from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
+from asreviewcontrib.datatools.dedup import drop_duplicates_by_similarity
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
 from asreviewcontrib.datatools.sample import _parse_arguments_sample
@@ -68,12 +69,13 @@ class DataEntryPoint(BaseEntryPoint):
 
                 if args_dedup.pid not in asdata.df.columns:
                     print(
-                        f"Not using {args_dedup.pid} for deduplication"
+                        f"Not using {args_dedup.pid} for deduplication "
                         "because there is no such data."
                     )
 
                 # retrieve deduplicated ASReview data object
                 asdata.drop_duplicates(pid=args_dedup.pid, inplace=True)
+                drop_duplicates_by_similarity(asdata)
 
                 # count duplicates
                 n_dup = initial_length - len(asdata.df)
