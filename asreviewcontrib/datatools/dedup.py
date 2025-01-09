@@ -1,6 +1,5 @@
 import re
-from difflib import Differ, SequenceMatcher
-from pprint import pformat
+from difflib import SequenceMatcher
 
 import ftfy
 import pandas as pd
@@ -91,7 +90,10 @@ def drop_duplicates_by_similarity(
         for j, t in s.iloc[i+1:][abs(s.str.len() - len(text)) < 5].items():
             seq_matcher.set_seq1(t)
 
-            if seq_matcher.real_quick_ratio() > similarity and seq_matcher.quick_ratio() > similarity and (not strict_similarity or seq_matcher.ratio() > similarity):
+            if seq_matcher.real_quick_ratio() > similarity and \
+                seq_matcher.quick_ratio() > similarity and \
+                (not strict_similarity or seq_matcher.ratio() > similarity):
+
                 if verbose and not duplicated[j]:
                     similar_list.append((i, j))
 
