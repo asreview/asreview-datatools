@@ -10,6 +10,7 @@ from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
+from asreviewcontrib.datatools.doi import find_dois
 from asreviewcontrib.datatools.sample import _parse_arguments_sample
 from asreviewcontrib.datatools.sample import sample
 from asreviewcontrib.datatools.snowball import _parse_arguments_snowball
@@ -17,7 +18,7 @@ from asreviewcontrib.datatools.snowball import snowball
 from asreviewcontrib.datatools.stack import _parse_arguments_vstack
 from asreviewcontrib.datatools.stack import vstack
 
-DATATOOLS = ["describe", "dedup", "convert", "compose", "vstack", "snowball", "sample"]
+DATATOOLS = ["describe", "dedup", "doi", "convert", "compose", "vstack", "snowball", "sample"]
 
 
 class DataEntryPoint(BaseEntryPoint):
@@ -89,6 +90,67 @@ class DataEntryPoint(BaseEntryPoint):
                         f"Found {n_dup} duplicates in dataset with"
                         f" {initial_length} records."
                     )
+            if argv[0] == "doi":
+                doi_parser = argparse.ArgumentParser(prog="asreview data doi")
+                doi_parser.add_argument(
+                    "input_path", type=str, help="The file path of the dataset."
+                )
+                doi_parser.add_argument(
+                    "--output_path",
+                    "-o",
+                    default=None,
+                    type=str,
+                    help="The file path of the dataset.",
+                )
+                doi_parser.add_argument(
+                    "--delay",
+                    default=750,
+                    type=int,
+                    help="Delay between requests in milliseconds. Default: 750.",
+                )
+                doi_parser.add_argument(
+                    "--threshold",
+                    default=0.95,
+                    type=float,
+                    help="Similarity threshold for deduplication. Default: 0.95.",
+                )
+                doi_parser.add_argument(
+                    "--strict_similarity",
+                    action='store_true',
+                    help="Use a more strict similarity for deduplication.",
+                )
+                doi_parser.add_argument(
+                    "--verbose",
+                    action='store_true',
+                    help="Print verbose output.",
+                )
+
+                args_doi = doi_parser.parse_args(argv[1:])
+
+                # read data in ASReview data object
+                asdata = load_data(args_doi.input_path)
+                find_dois(
+                    asdata,
+                    args_doi.delay,
+                    args_doi.threshold,
+                    args_doi.strict_similarity,
+                    args_doi.verbose,
+                )
+
+                added_dois = len(asdata.df) - asdata.df['doi'].isna().sum()
+
+                if args_doi.output_path:
+                    asdata.to_file(args_doi.output_path)
+                    print(
+                        f"Added doi for {added_dois} records in dataset with"
+                        f" {len(asdata.df)} records."
+                    )
+                else:
+                    print(
+                        f"Found doi for {added_dois} records in dataset with"
+                        f" {len(asdata.df)} records."
+                    )
+
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
                 args_compose = args_compose_parser.parse_args(argv[1:])
