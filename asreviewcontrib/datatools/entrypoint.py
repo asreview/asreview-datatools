@@ -66,7 +66,7 @@ class DataEntryPoint(BaseEntryPoint):
                     help="Drop similar records.",
                 )
                 dedup_parser.add_argument(
-                    "--similarity",
+                    "--threshold",
                     default=0.98,
                     type=float,
                     help="Similarity threshold for deduplication. Default: 0.98.",
@@ -116,7 +116,7 @@ class DataEntryPoint(BaseEntryPoint):
                 if args_dedup.drop_similar:
                     drop_duplicates_by_similarity(
                         asdata,
-                        args_dedup.similarity,
+                        args_dedup.threshold,
                         args_dedup.skip_abstract,
                         args_dedup.discard_stopwords,
                         args_dedup.stopwords_language,
