@@ -6,6 +6,7 @@ from typing import Any
 from urllib.parse import quote
 
 import ftfy
+import pandas as pd
 import requests
 from asreview import ASReviewData
 from requests.exceptions import ConnectTimeout
@@ -37,14 +38,14 @@ def _fetch_doi(
 
     except ConnectTimeout as e:
         if verbose:
-            tqdm.write(f'Timeout for {title}.\n{e}')
+            tqdm.write(f'Timeout for {title}. Wait for 30s and try again.\n{e}')
 
         raise e
 
-    except HTTPError as e1:
+    except HTTPError:
         if authors is None:
             if verbose:
-                tqdm.write(f'Could not fetch doi for {title}\n{str(e1)}')
+                tqdm.write(f'Could not fetch doi for {title}')
 
             return None
 
@@ -57,13 +58,13 @@ def _fetch_doi(
 
         except ConnectTimeout as e:
             if verbose:
-                tqdm.write(f'Timeout for {title}.\n{e}')
+                tqdm.write(f'Timeout for {title}. Wait for 30s and try again.\n{e}')
 
             raise e
 
-        except HTTPError as e2:
+        except HTTPError:
             if verbose:
-                tqdm.write(f'Could not fetch doi for {title}\n{str(e2)}')
+                tqdm.write(f'Could not fetch doi for {title}')
 
             return None
 
@@ -76,6 +77,7 @@ def _confirm_doi_title(
         data: dict[str, Any],
         similarity: float,
         strict_similarity: bool,
+        verbose: bool,
         ) -> None | str:
     clean_title = _SYMBOLS_REGEX.sub('', title.lower())
     clean_title = _SPACES_REGEX.sub(' ', clean_title)
@@ -90,7 +92,15 @@ def _confirm_doi_title(
         _SEQ_MATCHER.quick_ratio() > similarity and \
         (not strict_similarity or _SEQ_MATCHER.ratio() > similarity):
 
-        return data['message']['items'][0]['DOI']
+        doi = data['message']['items'][0]['DOI']
+
+        if verbose:
+            tqdm.write(f'Doi found for {title}: {doi}')
+
+        return doi
+
+    if verbose:
+        tqdm.write(f'No doi found for {title}')
 
     return None
 
@@ -108,7 +118,7 @@ def find_dois(
     else:
         authors = None
 
-    delay /= 1000
+    delay_in_seconds = delay / 1000
     dois = []
 
     for i, title in enumerate(tqdm(titles, desc="Finding DOIs")):
@@ -126,7 +136,7 @@ def find_dois(
 
         except IndexError:
             if verbose:
-                tqdm.write(f'No doi found for {title}\n{str(data)}')
+                tqdm.write(f'No doi found for {title}')
 
             dois.append(None)
             continue
@@ -137,11 +147,16 @@ def find_dois(
             data,
             similarity,
             strict_similarity,
+            verbose,
             )
 
         dois.append(doi)
 
-        # sleep for delay + random to avoid overloading with requests
-        sleep(delay + random())
+        # sleep for delay_in_seconds + random to avoid overloading with requests
+        sleep(delay_in_seconds + random())
 
-    asdata.df['doi'] = dois
+    # if 'doi' column already exists, merge the dois, giving preference to the old ones
+    if 'doi' in asdata.df.columns:
+        asdata.df['doi'] = asdata.df['doi'].combine_first(pd.Series(dois))
+    else:
+        asdata.df['doi'] = dois

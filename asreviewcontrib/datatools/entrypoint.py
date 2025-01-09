@@ -129,6 +129,16 @@ class DataEntryPoint(BaseEntryPoint):
 
                 # read data in ASReview data object
                 asdata = load_data(args_doi.input_path)
+
+                if 'doi' in asdata.df.columns:
+                    previous_dois = len(asdata.df) - asdata.df['doi'].isna().sum()
+                    print(f"Dataset already contains dois for {previous_dois} entries. "
+                           "Adding missing dois.")
+
+                else:
+                    print("Dataset does not contain dois. Adding dois.")
+                    previous_dois = 0
+
                 find_dois(
                     asdata,
                     args_doi.delay,
@@ -137,7 +147,7 @@ class DataEntryPoint(BaseEntryPoint):
                     args_doi.verbose,
                 )
 
-                added_dois = len(asdata.df) - asdata.df['doi'].isna().sum()
+                added_dois = len(asdata.df) - asdata.df['doi'].isna().sum() - previous_dois
 
                 if args_doi.output_path:
                     asdata.to_file(args_doi.output_path)
