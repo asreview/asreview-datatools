@@ -178,6 +178,25 @@ asreview data dedup synergy:van_de_schoot_2018 -o van_de_schoot_2018_dedup.csv
 Removed 104 records from dataset with 6189 records.
 ```
 
+### Add missing DOIs
+
+Add missing DOIs to a dataset. This tool uses the [Crossref API](https://www.crossref.org/) to find missing DOIs. The tool requires a column with titles in the dataset. The output file will contain the original dataset with the added DOIs, or `None` when the DOI was not found.
+
+```bash
+asreview data doi MY_DATASET.csv
+```
+
+Export the dataset with added DOIs to a file (`output.csv`)
+
+```bash
+asreview data doi MY_DATASET.csv -o output.csv
+```
+
+By default, the tool uses a delay of 750 milliseconds between requests and a similarity threshold of 0.95 for deduplication. The tool offers the option to use a different delay and similarity threshold. The tool also offers the option to use a more strict similarity for deduplication and print verbose output.
+
+```bash
+asreview data doi MY_DATASET.csv -o output.csv --delay 1000 --threshold 0.9 --strict_similarity --verbose
+```
 
 ### Data Vstack (Experimental)
 
@@ -186,7 +205,7 @@ Vertical stacking: combine as many datasets in the same file format as you want 
 ❗ Vstack is an experimental feature. We would love to hear your feedback.
 Please keep in mind that this feature can change in the future.
 
-Stack several datasets on top of each other: 
+Stack several datasets on top of each other:
 ```
 asreview data vstack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
 ```
@@ -206,7 +225,7 @@ Compose is where datasets containing records with different labels (or no
 labels) can be assembled into a single dataset.
 
 ❗ Compose is an experimental feature. We would love to hear your feedback.
-Please keep in mind that this feature can change in the future. 
+Please keep in mind that this feature can change in the future.
 
 Overview of possible input files and corresponding properties, use at least
 one of the following arguments:
@@ -231,7 +250,7 @@ case of conflicts, use the `--conflict_resolve`/`-c` flag. This is set to
 | Resolve method | Action in case of conflict                                                              |
 |----------------|-----------------------------------------------------------------------------------------|
 | `keep_one`     | Keep one label, using `--hierarchy` to determine which label to keep                    |
-| `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) | 
+| `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) |
 | `abort`        | Abort                                                                                   |
 
 
