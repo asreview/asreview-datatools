@@ -60,6 +60,43 @@ class DataEntryPoint(BaseEntryPoint):
                     type=str,
                     help="Persistent identifier used for deduplication. Default: doi.",
                 )
+                dedup_parser.add_argument(
+                    "--drop_similar",
+                    action='store_true',
+                    help="Drop similar records.",
+                )
+                dedup_parser.add_argument(
+                    "--similarity",
+                    default=0.98,
+                    type=float,
+                    help="Similarity threshold for deduplication. Default: 0.98.",
+                )
+                dedup_parser.add_argument(
+                    "--skip_abstract",
+                    action='store_true',
+                    help="Use only title for deduplication.",
+                )
+                dedup_parser.add_argument(
+                    "--discard_stopwords",
+                    action='store_true',
+                    help="Discard stopwords for deduplication.",
+                )
+                dedup_parser.add_argument(
+                    "--strict_similarity",
+                    action='store_true',
+                    help="Use a more strict similarity for deduplication.",
+                )
+                dedup_parser.add_argument(
+                    "--stopwords_language",
+                    default="english",
+                    type=str,
+                    help="Language for stopwords. Default: english.",
+                )
+                dedup_parser.add_argument(
+                    "--verbose",
+                    action='store_true',
+                    help="Print verbose output.",
+                )
 
                 args_dedup = dedup_parser.parse_args(argv[1:])
 
@@ -75,7 +112,17 @@ class DataEntryPoint(BaseEntryPoint):
 
                 # retrieve deduplicated ASReview data object
                 asdata.drop_duplicates(pid=args_dedup.pid, inplace=True)
-                drop_duplicates_by_similarity(asdata)
+
+                if args_dedup.drop_similar:
+                    drop_duplicates_by_similarity(
+                        asdata,
+                        args_dedup.similarity,
+                        args_dedup.skip_abstract,
+                        args_dedup.discard_stopwords,
+                        args_dedup.stopwords_language,
+                        args_dedup.strict_similarity,
+                        args_dedup.verbose,
+                        )
 
                 # count duplicates
                 n_dup = initial_length - len(asdata.df)
