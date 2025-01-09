@@ -178,6 +178,47 @@ asreview data dedup synergy:van_de_schoot_2018 -o van_de_schoot_2018_dedup.csv
 Removed 104 records from dataset with 6189 records.
 ```
 
+We can also choose to deduplicate based on the similarity of the title and abstract, instead of checking for an exact match. This way we can find duplicates that have small differences, but are actually the same record (for example, an additional comma or a fixed typo). This can be done by using the `--drop_similar` flag. This process takes about 4s on a dataset of about 2068 entries.
+
+```bash
+asreview data dedup neurips_2020.tsv --drop_similar
+```
+```
+Not using doi for deduplication because there is no such data.
+Deduplicating: 100%|████████████████████████████████████| 2068/2068 [00:03<00:00, 531.93it/s]
+Found 2 duplicates in dataset with 2068 records.
+```
+
+If we want to check which entries were found as duplicates, we can use the `--verbose` flag. This will print the lines of the dataset that were found as duplicates, as well as the difference between them. Any text that has to be removed from the first entry to become the second one is shown as red and has a strikethrough, and any text that has to be added to the first entry is shown as green. All text that is the same in both entries is dimmed.
+
+```bash
+asreview data dedup neurips_2020.tsv --drop_similar --verbose
+```
+
+![Verbose drop similar](./dedup_similar.png)
+
+The similarity threshold can be set with the `--similarity` flag. The default similarity threshold is `0.98`. We can also choose to only use the title for deduplication by using the `--skip_abstract` flag.
+
+```bash
+asreview data dedup neurips_2020.tsv --drop_similar --similarity 0.98 --skip_abstract
+```
+```
+Not using doi for deduplication because there is no such data.
+Deduplicating: 100%|████████████████████████████████████| 2068/2068 [00:02<00:00, 770.74it/s]
+Found 4 duplicates in dataset with 2068 records.
+```
+
+Note that you might have to adjust your similarity score if you choose to only use the title for deduplication. The similarity score is calculated using the [SequenceMatcher](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher) class from the `difflib` package. The similarity score is calculated as the ratio of the number of matching characters to the total number of characters in the two strings. For example, the similarity score between the strings "hello" and "hello world" is 0.625. By default, we use the [real_quick_ratio](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.real_quick_ratio) and [quick_ratio](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.quick_ratio) methods, which are faster and usually good enough, but less accurate. If you want to use the ratio method, you can use the `--strict_similarity` flag.
+
+Now, if we want to discard stopwords for deduplication (for a more strict check on the important words), we can use the `--discard_stopwords` flag. The default language for the stopwords is `english`, but that can be set with the `--stopwords_language` flag. The list of supported languages for the stopwords are the same supported by the [nltk](https://www.nltk.org/index.html) package. To check the list of available languages, you can run the following commands on your python environment:
+
+```python
+from nltk.corpus import stopwords
+print(stopwords.fileids())
+```
+```
+['arabic', 'azerbaijani', 'basque', 'bengali', 'catalan', 'chinese', 'danish', 'dutch', 'english', 'finnish', 'french', 'german', 'greek', 'hebrew', 'hinglish', 'hungarian', 'indonesian', 'italian', 'kazakh', 'nepali', 'norwegian', 'portuguese', 'romanian', 'russian', 'slovene', 'spanish', 'swedish', 'tajik', 'turkish']
+```
 
 ### Data Vstack (Experimental)
 
@@ -186,7 +227,7 @@ Vertical stacking: combine as many datasets in the same file format as you want 
 ❗ Vstack is an experimental feature. We would love to hear your feedback.
 Please keep in mind that this feature can change in the future.
 
-Stack several datasets on top of each other: 
+Stack several datasets on top of each other:
 ```
 asreview data vstack output.csv MY_DATASET_1.csv MY_DATASET_2.csv MY_DATASET_3.csv
 ```
@@ -206,7 +247,7 @@ Compose is where datasets containing records with different labels (or no
 labels) can be assembled into a single dataset.
 
 ❗ Compose is an experimental feature. We would love to hear your feedback.
-Please keep in mind that this feature can change in the future. 
+Please keep in mind that this feature can change in the future.
 
 Overview of possible input files and corresponding properties, use at least
 one of the following arguments:
@@ -231,7 +272,7 @@ case of conflicts, use the `--conflict_resolve`/`-c` flag. This is set to
 | Resolve method | Action in case of conflict                                                              |
 |----------------|-----------------------------------------------------------------------------------------|
 | `keep_one`     | Keep one label, using `--hierarchy` to determine which label to keep                    |
-| `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) | 
+| `keep_all`     | Keep conflicting records as duplicates in the composed dataset (ignoring `--hierarchy`) |
 | `abort`        | Abort                                                                                   |
 
 
