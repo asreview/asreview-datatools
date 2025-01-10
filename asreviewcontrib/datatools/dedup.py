@@ -1,4 +1,5 @@
 import re
+from argparse import Namespace
 from difflib import SequenceMatcher
 
 import ftfy
@@ -9,7 +10,7 @@ from rich.text import Text
 from tqdm import tqdm
 
 
-def _print_similar_list(similar_list: list[tuple[int, int]], data: pd.Series):
+def _print_similar_list(similar_list: list[tuple[int, int]], data: pd.Series) -> None:
     print_seq_matcher = SequenceMatcher()
     console = Console()
     print('Found similar titles at lines:')
@@ -44,7 +45,7 @@ def drop_duplicates_by_similarity(
         discard_stopwords: bool = False,
         stopwords_language: str = 'english',
         strict_similarity: bool = False,
-        verbose: bool = False):
+        verbose: bool = False) -> None:
 
     if skip_abstract:
         data = asdata.df['title']
@@ -76,7 +77,7 @@ def drop_duplicates_by_similarity(
         stopwords_regex = re.compile(rf'\b{"\\b|\\b".join(stopwords_set)}\b')
         s = s.str.replace(stopwords_regex, '', regex=True)
 
-    duplicated = (s.duplicated()) & (s.notnull())
+    duplicated = [False] * len(s)
     seq_matcher = SequenceMatcher()
 
     if verbose:
@@ -102,4 +103,59 @@ def drop_duplicates_by_similarity(
     if verbose:
         _print_similar_list(similar_list, data)
 
-    asdata.df = asdata.df[~duplicated].reset_index(drop=True)
+    asdata.df = asdata.df[~pd.Series(duplicated)].reset_index(drop=True)
+
+
+def deduplicate_data(asdata: ASReviewData, args: Namespace) -> None:
+    initial_length = len(asdata.df)
+
+    if args.pid not in asdata.df.columns:
+        print(
+            f"Not using {args.pid} for deduplication "
+            "because there is no such data."
+        )
+
+    if not args.similar:
+        if args.verbose:
+            before_dedup = asdata.df.copy()
+
+            # retrieve deduplicated ASReview data object
+            asdata.drop_duplicates(pid=args.pid, inplace=True, reset_index=False)
+            duplicate_entries = before_dedup[~before_dedup.index.isin(asdata.df.index)]
+
+            if len(duplicate_entries) > 0:
+                print("Duplicate entries:")
+                for i, row in duplicate_entries.iterrows():
+                    print(f"\tLine {i} - {row['title']}")
+
+            asdata.df.reset_index(drop=True, inplace=True)
+
+        else:
+            # retrieve deduplicated ASReview data object
+            asdata.drop_duplicates(pid=args.pid, inplace=True)
+
+    else:
+        drop_duplicates_by_similarity(
+            asdata,
+            args.threshold,
+            args.title_only,
+            args.stopwords,
+            args.stopwords_language,
+            args.strict,
+            args.verbose,
+            )
+
+    # count duplicates
+    n_dup = initial_length - len(asdata.df)
+
+    if args.output_path:
+        asdata.to_file(args.output_path)
+        print(
+            f"Removed {n_dup} duplicates from dataset with"
+            f" {initial_length} records."
+        )
+    else:
+        print(
+            f"Found {n_dup} duplicates in dataset with"
+            f" {initial_length} records."
+        )
