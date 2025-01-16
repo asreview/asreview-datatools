@@ -125,8 +125,14 @@ def deduplicate_data(asdata: ASReviewData, args: Namespace) -> None:
 
             if len(duplicate_entries) > 0:
                 print("Duplicate entries:")
-                for i, row in duplicate_entries.iterrows():
-                    print(f"\tLine {i} - {row['title']}")
+
+                if args.pid in duplicate_entries.columns:
+                    for i, row in duplicate_entries.iterrows():
+                        print(f"\tLine {i} - {args.pid} "
+                              f"{row[args.pid]} - {row['title']}")
+                else:
+                    for i, row in duplicate_entries.iterrows():
+                        print(f"\tLine {i} - {row['title']}")
 
             asdata.df.reset_index(drop=True, inplace=True)
 
