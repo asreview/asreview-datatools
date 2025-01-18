@@ -8,7 +8,7 @@ from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
-from asreviewcontrib.datatools.dedup import deduplicate_data, drop_duplicates_by_similarity
+from asreviewcontrib.datatools.dedup import deduplicate_data
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
 from asreviewcontrib.datatools.sample import _parse_arguments_sample
