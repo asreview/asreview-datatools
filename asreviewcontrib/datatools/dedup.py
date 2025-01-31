@@ -35,9 +35,9 @@ def _print_similar_list(
         if pids is not None:
             text.append(f'\nLines {i+1} and {j+1} ', style='bold')
             if pids.iloc[i] == pids.iloc[j]:
-                text.append(f'(same {pid} {pids.iloc[i]}):\n', style='dim')
+                text.append(f'(same {pid} "{pids.iloc[i]}"):\n', style='dim')
             else:
-                text.append(f'({pid} {pids.iloc[i]} and {pids.iloc[j]}):\n',
+                text.append(f'({pid} "{pids.iloc[i]}" and "{pids.iloc[j]}"):\n',
                             style='dim')
 
         else:
@@ -174,35 +174,14 @@ def deduplicate_data(asdata: ASReviewData, args: Namespace) -> None:
     initial_length = len(asdata.df)
 
     if not args.similar:
-        if args.verbose:
-            before_dedup = asdata.df.copy()
+        if args.pid not in asdata.df.columns:
+            print(
+                f'Not using {args.pid} for deduplication '
+                'because there is no such data.'
+            )
 
-            if args.pid not in asdata.df.columns:
-                print(
-                    f'Not using {args.pid} for deduplication '
-                    'because there is no such data.'
-                )
-
-            # retrieve deduplicated ASReview data object
-            asdata.drop_duplicates(pid=args.pid, inplace=True, reset_index=False)
-            duplicate_entries = before_dedup[~before_dedup.index.isin(asdata.df.index)]
-
-            if len(duplicate_entries) > 0:
-                print('Duplicate entries:')
-
-                if args.pid in duplicate_entries.columns:
-                    for i, row in duplicate_entries.iterrows():
-                        print(f'\tLine {i} - {args.pid} '
-                              f'{row[args.pid]} - {row['title']}')
-                else:
-                    for i, row in duplicate_entries.iterrows():
-                        print(f'\tLine {i} - {row['title']}')
-
-            asdata.df.reset_index(drop=True, inplace=True)
-
-        else:
-            # retrieve deduplicated ASReview data object
-            asdata.drop_duplicates(pid=args.pid, inplace=True)
+        # retrieve deduplicated ASReview data object
+        asdata.drop_duplicates(pid=args.pid, inplace=True)
 
     else:
         _drop_duplicates_by_similarity(
