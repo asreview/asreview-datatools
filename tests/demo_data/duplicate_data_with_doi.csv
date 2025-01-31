@@ -1,0 +1,6 @@
+title, abstract, doi, publication_year
+exact copy title without stopwords, exact copy abstract without stopwords, doi1, 2005
+exact copy title without stopwords, exact copy abstract without stopwords, doi1, 2005
+other title without stopwords same doi, other abstract without stopwords same doi, doi1, 2006
+1 exact copy title without stopwords, 1 exact copy abstract without stopwords, doi2, 2005
+an "exact" copy of title without stopwords, an "exact" copy of abstract without stopwords, doi3, 2007
