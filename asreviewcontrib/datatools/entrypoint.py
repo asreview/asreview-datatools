@@ -62,7 +62,7 @@ class DataEntryPoint(BaseEntryPoint):
                 )
                 dedup_parser.add_argument(
                     "--similar",
-                    action='store_true',
+                    action="store_true",
                     help="Drop similar records.",
                 )
                 dedup_parser.add_argument(
@@ -73,17 +73,17 @@ class DataEntryPoint(BaseEntryPoint):
                 )
                 dedup_parser.add_argument(
                     "--title_only",
-                    action='store_true',
+                    action="store_true",
                     help="Use only title for deduplication.",
                 )
                 dedup_parser.add_argument(
                     "--stopwords",
-                    action='store_true',
+                    action="store_true",
                     help="Ignore stopwords for deduplication, focusing on main words.",
                 )
                 dedup_parser.add_argument(
                     "--strict",
-                    action='store_true',
+                    action="store_true",
                     help="Use a more strict similarity for deduplication.",
                 )
                 dedup_parser.add_argument(
@@ -94,7 +94,7 @@ class DataEntryPoint(BaseEntryPoint):
                 )
                 dedup_parser.add_argument(
                     "--verbose",
-                    action='store_true',
+                    action="store_true",
                     help="Print verbose output.",
                 )
 
@@ -141,7 +141,7 @@ class DataEntryPoint(BaseEntryPoint):
                 "subcommand",
                 nargs="?",
                 default=None,
-                help=f"The datatool to launch. Available commands:\n\n" f"{DATATOOLS}",
+                help=f"The datatool to launch. Available commands:\n\n{DATATOOLS}",
             )
             parser.add_argument(
                 "-V",
