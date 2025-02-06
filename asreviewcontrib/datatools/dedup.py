@@ -231,11 +231,9 @@ def deduplicate_data(
             verbose=verbose,
         )
 
-    # count duplicates
-    n_dup = initial_length - len(asdata.df)
-
     if output_path:
         asdata.to_file(output_path)
-        print(f"Removed {n_dup} duplicates from dataset with {initial_length} records.")
-    else:
-        print(f"Found {n_dup} duplicates in dataset with {initial_length} records.")
+
+    # count duplicates
+    n_dup = initial_length - len(asdata.df)
+    print(f"Found {n_dup} duplicates in dataset with {initial_length} records.")
