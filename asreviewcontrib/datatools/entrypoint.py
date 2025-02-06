@@ -52,7 +52,7 @@ class DataEntryPoint(BaseEntryPoint):
                     "-o",
                     default=None,
                     type=str,
-                    help="The file path of the dataset.",
+                    help="The file path of the output dataset.",
                 )
                 dedup_parser.add_argument(
                     "--pid",
@@ -63,46 +63,72 @@ class DataEntryPoint(BaseEntryPoint):
                 dedup_parser.add_argument(
                     "--similar",
                     action="store_true",
-                    help="Drop similar records.",
+                    help=(
+                        "Drop similar records, not only exactly matching records. The"
+                        " Ratcliff-Obershelp algorithm is used to calculate the"
+                        " similarity of records."
+                    ),
                 )
                 dedup_parser.add_argument(
                     "--threshold",
                     default=0.98,
                     type=float,
-                    help="Similarity threshold for deduplication. Default: 0.98.",
+                    help=(
+                        "Record with a similarity score above this threshold are"
+                        " considered duplicate. Default: 0.98. Only applies if"
+                        " similarity is set to True."
+                    ),
                 )
                 dedup_parser.add_argument(
                     "--title_only",
                     action="store_true",
-                    help="Use only title for deduplication.",
-                )
-                dedup_parser.add_argument(
-                    "--stopwords",
-                    action="store_true",
-                    help="Ignore stopwords for deduplication, focusing on main words.",
+                    help=(
+                        "Use only title for deduplication. Only applies if similarity"
+                        " is set to True"
+                    ),
                 )
                 dedup_parser.add_argument(
                     "--strict",
                     action="store_true",
-                    help="Use a more strict similarity for deduplication.",
+                    help=(
+                        "Use a more strict version of the similarity algorithm. Only"
+                        " applies if similarity is set to True."
+                    ),
                 )
                 dedup_parser.add_argument(
                     "--stopwords_language",
-                    default="english",
+                    default=None,
                     type=str,
-                    help="Language for stopwords. Default: english.",
+                    help=(
+                        "Remove stopwords from this language before calculating"
+                        " similarity. For example 'english'. Only applies if similarity"
+                        " is set to True."
+                    ),
                 )
                 dedup_parser.add_argument(
                     "--verbose",
                     action="store_true",
-                    help="Print verbose output.",
+                    help=(
+                        "Print verbose output. Only applies if similarity is set to"
+                        " True."
+                    ),
                 )
 
                 args_dedup = dedup_parser.parse_args(argv[1:])
 
                 # read data in ASReview data object
                 asdata = load_data(args_dedup.input_path)
-                deduplicate_data(asdata, args_dedup)
+                deduplicate_data(
+                    asdata=asdata,
+                    output_path=args_dedup.output_path,
+                    pid=args_dedup.pid,
+                    similar=args_dedup.similar,
+                    threshold=args_dedup.threshold,
+                    title_only=args_dedup.title_only,
+                    stopwords_language=args_dedup.stopwords_language,
+                    strict=args_dedup.strict,
+                    verbose=args_dedup.verbose,
+                )
 
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
