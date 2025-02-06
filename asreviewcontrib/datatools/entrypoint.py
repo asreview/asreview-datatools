@@ -8,6 +8,7 @@ from asreviewcontrib.datatools.compose import _parse_arguments_compose
 from asreviewcontrib.datatools.compose import compose
 from asreviewcontrib.datatools.convert import _parse_arguments_convert
 from asreviewcontrib.datatools.convert import convert
+from asreviewcontrib.datatools.dedup import deduplicate_data
 from asreviewcontrib.datatools.describe import _parse_arguments_describe
 from asreviewcontrib.datatools.describe import describe
 from asreviewcontrib.datatools.sample import _parse_arguments_sample
@@ -59,36 +60,50 @@ class DataEntryPoint(BaseEntryPoint):
                     type=str,
                     help="Persistent identifier used for deduplication. Default: doi.",
                 )
+                dedup_parser.add_argument(
+                    "--similar",
+                    action='store_true',
+                    help="Drop similar records.",
+                )
+                dedup_parser.add_argument(
+                    "--threshold",
+                    default=0.98,
+                    type=float,
+                    help="Similarity threshold for deduplication. Default: 0.98.",
+                )
+                dedup_parser.add_argument(
+                    "--title_only",
+                    action='store_true',
+                    help="Use only title for deduplication.",
+                )
+                dedup_parser.add_argument(
+                    "--stopwords",
+                    action='store_true',
+                    help="Ignore stopwords for deduplication, focusing on main words.",
+                )
+                dedup_parser.add_argument(
+                    "--strict",
+                    action='store_true',
+                    help="Use a more strict similarity for deduplication.",
+                )
+                dedup_parser.add_argument(
+                    "--stopwords_language",
+                    default="english",
+                    type=str,
+                    help="Language for stopwords. Default: english.",
+                )
+                dedup_parser.add_argument(
+                    "--verbose",
+                    action='store_true',
+                    help="Print verbose output.",
+                )
 
                 args_dedup = dedup_parser.parse_args(argv[1:])
 
                 # read data in ASReview data object
                 asdata = load_data(args_dedup.input_path)
-                initial_length = len(asdata.df)
+                deduplicate_data(asdata, args_dedup)
 
-                if args_dedup.pid not in asdata.df.columns:
-                    print(
-                        f"Not using {args_dedup.pid} for deduplication"
-                        "because there is no such data."
-                    )
-
-                # retrieve deduplicated ASReview data object
-                asdata.drop_duplicates(pid=args_dedup.pid, inplace=True)
-
-                # count duplicates
-                n_dup = initial_length - len(asdata.df)
-
-                if args_dedup.output_path:
-                    asdata.to_file(args_dedup.output_path)
-                    print(
-                        f"Removed {n_dup} duplicates from dataset with"
-                        f" {initial_length} records."
-                    )
-                else:
-                    print(
-                        f"Found {n_dup} duplicates in dataset with"
-                        f" {initial_length} records."
-                    )
             if argv[0] == "compose":
                 args_compose_parser = _parse_arguments_compose()
                 args_compose = args_compose_parser.parse_args(argv[1:])

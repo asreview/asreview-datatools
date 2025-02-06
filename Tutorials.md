@@ -1,6 +1,6 @@
 # Tutorials
 
---- 
+---
 Below are several examples to illustrate how to use `ASReview-datatools`.  Make
 sure to have installed
 [asreview-datatools](https://github.com/asreview/asreview-datatools) and
@@ -18,9 +18,9 @@ ASReview converts the labeling decisions in [RIS files](https://asreview.readthe
 irrelevant as `0` and relevant as `1`. Records marked as unseen or with
 missing labeling decisions are converted to `-1`.
 
---- 
+---
 
-## Update Systematic Review 
+## Update Systematic Review
 
 Assume you are working on a systematic review and you want to update the
 review with newly available records. The original data is stored in
@@ -28,7 +28,7 @@ review with newly available records. The original data is stored in
 [column](https://asreview.readthedocs.io/en/latest/data_labeled.html#label-format)
 containing the labeling decissions. In order to update the systematic review,
 you run the original  search query again but with a new date. You save the
-newly found records in `SEARCH_UPDATE.ris`. 
+newly found records in `SEARCH_UPDATE.ris`.
 
 
 In the command line interface (CLI), navigate to the directory where the
@@ -52,10 +52,16 @@ asreview data convert SEARCH_UPDATE.ris SEARCH_UPDATE.csv
 
 Duplicate records can be removed with with `dedup` script. The algorithm
 removes duplicates using the Digital Object Indentifier
-([DOI](https://www.doi.org/)) and the title plus abstract. 
+([DOI](https://www.doi.org/)) and the title plus abstract.
 
 ```bash
 asreview data dedup SEARCH_UPDATE.csv -o SEARCH_UPDATE_DEDUP.csv
+```
+
+This can also be done considering a similarity threshold between the titles and abstracts.
+
+```bash
+asreview data dedup SEARCH_UPDATE.csv -o SEARCH_UPDATE_DEDUP.csv --drop_similar
 ```
 
 ### Describe input
@@ -78,12 +84,12 @@ asreview data compose updated_search.csv -l MY_LABELED_DATASET.csv -u SEARCH_UPD
 The flag `-l` means the labels in `MY_LABELED_DATASET.csv` will be kept.
 
 The flag `-u` means all records from `SEARCH_UPDATE_DEDUP.csv` will be
-added as unlabeled to the composed dataset. 
+added as unlabeled to the composed dataset.
 
 If a record exists in both datasets, it is assumed the record containing a
 label is maintained, see the default [conflict resolving
 strategy](https://github.com/asreview/asreview-datatools#resolving-conflicting-labels).
-To keep both records (with and without label), use 
+To keep both records (with and without label), use
 
 ```bash
 asreview data compose updated_search.csv -l MY_LABELED_DATASET.csv -u SEARCH_UPDATE_DEDUP.csv -c keep
@@ -154,14 +160,14 @@ added as unlabeled.
 
 If any duplicate records exist across the datasets, by default the order of
 keeping labels is:
-1. relevant 
+1. relevant
 2. irrelevant
 3. unlabeled
 
 You can configure the behavior in resolving conflicting labels by setting the
 hierarchy differently. To do so, pass the letters r (relevant), i
 (irrelevant), and u (unlabeled) in any order to, for example, `--hierarchy
-uir`. 
+uir`.
 
 
 The composed dataset will be exported to `search_with_priors.ris`.
@@ -193,12 +199,12 @@ new search.
 Assume you want to use the [simulation
 mode](https://asreview.readthedocs.io/en/latest/simulation_overview.html) of
 ASReview but the data is not stored in one singe file containing the meta-data
-and labelling decissions as required by ASReview. 
+and labelling decissions as required by ASReview.
 
 Suppose the following files are available:
 
 - `SCREENED.ris`: all records that were screened
-- `RELEVANT.ris`: the subset of relevant records after manually screening all the records.  
+- `RELEVANT.ris`: the subset of relevant records after manually screening all the records.
 
 You need to compose the files into a single file where all records from
 `RELEVANT.csv` are relevant all other records are irrelevant.
