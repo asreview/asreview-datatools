@@ -1,5 +1,4 @@
 import re
-from argparse import Namespace
 from difflib import SequenceMatcher
 
 import ftfy
@@ -63,14 +62,13 @@ def _print_similar_list(
 def _drop_duplicates_by_similarity(
     asdata: ASReviewData,
     pid: str,
-    similarity: float = 0.98,
-    skip_abstract: bool = False,
-    discard_stopwords: bool = False,
-    stopwords_language: str = "english",
-    strict_similarity: bool = False,
+    threshold: float = 0.98,
+    title_only: bool = False,
+    stopwords_language: str = None,
+    strict: bool = False,
     verbose: bool = False,
 ) -> None:
-    if skip_abstract:
+    if title_only:
         data = asdata.df["title"]
     else:
         data = pd.Series(asdata.texts)
@@ -88,7 +86,7 @@ def _drop_duplicates_by_similarity(
         .replace("", None)
     )
 
-    if discard_stopwords:
+    if stopwords_language:
         try:
             from nltk.corpus import stopwords
 
@@ -134,9 +132,9 @@ def _drop_duplicates_by_similarity(
                 # if the texts have the same pid or are similar enough,
                 # mark the second one as duplicate
                 if pids.iloc[i] == pids.iloc[j] or (
-                    seq_matcher.real_quick_ratio() > similarity
-                    and seq_matcher.quick_ratio() > similarity
-                    and (not strict_similarity or seq_matcher.ratio() > similarity)
+                    seq_matcher.real_quick_ratio() > threshold
+                    and seq_matcher.quick_ratio() > threshold
+                    and (not strict or seq_matcher.ratio() > threshold)
                 ):
                     if verbose and not duplicated[j]:
                         similar_list.append((i, j))
@@ -158,9 +156,9 @@ def _drop_duplicates_by_similarity(
 
                 # if the texts are similar enough, mark the second one as duplicate
                 if (
-                    seq_matcher.real_quick_ratio() > similarity
-                    and seq_matcher.quick_ratio() > similarity
-                    and (not strict_similarity or seq_matcher.ratio() > similarity)
+                    seq_matcher.real_quick_ratio() > threshold
+                    and seq_matcher.quick_ratio() > threshold
+                    and (not strict or seq_matcher.ratio() > threshold)
                 ):
                     if verbose and not duplicated[j]:
                         similar_list.append((i, j))
@@ -173,35 +171,71 @@ def _drop_duplicates_by_similarity(
     asdata.df = asdata.df[~pd.Series(duplicated)].reset_index(drop=True)
 
 
-def deduplicate_data(asdata: ASReviewData, args: Namespace) -> None:
+def deduplicate_data(
+    asdata: ASReviewData,
+    output_path: str = None,
+    pid: str = "doi",
+    similar: bool = False,
+    threshold: float = 0.98,
+    title_only: bool = False,
+    stopwords_language: str = None,
+    strict: bool = False,
+    verbose: bool = False,
+) -> None:
+    """Deduplicate an ASReview data object.
+
+    Parameters
+    ----------
+    asdata : ASReviewData
+        The data object.
+    output_path : str, optional
+        If provided, the deduplicated data object is stored at this location. By
+        default None.
+    pid : str, optional
+        Principal identifier to use for deduplication, by default "doi"
+    similar : bool, optional
+        Where to deduplicate 'similar' record. The similarity of the records is
+        calculated using the `SequenceMatcher` from `difflib`. By default False.
+    threshold : float, optional
+        Threshold score above which two records are considered duplicate.
+        By default 0.98. Only applies if `similar` is set to `True`.
+    title_only : bool, optional
+        Only use the title for deduplication, by default False
+    stopwords_language : str, optional
+        Remove stopwords from this language before deduplicating, for example 'english'.
+        By default None. Only applies if `similar` is set to `True`.
+    strict : bool, optional
+        Use a stricter algorithm to calculate the similarity between records.
+        By default False. Only applies if `similar` is set to `True`.
+    verbose : bool, optional
+        Get verbose output during deduplicating. By default False. Only applies if
+        `similar` is set to `True`.
+    """
     initial_length = len(asdata.df)
 
-    if not args.similar:
-        if args.pid not in asdata.df.columns:
-            print(
-                f"Not using {args.pid} for deduplication because there is no such data."
-            )
+    if not similar:
+        if pid not in asdata.df.columns:
+            print(f"Not using {pid} for deduplication because there is no such data.")
 
         # retrieve deduplicated ASReview data object
-        asdata.drop_duplicates(pid=args.pid, inplace=True)
+        asdata.drop_duplicates(pid=pid, inplace=True)
 
     else:
         _drop_duplicates_by_similarity(
-            asdata,
-            args.pid,
-            args.threshold,
-            args.title_only,
-            args.stopwords,
-            args.stopwords_language,
-            args.strict,
-            args.verbose,
+            asdata=asdata,
+            pid=pid,
+            threshold=threshold,
+            title_only=title_only,
+            stopwords_language=stopwords_language,
+            strict=strict,
+            verbose=verbose,
         )
 
     # count duplicates
     n_dup = initial_length - len(asdata.df)
 
-    if args.output_path:
-        asdata.to_file(args.output_path)
+    if output_path:
+        asdata.to_file(output_path)
         print(f"Removed {n_dup} duplicates from dataset with {initial_length} records.")
     else:
         print(f"Found {n_dup} duplicates in dataset with {initial_length} records.")

@@ -1,4 +1,3 @@
-from argparse import Namespace
 from pathlib import Path
 
 from asreview.data import ASReviewData
@@ -10,7 +9,7 @@ file_without_doi = Path(test_dir, "demo_data", "duplicate_data_without_doi.csv")
 file_with_doi = Path(test_dir, "demo_data", "duplicate_data_with_doi.csv")
 
 
-def test_dedup_without_doi(tmpdir):
+def test_dedup_without_doi():
     """
     Test deduplication without DOI.
 
@@ -23,17 +22,20 @@ def test_dedup_without_doi(tmpdir):
     Found 1 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_without_doi)
+    deduplicate_data(data)
+    assert len(data.df) == 4
+
+
+def test_output(tmpdir):
+    data = ASReviewData.from_file(file_without_doi)
     output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(similar=False, output_path=output_path)
-    deduplicate_data(data, args)
+    deduplicate_data(data, output_path=output_path)
     as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 4, "Deduplicated data should have 4 records."
+    assert len(data.df) == 4
+    assert len(as_test.df) == 4
 
 
-def test_dedup_with_doi(tmpdir):
+def test_dedup_with_doi():
     """
     Test deduplication with DOI.
 
@@ -46,17 +48,11 @@ def test_dedup_with_doi(tmpdir):
     Found 2 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_with_doi)
-    output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(similar=False, output_path=output_path)
-    deduplicate_data(data, args)
-    as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 3, "Deduplicated data should have 3 records."
+    deduplicate_data(data)
+    assert len(data.df) == 3
 
 
-def test_dedup_with_similarity_without_doi(tmpdir):
+def test_dedup_with_similarity_without_doi():
     """
     Test deduplication with similarity without DOI.
 
@@ -71,17 +67,11 @@ def test_dedup_with_similarity_without_doi(tmpdir):
     Found 2 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_without_doi)
-    output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(similar=True, output_path=output_path, threshold=0.95)
-    deduplicate_data(data, args)
-    as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 3, "Deduplicated data should have 3 records."
+    deduplicate_data(data, similar=True, threshold=0.95)
+    assert len(data.df) == 3, "Original data should have 5 records."
 
 
-def test_dedup_with_similarity_with_doi(tmpdir):
+def test_dedup_with_similarity_with_doi():
     """
     Test deduplication with similarity with DOI.
 
@@ -96,17 +86,11 @@ def test_dedup_with_similarity_with_doi(tmpdir):
     Found 3 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_with_doi)
-    output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(similar=True, output_path=output_path, threshold=0.95)
-    deduplicate_data(data, args)
-    as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 2, "Deduplicated data should have 2 records."
+    deduplicate_data(data, similar=True, threshold=0.95)
+    assert len(data.df) == 2
 
 
-def test_dedup_with_similarity_without_doi_stopwords(tmpdir):
+def test_dedup_with_similarity_without_doi_stopwords():
     """
     Test deduplication with similarity without DOI and removing stopwords.
 
@@ -122,22 +106,11 @@ def test_dedup_with_similarity_without_doi_stopwords(tmpdir):
     Found 3 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_without_doi)
-    output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(
-        similar=True,
-        output_path=output_path,
-        threshold=0.95,
-        stopwords=True,
-        )
-    deduplicate_data(data, args)
-    as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 2, "Deduplicated data should have 2 records."
+    deduplicate_data(data, similar=True, threshold=0.95, stopwords_language="english")
+    assert len(data.df) == 2
 
 
-def test_dedup_with_similarity_with_doi_stopwords(tmpdir):
+def test_dedup_with_similarity_with_doi_stopwords():
     """
     Test deduplication with similarity with DOI and removing stopwords.
 
@@ -153,16 +126,5 @@ def test_dedup_with_similarity_with_doi_stopwords(tmpdir):
     Found 4 duplicates in dataset with 5 records.
     """
     data = ASReviewData.from_file(file_with_doi)
-    output_path = Path(tmpdir, "test_dedup.csv")
-    args = Namespace(
-        similar=True,
-        output_path=output_path,
-        threshold=0.95,
-        stopwords=True,
-        )
-    deduplicate_data(data, args)
-    as_test = ASReviewData.from_file(output_path)
-
-    assert len(data.df) != len(as_test.df), "Data should have been deduplicated."
-    assert len(data.df) == 5, "Original data should have 5 records."
-    assert len(as_test.df) == 1, "Deduplicated data should have 1 record."
+    deduplicate_data(data, similar=True, threshold=0.95, stopwords_language="english")
+    assert len(data.df) == 1
