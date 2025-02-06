@@ -103,11 +103,7 @@ def _drop_duplicates_by_similarity(
     seq_matcher = SequenceMatcher()
     duplicated = [False] * len(s)
 
-    if verbose:
-        similar_list = []
-    else:
-        similar_list = None
-
+    similar_list = []
     if pid in asdata.df.columns:
         if is_string_dtype(asdata.df[pid]) or is_object_dtype(asdata.df[pid]):
             pids = asdata.df[pid].str.strip().replace("", None)
@@ -115,7 +111,6 @@ def _drop_duplicates_by_similarity(
                 pids = pids.str.lower().str.replace(
                     r"^https?://(www\.)?doi\.org/", "", regex=True
                 )
-
         else:
             pids = asdata.df[pid]
 
@@ -136,13 +131,9 @@ def _drop_duplicates_by_similarity(
                     and seq_matcher.quick_ratio() > threshold
                     and (not strict or seq_matcher.ratio() > threshold)
                 ):
-                    if verbose and not duplicated[j]:
+                    if not duplicated[j]:
                         similar_list.append((i, j))
-
                     duplicated[j] = True
-
-        if verbose:
-            _print_similar_list(similar_list, data, pid, pids)
 
     else:
         print(f"Not using {pid} for deduplication because there is no such data.")
@@ -160,15 +151,12 @@ def _drop_duplicates_by_similarity(
                     and seq_matcher.quick_ratio() > threshold
                     and (not strict or seq_matcher.ratio() > threshold)
                 ):
-                    if verbose and not duplicated[j]:
+                    if not duplicated[j]:
                         similar_list.append((i, j))
-
                     duplicated[j] = True
-
-        if verbose:
-            _print_similar_list(similar_list, data, pid)
-
     asdata.df = asdata.df[~pd.Series(duplicated)].reset_index(drop=True)
+    if verbose:
+        _print_similar_list(similar_list, data, pid)
 
 
 def deduplicate_data(
