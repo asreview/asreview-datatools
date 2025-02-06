@@ -128,3 +128,9 @@ def test_dedup_with_similarity_with_doi_stopwords():
     data = ASReviewData.from_file(file_with_doi)
     deduplicate_data(data, similar=True, threshold=0.95, stopwords_language="english")
     assert len(data.df) == 1
+
+
+def test_threshold_zero():
+    data = ASReviewData.from_file(file_with_doi)
+    deduplicate_data(data, similar=True, threshold=0)
+    assert len(data.df) == 1
